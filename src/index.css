@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+/* Custom primary color */
+:root {
+  --color-primary: #0d7c66;
+  --color-primary-hover: #0a6a58;
+}
+
+/* Button styles using direct classes instead of @apply */
+.btn-primary {
+  background-color: #0d7c66;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0a6a58;
+}
+
+.btn-outline {
+  border: 1px solid #0d7c66;
+  color: #0d7c66;
+}
+
+.btn-outline:hover {
+  background-color: rgba(13, 124, 102, 0.1);
+}
+
+.btn-disabled {
+  cursor: not-allowed;
+  background-color: #d1d5db;
+  color: #6b7280;
+}

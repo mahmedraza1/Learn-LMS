@@ -1,12 +1,68 @@
-# React + Vite
+# Learn Live - Lecture Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based lecture management system that integrates with a WordPress backend API to provide role-based access to lecture content.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Role-based access control**: Different views for guests, students, and instructors/admins
+- **Batch management**: Courses organized by batches with specific lecture schedules
+- **Lecture scheduling**: Automatic date calculation for lectures based on batch rules
+- **Live lectures**: Integration with YouTube live streams for virtual classes
+- **Responsive design**: Built with Tailwind CSS for a modern, mobile-friendly interface
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 19
+- Tailwind CSS 4
+- Vite 7
+- React Hook Form for form management
+- React Hot Toast for notifications
+- React Icons for UI elements
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18.x or higher
+- npm 9.x or higher
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/mahmedraza1/Learn-Live.git
+   cd Learn-Live
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Start the development server:
+   ```
+   npm run dev
+   ```
+
+4. Access the application at [https://lectures.learn.pk:5173](https://lectures.learn.pk:5173)
+
+## Project Structure
+
+- `src/components/` - Reusable UI components
+- `src/contexts/` - React context providers for state management
+- `src/pages/` - Page components for different user roles
+- `src/utils/` - Utility functions and helpers
+
+## User Roles
+
+### Guest
+- Sees a login message prompting them to log in at Learn.pk
+
+### Student
+- If unassigned to a batch: Sees a pending verification message
+- If assigned to a batch: Sees lecture dashboard for their batch
+
+### Instructor/Admin
+- Has access to all batches
+- Can add/edit/delete lectures
+- Can preview video content

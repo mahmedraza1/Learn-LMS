@@ -3,9 +3,20 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import React from 'react'
 import App from './App.jsx'
+import { AuthProvider } from './contexts/AuthContext'
+import { BatchProvider } from './contexts/BatchContext'
+import { LectureProvider } from './contexts/LectureContext'
+import { Toaster } from 'react-hot-toast'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <AuthProvider>
+      <BatchProvider>
+        <LectureProvider>
+          <App />
+          <Toaster position="bottom-right" />
+        </LectureProvider>
+      </BatchProvider>
+    </AuthProvider>
   </StrictMode>,
 )

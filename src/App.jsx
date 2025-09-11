@@ -33,75 +33,64 @@
 // }
 
 // export default App
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useAuth } from "./contexts/AuthContext";
+import { useBatch } from "./contexts/BatchContext";
+import GuestView from "./pages/GuestView";
+import StudentPendingView from "./pages/StudentPendingView";
+import StudentDashboard from "./pages/StudentDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [batches, setBatches] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { user, isAdmin, isStudent, isGuest, loading } = useAuth();
+  const { selectedBatch } = useBatch();
 
-  useEffect(() => {
-    // Step 1: Get current WordPress user
-    fetch("https://learn.pk/wp-json/custom/v1/me", {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch user info");
-        return res.json();
-      })
-      .then((userData) => {
-        if (!userData || userData.id === 0) throw new Error("Guest user");
-        setUser(userData);
+  if (loading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="mt-3 text-lg font-medium text-gray-700">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-        // Step 2: Fetch user batches using user ID
-        return fetch(
-          `https://learn.pk/wp-json/wplms/v1/user-batches/${userData.id}`,
-          { credentials: "include" }
-        );
-      })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch user batches");
-        return res.json();
-      })
-      .then((batchData) => {
-        setBatches(batchData);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
+  // Guest view
+  if (isGuest) {
+    return <GuestView />;
+  }
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // Student with unassigned batch
+  if (isStudent && user?.batch === "Unassigned") {
+    return <StudentPendingView />;
+  }
 
+  // Student with assigned batch
+  if (isStudent && user?.batch && user.batch !== "Unassigned") {
+    return <StudentDashboard />;
+  }
+
+  // Admin/Instructor view
+  if (isAdmin) {
+    return <AdminDashboard />;
+  }
+
+  // Fallback view for unknown roles
   return (
-    <div>
-      <h1>WordPress User Info</h1>
-      <p>
-        <strong>ID:</strong> {user.id}
-      </p>
-      <p>
-        <strong>Name:</strong> {user.name}
-      </p>
-      <p>
-        <strong>Roles:</strong> {user.roles.join(", ")}
-      </p>
-
-      <h2>User Batches</h2>
-      {batches.length === 0 ? (
-        <p>No batches found.</p>
-      ) : (
-        <ul>
-          {batches.map((batch, index) => (
-            <li key={index}>
-              <strong>{batch.course_title}</strong> — Batch {batch.batch}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="container mx-auto p-4">
+      <div className="rounded-lg bg-yellow-50 p-4 text-yellow-800">
+        <h2 className="mb-2 text-lg font-semibold">Unknown User Role</h2>
+        <p>
+          Your account type is not recognized. Please contact support for assistance.
+        </p>
+        <div className="mt-3">
+          <p className="text-sm">
+            📧 contact@learn.pk<br />
+            📱 WhatsApp: +923177569038
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

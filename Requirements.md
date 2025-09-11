@@ -1,69 +1,122 @@
-Build a MERN stack dashboard for WordPress-integrated courses and live lectures. The app should support three roles: student, instructor, and admin, based on the WordPress /me endpoint.
+# React + Tailwind + Vite Project Instructions
 
-Requirements:
+We are building a role-based lecture management frontend that integrates with a WordPress backend API.
 
-1. **Roles & Permissions:**
-   - **Student**: can only see their batch (A or B) lectures for their enrolled courses. Cards should be grayed out if the lecture hasn’t started and prominent when the lecture date/time has arrived. Clicking “Attend” opens the YouTube live video in a fullscreen popup modal.
-   - **Instructor**: can add/edit lectures for only the courses assigned to them (max 4 courses). They can only add lectures for batches A & B of their assigned courses. Can edit their own lectures.
-   - **Admin**: can add/edit lectures for any course and any batch. Can edit anyone’s lectures.
+---
 
-2. **Data Storage (JSON Files):**
-   - **courses.json**: list of all courses with id and name.
-   - **classes.json**: stores lectures for each course, batch, lecture number, YouTube URL, scheduled date/time, and instructor id.
+## API
+- First, always fetch user data from:  
+  `https://learn.pk/wp-json/custom/v1/me`
 
-3. **Backend (Express/Node):**
-   - API endpoints:
-     - GET `/lectures/:courseId/:batch` → returns all lectures for course + batch.
-     - POST `/lectures/add` → adds a lecture (role-based access: instructor/admin).
-     - PUT `/lectures/edit/:lectureId` → edits a lecture (role-based access: instructor/admin).
-     - DELETE `/lectures/:lectureId` → deletes a lecture with confirmation.
-     - GET `/me` → returns WordPress user info (id, name, role, batch) from `/wp-json/custom/v1/me`.
-   - Validate user role and batch for each endpoint.
-   - Read/write JSON files for persistence.
+- Example response:
+  ```json
+  {
+    "id": 1168,
+    "name": "test",
+    "email": "test@test.com",
+    "roles": ["student", "bbp_participant"],
+    "batch": "Batch B"
+  }
+Role Logic
+Guest
 
-4. **Frontend (React + Vite):**
-   - Detect WordPress user using `/me` endpoint.
-   - Role-based routing & rendering:
-     - Guest → show message linking to learn.pk to log in.
-     - Student → show batch-specific lecture cards.
-     - Instructor/Admin → show course selection, batch tabs, and add/edit lecture forms.
-   - **Lecture Cards**:
-     - Show thumbnail, lecture number, title, and “Attend” button.
-     - Card grayed out if lecture date is in the future, prominent when live.
-   - **Add/Edit Lecture Form**:
-     - Use **React Hook Form** for form handling.
-     - Fields: Lecture number, YouTube live URL, scheduled date/time.
-     - Only allowed courses and batches based on role.
-   - **Deletion Mechanism**:
-     - Can delete single lectures.
-     - Warn with confirmation before deleting.
-     - Include “Select” feature to select multiple lectures for deletion.
-     - “Select All” selects only lectures of the currently selected course.
-   - **Notifications**:
-     - Use **React Hot Toast** to show success/error messages.
-   - **Icons**:
-     - Use **React Icons** for buttons (edit, delete, add, etc.).
-   - YouTube popup modal for lecture playback.
-   - Styling:
-     - Light theme.
-     - Primary: #0d7c66, Secondary: #f2b544, Heading: #000000, Text secondary: #8a8a8a.
-     - Grayed-out cards: desaturated, opacity ~0.5.
-     - Prominent cards: primary color accents, hover shadow.
+If id === 0 → show message:
+"Please log in at Learn.pk to continue."
 
-5. **UX/Behavior:**
-   - Auto-sort lectures by date.
-   - Only instructors assigned to a course can add/edit their courses.
-   - Students cannot edit or see other courses/batches.
-   - Admin can see/edit all courses and lectures.
-   - Handle all role and batch restrictions on both frontend and backend.
-   - Responsive layout for desktop, tablet, and mobile.
+Student
 
-6. **Extras:**
-   - Include simple error handling for failed fetch requests.
-   - Include loading state for API calls.
-   - Modular React components: LectureCard, AddLectureForm, CourseTabs, YouTubeModal, DeleteConfirmation.
-   - Keep code clean and organized for scalability.
+If batch === "Unassigned" → show message:
+"Your account is pending verification.
+If you have paid your fee, please wait for approval.
+If not, please pay your fee or contact us at:
+📧 contact@learn.pk
+📱 WhatsApp: +923177569038"
 
-Generate both backend and frontend scaffolding, including JSON read/write logic, API endpoints, role-based permissions, React components with state management, lecture card rendering, forms with React Hook Form, notifications using React Hot Toast, icons using React Icons, and deletion with confirmation & select functionality.
+If batch === "Batch A" or "Batch B" → show lecture dashboard for that batch.
 
-Do not hardcode data; make it dynamic and read/write from the JSON files.
+Instructor/Admin
+
+Skip batch logic.
+
+Show dashboard with tabs for "Batch A" and "Batch B".
+
+Each tab shows course cards.
+
+Clicking a course shows lecture cards (15 cards, prewritten dates).
+
+Instructors/Admins can add/edit/delete lectures by entering a YouTube live stream URL.
+
+Lecture Dates Logic
+Each course has 15 lectures.
+
+Each lecture card must have a scheduled date.
+
+Rules
+Batch A → Lectures are scheduled on all odd dates of the current month (1, 3, 5, 7, …).
+
+Batch B → Lectures are scheduled on all even dates of the current month (2, 4, 6, 8, …).
+
+Display Behavior
+Today’s date:
+
+If today matches the scheduled date → mark that lecture card as prominent (highlighted with primary color).
+
+All other lecture dates:
+
+Cards must appear grayed out (reduced opacity, disabled hover/CTA).
+
+Student Dashboard Rules
+Students see all courses in their batch.
+
+Each lecture card shows:
+
+YouTube thumbnail (or placeholder if no link).
+
+Title: "Lecture {number}".
+
+Scheduled date (calculated via odd/even rule).
+
+CTA button → "Attend".
+
+Card states:
+
+Today’s lecture → highlighted with primary color (#0d7c66).
+
+All other lectures → grayed out (lower opacity).
+
+Clicking a card/CTA opens a fullscreen modal with embedded YouTube live stream.
+
+Components
+React Hook Form → for forms (adding/editing lectures).
+
+React Hot Toast → for notifications (success/error).
+
+React Icons → for icons (close button, delete icon, play icon, etc).
+
+TailwindCSS → for styling.
+
+Theme
+Mode: Light
+
+make design modern
+
+Colors:
+
+Primary: #0d7c66
+
+Secondary: #f2b544
+
+Heading: #000000
+
+Text Secondary: #8a8a8a 
+
+## Additional Features
+- **Instructors/Admins**  
+  - Confirmation dialog before deleting a lecture.  
+  - Delete only resets the lecture’s YouTube link to blank, keeping the lecture card, date, and numbering intact.  
+  - Multi-select delete option.  
+  - "Select All" → only selects lectures of the current course.  
+
+- **Students**  
+  - If lecture date != today → card is **disabled + grayed out**.  
+  - If lecture date == today → card is **prominent + clickable**.  
