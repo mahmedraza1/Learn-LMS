@@ -1,0 +1,16 @@
+{
+  "Batch A": {},
+  "Batch B": {
+    "1": [
+      {
+        "course_id": 1,
+        "title": "Lecture 1",
+        "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+        "youtube_id": "jfKfPfyJRdk",
+        "lecture_number": 1,
+        "date": "2025-09-15T19:00:00.000Z",
+        "id": 1757652585577
+      }
+    ]
+  }
+}

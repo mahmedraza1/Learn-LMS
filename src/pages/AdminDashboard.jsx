@@ -24,21 +24,15 @@ const AdminDashboard = () => {
     videoUrl: ""
   });
   
-  // Handler for opening lecture form
-  const handleAddLecture = (courseId) => {
-    setLectureForm({
-      isOpen: true,
-      courseId,
-      lecture: null
-    });
-  };
-  
-  // Handler for editing lecture
+  // Handler for editing lecture - now handles both editing and adding lectures
   const handleEditLecture = (lecture, courseId) => {
+    // If lecture has a YouTube URL, it's an edit operation, otherwise it's an add operation
+    const isAdd = !lecture?.youtube_url;
+    
     setLectureForm({
       isOpen: true,
-      courseId,
-      lecture
+      courseId: courseId || lecture?.course_id,
+      lecture: isAdd ? null : lecture // If adding new lecture, set lecture to null
     });
   };
   
@@ -59,20 +53,16 @@ const AdminDashboard = () => {
     try {
       const { courseId, lecture } = lectureForm;
       
-      if (lecture) {
-        // Update existing lecture
+      if (lecture && lecture.youtube_url) {
+        // Update existing lecture (only YouTube URL, date is fixed by batch schedule, title is fixed)
         await updateLecture(courseId, lecture.id, {
-          title: data.title,
-          youtube_url: data.youtubeUrl,
-          date: new Date(data.date)
+          youtube_url: data.youtubeUrl
         });
         toast.success("Lecture updated successfully");
       } else {
-        // Add new lecture
+        // Add new lecture (title will be auto-generated, date will be auto-assigned based on batch)
         await addLecture(courseId, {
-          title: data.title,
-          youtubeUrl: data.youtubeUrl,
-          date: new Date(data.date)
+          youtubeUrl: data.youtubeUrl
         });
         toast.success("Lecture added successfully");
       }
@@ -133,6 +123,22 @@ const AdminDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Batch schedule info */}
+        <div className="mb-6 rounded-lg border-l-4 border-[#0d7c66] bg-white p-4 shadow-sm">
+          <h3 className="mb-2 font-medium text-gray-800">Current Batch Schedule</h3>
+          <p className="text-sm text-gray-600">
+            {selectedBatch === "Batch A" 
+              ? "Batch A lectures are scheduled on odd dates (1st, 3rd, 5th...) from the 1st of this month to the 1st of next month."
+              : "Batch B lectures are scheduled on even dates (16th, 18th, 20th...) from the 15th of this month to the 15th of next month."}
+          </p>
+          <p className="mt-2 text-sm text-gray-600">
+            <strong>Today's date:</strong> {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+          </p>
+          <p className="mt-1 text-xs text-gray-500 italic">
+            Note: When adding lectures, the system will automatically assign dates based on the batch schedule.
+          </p>
+        </div>
+        
         <h2 className="mb-6 text-xl font-bold text-gray-800">
           Courses for {selectedBatch}
         </h2>
@@ -149,7 +155,6 @@ const AdminDashboard = () => {
               key={course.id}
               course={course}
               isAdmin={true}
-              onAddLecture={() => handleAddLecture(course.id)}
               onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
               onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
               onVideoPreview={handleVideoPreview}

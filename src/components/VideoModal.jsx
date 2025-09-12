@@ -2,14 +2,39 @@ import React, { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 
 const VideoModal = ({ isOpen, onClose, videoUrl }) => {
-  // Extract YouTube video ID from URL
+  // Extract YouTube video ID from various URL formats
   const getYoutubeId = (url) => {
     if (!url) return null;
+    
     try {
-      const urlObj = new URL(url);
-      return urlObj.searchParams.get("v");
+      // Handle different YouTube URL formats
+      // Format: https://www.youtube.com/watch?v=VIDEO_ID
+      // Format: https://youtu.be/VIDEO_ID
+      // Format: https://www.youtube.com/embed/VIDEO_ID
+      
+      let videoId = null;
+      
+      if (url.includes('youtu.be/')) {
+        // Short URL format: https://youtu.be/VIDEO_ID
+        const parts = url.split('youtu.be/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      } else if (url.includes('youtube.com/watch')) {
+        // Standard URL: https://www.youtube.com/watch?v=VIDEO_ID
+        const urlObj = new URL(url);
+        videoId = urlObj.searchParams.get('v');
+      } else if (url.includes('youtube.com/embed/')) {
+        // Embed URL: https://www.youtube.com/embed/VIDEO_ID
+        const parts = url.split('embed/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      }
+      
+      return videoId;
     } catch (err) {
-      console.error("Invalid URL", err);
+      console.error("Error extracting YouTube ID:", err);
       return null;
     }
   };
@@ -60,8 +85,11 @@ const VideoModal = ({ isOpen, onClose, videoUrl }) => {
             className="h-full w-full"
           ></iframe>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gray-900 text-white">
-            <p>Invalid video URL</p>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-900 p-8 text-white">
+            <p className="text-xl">Invalid or missing YouTube video URL</p>
+            <p className="text-center text-sm text-gray-300">
+              The lecture might not have a valid YouTube URL assigned yet. Please check back later or contact your instructor.
+            </p>
           </div>
         )}
       </div>

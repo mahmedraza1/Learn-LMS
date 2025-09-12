@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 
 const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null }) => {
-  const isEditMode = !!lecture;
+  // If lecture exists and has a YouTube URL, it's edit mode, otherwise it's add mode
+  const isEditMode = !!(lecture && lecture.youtube_url);
   
   const {
     register,
@@ -12,11 +13,7 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null }) => {
     reset
   } = useForm({
     defaultValues: {
-      title: lecture?.title || "",
-      youtubeUrl: lecture?.youtube_url || "",
-      date: lecture?.date 
-        ? new Date(lecture.date).toISOString().slice(0, 10)
-        : new Date().toISOString().slice(0, 10)
+      youtubeUrl: lecture?.youtube_url || ""
     }
   });
 
@@ -49,23 +46,16 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null }) => {
         </div>
 
         <form onSubmit={handleSubmit(submitHandler)}>
-          {/* Title field */}
-          <div className="mb-4">
-            <label htmlFor="title" className="mb-1 block text-sm font-medium text-gray-700">
+          {/* Lecture title info */}
+          <div className="mb-4 rounded-md bg-gray-50 p-3">
+            <label className="block text-sm font-medium text-gray-700">
               Lecture Title
             </label>
-            <input
-              id="title"
-              type="text"
-              className={`w-full rounded-md border ${
-                errors.title ? "border-red-500" : "border-gray-300"
-              } px-3 py-2 focus:border-[#0d7c66] focus:outline-none focus:ring-1 focus:ring-[#0d7c66]`}
-              placeholder="Enter lecture title"
-              {...register("title", { required: "Title is required" })}
-            />
-            {errors.title && (
-              <p className="mt-1 text-xs text-red-500">{errors.title.message}</p>
-            )}
+            <p className="mt-1 text-sm text-gray-600">
+              {isEditMode ? 
+                lecture?.title || "Lecture" : 
+                "Lecture titles are automatically numbered (Lecture 1, Lecture 2, etc.)"}
+            </p>
           </div>
 
           {/* YouTube URL field */}
@@ -93,22 +83,12 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null }) => {
             )}
           </div>
 
-          {/* Date field */}
-          <div className="mb-6">
-            <label htmlFor="date" className="mb-1 block text-sm font-medium text-gray-700">
-              Lecture Date
-            </label>
-            <input
-              id="date"
-              type="date"
-              className={`w-full rounded-md border ${
-                errors.date ? "border-red-500" : "border-gray-300"
-              } px-3 py-2 focus:border-[#0d7c66] focus:outline-none focus:ring-1 focus:ring-[#0d7c66]`}
-              {...register("date", { required: "Date is required" })}
-            />
-            {errors.date && (
-              <p className="mt-1 text-xs text-red-500">{errors.date.message}</p>
-            )}
+          {/* Note about automatic date scheduling */}
+          <div className="mb-6 rounded-md bg-blue-50 p-3 text-sm text-blue-700">
+            <p>
+              <strong>Note:</strong> Lecture dates are automatically scheduled based on the batch. 
+              Batch A lectures are held on odd dates, while Batch B lectures are held on even dates.
+            </p>
           </div>
 
           {/* Action buttons */}

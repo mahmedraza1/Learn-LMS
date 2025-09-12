@@ -67,6 +67,19 @@ const StudentDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Batch schedule info */}
+        <div className="mb-6 rounded-lg border-l-4 border-[#0d7c66] bg-white p-4 shadow-sm">
+          <h3 className="mb-2 font-medium text-gray-800">Your Lecture Schedule</h3>
+          <p className="text-sm text-gray-600">
+            {user.batch === "Batch A" 
+              ? "Your lectures are scheduled on odd dates (1st, 3rd, 5th...) from the 1st of this month to the 1st of next month."
+              : "Your lectures are scheduled on even dates (16th, 18th, 20th...) from the 15th of this month to the 15th of next month."}
+          </p>
+          <p className="mt-2 text-sm text-gray-600">
+            <strong>Today's date:</strong> {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+          </p>
+        </div>
+        
         <h2 className="mb-6 text-xl font-bold text-gray-800">My Courses</h2>
 
         {batchCourses.length === 0 ? (

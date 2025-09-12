@@ -41,24 +41,33 @@ export const BatchProvider = ({ children }) => {
           setSelectedBatch(availableBatches[0]);
         }
         
-        // For now, create a placeholder structure for courses
-        // This will be replaced with actual course data once we have that API
+        // Use the actual courses from Courses.md
+        const actualCourses = [
+          "Graphics Designing",
+          "Artificial Intelligence Prompt",
+          "Affiliate Marketing",
+          "Content Writing",
+          "English Language and Communication",
+          "Shopify Dropshipping",
+          "Full Stack Web Development",
+          "Search Engine Optimization",
+          "MS Office and Digital Literacy",
+          "Amazon Virtual Assistant",
+          "YouTube Creator",
+          "Freelancing",
+          "WordPress",
+          "Digital Marketing",
+          "Video Editing"
+        ];
+        
         const coursesData = {};
         availableBatches.forEach(batch => {
-          coursesData[batch] = [
-            {
-              id: 1,
-              title: "Example Course 1",
-              batch: batch,
-              lectures: []
-            },
-            {
-              id: 2,
-              title: "Example Course 2",
-              batch: batch,
-              lectures: []
-            }
-          ];
+          coursesData[batch] = actualCourses.map((title, index) => ({
+            id: index + 1,
+            title: title,
+            batch: batch,
+            lectures: []
+          }));
         });
         
         setCourses(coursesData);

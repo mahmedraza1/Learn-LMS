@@ -6,7 +6,6 @@ import { FaAngleDown, FaAngleUp, FaPlus } from "react-icons/fa";
 const CourseCard = ({ 
   course, 
   isAdmin = false,
-  onAddLecture,
   onEditLecture,
   onDeleteLecture,
   onAttendLecture,
@@ -44,6 +43,13 @@ const CourseCard = ({
       onVideoPreview(lecture);
     }
   };
+  
+  // Handler for video preview specifically for admin/instructor
+  const handlePreviewLecture = (lecture) => {
+    if (onVideoPreview) {
+      onVideoPreview(lecture);
+    }
+  };
 
   return (
     <div className="mb-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -54,19 +60,6 @@ const CourseCard = ({
       >
         <h2 className="text-xl font-bold text-gray-800">{course.title}</h2>
         <div className="flex items-center">
-          {isAdmin && (
-            <button 
-              className="mr-4 flex items-center rounded-md bg-[#0d7c66] px-3 py-2 text-sm font-medium text-white hover:bg-[#0a6a58]"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (onAddLecture) {
-                  onAddLecture();
-                }
-              }}
-            >
-              <FaPlus className="mr-1" /> Add Lecture
-            </button>
-          )}
           {isExpanded ? (
             <FaAngleUp className="text-gray-500" />
           ) : (
@@ -81,20 +74,31 @@ const CourseCard = ({
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {/* Generate 15 lecture cards based on requirements */}
             {lectureDates.map((date, index) => {
+              const lectureNumber = index + 1;
+              
               // Find a lecture for this date if it exists
               const matchingLecture = lectures.find(
                 lecture => new Date(lecture.date).toDateString() === date.toDateString()
               );
               
+              // If we found a matching lecture, make sure to use its data
+              // Otherwise, create a placeholder with the correct number
+              const lectureData = matchingLecture ? {
+                ...matchingLecture,
+                title: `Lecture ${lectureNumber}` // Ensure consistent naming
+              } : {
+                title: `Lecture ${lectureNumber}`
+              };
+              
               return (
                 <LectureCard
                   key={index}
-                  lecture={matchingLecture}
-                  lectureNumber={index + 1}
+                  lecture={lectureData}
+                  lectureNumber={lectureNumber}
                   isEditable={isAdmin}
                   onEdit={handleEditLecture}
                   onDelete={handleDeleteLecture}
-                  onAttend={handleAttendLecture}
+                  onAttend={isAdmin ? handlePreviewLecture : handleAttendLecture}
                   scheduleDate={date}
                 />
               );
