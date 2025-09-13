@@ -26,13 +26,20 @@ const AdminDashboard = () => {
   
   // Handler for editing lecture - now handles both editing and adding lectures
   const handleEditLecture = (lecture, courseId) => {
-    // If lecture has a YouTube URL, it's an edit operation, otherwise it's an add operation
-    const isAdd = !lecture?.youtube_url;
+    // If courseId is provided separately, use it, otherwise get it from the lecture
+    const actualCourseId = courseId || lecture?.course_id;
+    const course = courses[selectedBatch]?.find(c => c.id === parseInt(actualCourseId));
+    
+    // Create a copy of the lecture with course information to help with date validation
+    const lectureWithCourse = {
+      ...lecture,
+      course: course
+    };
     
     setLectureForm({
       isOpen: true,
-      courseId: courseId || lecture?.course_id,
-      lecture: isAdd ? null : lecture // If adding new lecture, set lecture to null
+      courseId: actualCourseId,
+      lecture: lectureWithCourse
     });
   };
   
@@ -54,20 +61,38 @@ const AdminDashboard = () => {
       const { courseId, lecture } = lectureForm;
       
       if (lecture && lecture.youtube_url) {
-        // Update existing lecture (only YouTube URL, date is fixed by batch schedule, title is fixed)
+        // Update existing lecture
         await updateLecture(courseId, lecture.id, {
-          youtube_url: data.youtubeUrl
+          lectureName: data.lectureName,
+          lectureDate: data.lectureDate,
+          lectureTime: data.lectureTime,
+          youtubeUrl: data.youtubeUrl
         });
         toast.success("Lecture updated successfully");
       } else {
-        // Add new lecture (title will be auto-generated, date will be auto-assigned based on batch)
+        // Add new lecture
         await addLecture(courseId, {
+          lectureName: data.lectureName,
+          lectureDate: data.lectureDate,
+          lectureTime: data.lectureTime,
           youtubeUrl: data.youtubeUrl
         });
         toast.success("Lecture added successfully");
       }
     } catch (error) {
-      toast.error("Failed to save lecture");
+      toast.error(`Failed to save lecture: ${error.message}`);
+    }
+  };
+  
+  // Handler for marking lecture as delivered
+  const handleMarkDelivered = async (lecture, courseId) => {
+    try {
+      await updateLecture(courseId, lecture.id, {
+        delivered: !lecture.delivered // Toggle delivered status
+      });
+      toast.success(lecture.delivered ? "Lecture marked as not delivered" : "Lecture marked as delivered");
+    } catch (error) {
+      toast.error("Failed to update lecture status");
     }
   };
   
@@ -128,8 +153,8 @@ const AdminDashboard = () => {
           <h3 className="mb-2 font-medium text-gray-800">Current Batch Schedule</h3>
           <p className="text-sm text-gray-600">
             {selectedBatch === "Batch A" 
-              ? "Batch A lectures are scheduled on odd dates (1st, 3rd, 5th...) from the 1st of this month to the 1st of next month."
-              : "Batch B lectures are scheduled on even dates (16th, 18th, 20th...) from the 15th of this month to the 15th of next month."}
+              ? "Batch A lectures are scheduled on odd dates (1st, 3rd, 5th...) starting from the 1st of the current month, continuing into future months and years as needed."
+              : "Batch B lectures are scheduled on even dates (16th, 18th, 20th...) starting from the 16th of the current month, continuing into future months and years as needed."}
           </p>
           <p className="mt-2 text-sm text-gray-600">
             <strong>Today's date:</strong> {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -158,6 +183,7 @@ const AdminDashboard = () => {
               onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
               onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
               onVideoPreview={handleVideoPreview}
+              onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
             />
           ))
         )}
@@ -169,6 +195,7 @@ const AdminDashboard = () => {
         onClose={() => setLectureForm({ isOpen: false, courseId: null, lecture: null })}
         onSubmit={handleLectureFormSubmit}
         lecture={lectureForm.lecture}
+        batch={selectedBatch}
       />
 
       {/* Video Modal */}

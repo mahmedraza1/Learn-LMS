@@ -1,14 +1,16 @@
 import React from "react";
 import { useLecture } from "../contexts/LectureContext";
-import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay } from "react-icons/fa";
+import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck } from "react-icons/fa";
 
 const LectureCard = ({ 
   lecture, 
   lectureNumber, 
   isEditable = false, 
+  isAdmin = false,
   onEdit,
   onDelete,
   onAttend,
+  onMarkDelivered,
   scheduleDate
 }) => {
   const { isToday } = useLecture();
@@ -18,8 +20,21 @@ const LectureCard = ({
   const formatDate = (date) => {
     return date.toLocaleDateString('en-US', { 
       month: 'short', 
-      day: 'numeric' 
+      day: 'numeric',
+      year: 'numeric'
     });
+  };
+  
+  // Get day of week - use lecture.day if available, otherwise calculate from date
+  const getDayOfWeek = (date) => {
+    // First check if the lecture object has a day property
+    if (lecture && lecture.day) {
+      return lecture.day;
+    }
+    
+    // Fall back to calculating from date
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return days[date.getDay()];
   };
 
   // Get YouTube thumbnail URL if available
@@ -64,9 +79,18 @@ const LectureCard = ({
     return null;
   };
 
+  // Determine if this lecture has been delivered
+  const isDelivered = lecture?.delivered;
+
+  // Determine if this is today's lecture
+  const isTodayLecture = isLectureToday;
+  
+  // Apply special styling for today's lecture
   const cardClassName = `relative rounded-lg overflow-hidden shadow ${
-    isLectureToday 
-      ? 'bg-white border-2 border-[#0d7c66]' 
+    isTodayLecture 
+      ? 'bg-white border-2 border-[#0d7c66] transform scale-110 z-10 shadow-lg' // Make today's lecture larger and more prominent
+      : isDelivered
+      ? 'bg-white/70 border border-gray-200'
       : 'bg-white/70 border border-gray-200'
   }`;
 
@@ -88,9 +112,14 @@ const LectureCard = ({
         
         {/* Date badge */}
         <div className="absolute bottom-2 left-2 rounded-full bg-white/90 px-3 py-1 text-xs font-medium shadow-sm">
-          <div className="flex items-center space-x-1">
-            <FaClock className="text-gray-500" />
-            <span>{formatDate(scheduleDate)}</span>
+          <div className="flex flex-col">
+            <div className="flex items-center space-x-1">
+              <FaClock className="text-gray-500" />
+              <span>{formatDate(scheduleDate)}</span>
+            </div>
+            <div className="text-center text-xs text-gray-600 font-medium">
+              {getDayOfWeek(scheduleDate)}
+            </div>
           </div>
         </div>
       </div>
@@ -100,6 +129,13 @@ const LectureCard = ({
         <h3 className="mb-2 text-lg font-semibold">
           {lecture?.title || `Lecture ${lectureNumber}`}
         </h3>
+        
+        {/* Time badge if available */}
+        {lecture?.time && (
+          <div className="mb-1 text-xs text-gray-500">
+            Time: {lecture.time}
+          </div>
+        )}
         
         {/* Actions */}
         <div className="mt-3 flex justify-between">
@@ -129,6 +165,18 @@ const LectureCard = ({
                   >
                     <FaTrash className="mr-1" /> Delete
                   </button>
+                  {isAdmin && (
+                    <button 
+                      onClick={() => onMarkDelivered && onMarkDelivered(lecture)}
+                      className={`flex items-center rounded-md px-3 py-1.5 text-xs font-medium ${
+                        lecture.delivered 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-amber-50 text-amber-700'
+                      }`}
+                    >
+                      <FaCheck className="mr-1" /> {lecture.delivered ? 'Delivered' : 'Mark Delivered'}
+                    </button>
+                  )}
                 </>
               )}
             </div>

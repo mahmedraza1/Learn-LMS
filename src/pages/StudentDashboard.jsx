@@ -42,7 +42,13 @@ const StudentDashboard = () => {
     );
   }
 
-  const batchCourses = courses[user.batch] || [];
+  // Ensure we're using the correct batch format for accessing courses
+  const formattedBatch = user.batch && user.batch.includes("Batch") ? 
+    user.batch : 
+    `Batch ${user.batch}`;
+  
+  // Get courses for the student's batch
+  const batchCourses = courses[formattedBatch] || [];
 
   return (
     <div className="min-h-screen bg-gray-50 pb-10">
@@ -58,7 +64,7 @@ const StudentDashboard = () => {
             </div>
             <div className="mt-3 sm:mt-0">
               <span className="inline-flex items-center rounded-md bg-[#0d7c66]/10 px-3 py-1 text-sm font-medium text-[#0d7c66]">
-                {user.batch}
+                {formattedBatch}
               </span>
             </div>
           </div>
@@ -71,13 +77,29 @@ const StudentDashboard = () => {
         <div className="mb-6 rounded-lg border-l-4 border-[#0d7c66] bg-white p-4 shadow-sm">
           <h3 className="mb-2 font-medium text-gray-800">Your Lecture Schedule</h3>
           <p className="text-sm text-gray-600">
-            {user.batch === "Batch A" 
-              ? "Your lectures are scheduled on odd dates (1st, 3rd, 5th...) from the 1st of this month to the 1st of next month."
-              : "Your lectures are scheduled on even dates (16th, 18th, 20th...) from the 15th of this month to the 15th of next month."}
+            {formattedBatch === "Batch A" || formattedBatch === "Batch a"
+              ? "Your lectures run from the 1st to the 27th of each month (excluding Fridays and the 31st). Remaining days are leave days."
+              : "Your lectures run from the 16th of the current month to the 12th of the next month (excluding Fridays and the 31st)."}
           </p>
-          <p className="mt-2 text-sm text-gray-600">
+          <div className="mt-3 text-sm text-gray-600">
             <strong>Today's date:</strong> {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
+            <span className="ml-3">
+              {new Date().getDate() % 2 !== 0 ? 
+                "(Today has 8 lectures from Batch A and 7 from Batch B)" : 
+                "(Today has 7 lectures from Batch A and 8 from Batch B)"
+              }
+            </span>
+          </div>
+          <div className="mt-3 text-xs bg-gray-50 p-2 rounded">
+            <p className="font-medium">Lecture Schedule Rules:</p>
+            <ul className="list-disc pl-4 mt-1 space-y-1">
+              <li>Lectures are never scheduled on Fridays</li>
+              <li>Batch A: Runs from 1st to 27th of each month</li>
+              <li>Batch B: Runs from 16th of current month to 12th of next month</li>
+              <li>On odd dates: 8 lectures from Batch A, 7 from Batch B</li>
+              <li>On even dates: 7 lectures from Batch A, 8 from Batch B</li>
+            </ul>
+          </div>
         </div>
         
         <h2 className="mb-6 text-xl font-bold text-gray-800">My Courses</h2>

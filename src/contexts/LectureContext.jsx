@@ -3,8 +3,10 @@ import { useAuth } from './AuthContext';
 import { useBatch } from './BatchContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { getCoursesForDate, shouldCourseHaveLecture } from '../utils/courseScheduleRules';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Using learnlive prefix to match server configuration
+const API_BASE_URL = 'http://localhost:5000/learnlive';
 
 const LectureContext = createContext();
 
@@ -14,24 +16,97 @@ export const LectureProvider = ({ children }) => {
   const { user, isAdmin } = useAuth();
   const { selectedBatch, courses } = useBatch();
   const [lectures, setLectures] = useState({});
+  const [announcements, setAnnouncements] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Fetch lectures on mount or when batch changes
+  // Fetch lectures and announcements on mount or when batch changes
   useEffect(() => {
     if (selectedBatch) {
-      fetchLecturesForBatch(selectedBatch);
+      fetchLecturesForBatch(selectedBatch).then(updatedLectures => {
+        // After fetching, ensure all lectures have a day field
+        updateLecturesWithDayField(updatedLectures);
+      });
+      fetchAnnouncementsForBatch(selectedBatch);
     }
   }, [selectedBatch]);
+  
+  // Helper function to add day field to lectures that don't have it
+  const updateLecturesWithDayField = async (fetchedLectures) => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const updatedLectures = { ...fetchedLectures };
+    let lecturesNeedingUpdate = [];
+    
+    // Check each lecture in each course
+    Object.keys(updatedLectures).forEach(courseId => {
+      if (Array.isArray(updatedLectures[courseId])) {
+        updatedLectures[courseId] = updatedLectures[courseId].map(lecture => {
+          // If lecture doesn't have a day field, add it
+          if (!lecture.day && lecture.date) {
+            const lectureDate = new Date(lecture.date);
+            const dayOfWeek = days[lectureDate.getDay()];
+            const updatedLecture = { ...lecture, day: dayOfWeek };
+            lecturesNeedingUpdate.push(updatedLecture);
+            return updatedLecture;
+          }
+          return lecture;
+        });
+      }
+    });
+    
+    // If any lectures were updated, update the state and server
+    if (lecturesNeedingUpdate.length > 0) {
+      console.log(`Found ${lecturesNeedingUpdate.length} lectures that need day field updates`);
+      setLectures(updatedLectures);
+      
+      // Update each lecture on the server
+      try {
+        for (const lecture of lecturesNeedingUpdate) {
+          console.log(`Updating lecture ${lecture.id} with day: ${lecture.day}`);
+          await axios.put(`${API_BASE_URL}/lectures/${lecture.id}`, lecture);
+        }
+        toast.success(`Updated ${lecturesNeedingUpdate.length} lectures with day information`);
+      } catch (error) {
+        console.error('Error updating lectures with day field:', error);
+        toast.error('Failed to update some lectures with day information');
+      }
+    }
+  };
 
   // Fetch all lectures for a specific batch
   const fetchLecturesForBatch = async (batchName) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/lectures/${batchName}`);
-      setLectures(response.data || {});
+      // Ensure the batch name is in the correct format (Batch A or Batch B)
+      // The API expects "Batch A" or "Batch B", not just "A" or "B"
+      const formattedBatchName = batchName.includes("Batch") ? batchName : `Batch ${batchName}`;
+      console.log(`Fetching lectures for batch: ${formattedBatchName}`);
+      const response = await axios.get(`${API_BASE_URL}/lectures/${formattedBatchName}`);
+      
+      let lecturesData = {};
+      
+      // Handle the data structure where lectures are nested under 'lectures'
+      if (response.data && response.data.lectures) {
+        lecturesData = response.data.lectures || {};
+      } else {
+        lecturesData = response.data || {};
+      }
+      
+      setLectures(lecturesData);
+      return lecturesData; // Return the lectures data for further processing
+      
     } catch (error) {
       console.error('Error fetching lectures:', error);
-      toast.error('Failed to load lectures');
+      
+      // Check if the error might be related to an ad blocker
+      if (error.message === 'Network Error' || error.code === 'ERR_BLOCKED_BY_CLIENT') {
+        toast.error(
+          'It seems your ad blocker is preventing API requests. Please disable your ad blocker to use this site properly.',
+          { duration: 6000 }
+        );
+      } else {
+        toast.error('Failed to load lectures');
+      }
+      return {}; // Return empty object in case of error
     } finally {
       setLoading(false);
     }
@@ -41,50 +116,95 @@ export const LectureProvider = ({ children }) => {
   const calculateLectureDates = (batchName) => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
-    const nextMonth = (currentMonth + 1) % 12;
     const currentYear = currentDate.getFullYear();
-    const nextMonthYear = nextMonth === 0 ? currentYear + 1 : currentYear;
     
     const dates = [];
     
-    // Batch A: From 1st of current month to 1st of next month, only odd dates
-    // Batch B: From 15th of current month to 15th of next month, only even dates
+    // Function to get days in month
+    const getDaysInMonth = (year, month) => {
+      return new Date(year, month + 1, 0).getDate();
+    };
     
+    // Function to check if a date is Friday (day 5)
+    const isFriday = (date) => {
+      return date.getDay() === 5; // 5 is Friday (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    };
+    
+    // Implement the rules from "Lecture Delivering System Upgraded.md"
     if (batchName === "Batch A") {
-      // Starting day for Batch A is 1st of current month
-      const startDay = 1;
-      const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      // Batch A runs from 1st to 27th of each month
+      let month = currentMonth;
+      let year = currentYear;
       
-      // Add odd dates from current month
-      for (let day = startDay; day <= daysInCurrentMonth && dates.length < 15; day += 2) {
-        dates.push(new Date(currentYear, currentMonth, day));
-      }
-      
-      // Continue with odd dates in next month if needed
-      let day = 1;
-      while (dates.length < 15 && day <= 15) {
-        dates.push(new Date(nextMonthYear, nextMonth, day));
-        day += 2;
+      // Continue until we have 15 valid dates
+      while (dates.length < 15) {
+        const daysInMonth = Math.min(27, getDaysInMonth(year, month)); // Max day is 27th for Batch A
+        let startDay = 1; // Always start from 1st
+        
+        // Add dates for this month, excluding Fridays
+        for (let day = startDay; day <= daysInMonth && dates.length < 15; day++) {
+          const date = new Date(year, month, day);
+          
+          // Skip Fridays
+          if (isFriday(date)) {
+            continue;
+          }
+          
+          dates.push(date);
+        }
+        
+        // Move to next month
+        month++;
+        if (month > 11) {
+          month = 0;
+          year++;
+        }
       }
     } else if (batchName === "Batch B") {
-      // Starting day for Batch B is 15th (or 16th if we want even) of current month
-      const startDay = 16; // First even day from the 15th
-      const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      // Batch B runs from 16th of current month to the 12th of next month
+      let month = currentMonth;
+      let year = currentYear;
+      let firstIteration = true;
       
-      // Add even dates from 16th of current month
-      for (let day = startDay; day <= daysInCurrentMonth && dates.length < 15; day += 2) {
-        dates.push(new Date(currentYear, currentMonth, day));
-      }
-      
-      // Continue with even dates in next month if needed
-      let day = 2; // First even date of month
-      while (dates.length < 15 && day <= 16) { // Up to 16th of next month (including)
-        dates.push(new Date(nextMonthYear, nextMonth, day));
-        day += 2;
+      // Continue until we have 15 valid dates
+      while (dates.length < 15) {
+        const daysInMonth = getDaysInMonth(year, month);
+        
+        // In first iteration, start from 16th; in subsequent months, start from 1st
+        let startDay = firstIteration ? 16 : 1;
+        
+        // End day is either end of month (first iteration) or 12th of month (subsequent iterations)
+        let endDay = firstIteration ? daysInMonth : 12;
+        
+        // If the last day of the month is 31 and we're in the next month (not first iteration),
+        // then the 31st is a leave day according to the rules
+        if (!firstIteration && daysInMonth === 31) {
+          endDay = 30; // Skip the 31st
+        }
+        
+        // Add dates for this range, excluding Fridays
+        for (let day = startDay; day <= endDay && dates.length < 15; day++) {
+          const date = new Date(year, month, day);
+          
+          // Skip Fridays
+          if (isFriday(date)) {
+            continue;
+          }
+          
+          dates.push(date);
+        }
+        
+        // Move to next month
+        month++;
+        if (month > 11) {
+          month = 0;
+          year++;
+        }
+        firstIteration = false;
       }
     }
     
-    return dates.slice(0, 15);
+    return dates;
   };
 
   // Function to check if a date is today
@@ -116,33 +236,59 @@ export const LectureProvider = ({ children }) => {
         throw new Error("Course not found");
       }
       
-      // Calculate the appropriate date based on batch and lecture number
+      // Get existing lectures for this course to determine lecture number
       const existingLectures = lectures[courseId] || [];
       const lectureNumber = existingLectures.length + 1;
       
-      // Get the dates for this batch - this will now follow the correct scheduling:
-      // Batch A: From 1st of month, odd dates (1,3,5...)
-      // Batch B: From 15th/16th of month, even dates (16,18,20...)
-      const batchDates = calculateLectureDates(courseBatch);
+      // Parse the provided date and time
+      let lectureDateTime;
+      if (lectureData.lectureDate) {
+        // Create date from the provided lecture date and time
+        const dateParts = lectureData.lectureDate.split('-').map(part => parseInt(part, 10));
+        const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Month is 0-indexed
+        
+        // Check if the date is a Friday
+        if (date.getDay() === 5) { // 5 is Friday
+          throw new Error("Lectures cannot be scheduled on Fridays");
+        }
+        
+        // If time is provided, set it
+        if (lectureData.lectureTime) {
+          const timeParts = lectureData.lectureTime.split(':').map(part => parseInt(part, 10));
+          date.setHours(timeParts[0], timeParts[1], 0);
+        }
+        
+        lectureDateTime = date;
+      } else {
+        // Use the system's automatic scheduling as fallback
+        const batchDates = calculateLectureDates(courseBatch);
+        lectureDateTime = lectureNumber <= batchDates.length 
+          ? batchDates[lectureNumber - 1] 
+          : new Date();
+      }
       
-      // Use the appropriate date based on lecture number
-      const lectureDate = lectureNumber <= batchDates.length 
-        ? batchDates[lectureNumber - 1] 
-        : new Date(); // Fallback to today if we've run out of scheduled dates
+      // Get day of week
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dayOfWeek = days[lectureDateTime.getDay()];
       
-      // Create a new lecture object with auto-generated title
+      // Create a new lecture object
       const newLecture = {
         course_id: courseId,
-        title: `Lecture ${lectureNumber}`, // Auto-generate title based on lecture number
+        title: lectureData.lectureName || `Lecture ${lectureNumber}`,
         youtube_url: lectureData.youtubeUrl,
         youtube_id: videoId,
         lecture_number: lectureNumber,
-        date: lectureDate.toISOString() // Store as ISO string
+        date: lectureDateTime.toISOString(),
+        time: lectureData.lectureTime || '',
+        day: dayOfWeek, // Include the day of the week
+        delivered: false
       };
       
       // Send to API
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
       const response = await axios.post(
-        `${API_BASE_URL}/lectures/${courseBatch}/${courseId}`, 
+        `${API_BASE_URL}/lectures/${formattedBatchName}/${courseId}`, 
         { lecture: newLecture }
       );
       
@@ -231,30 +377,61 @@ export const LectureProvider = ({ children }) => {
       
       // Extract YouTube video ID if URL is being updated
       let youtubeId = null;
-      if (lectureData.youtube_url) {
-        youtubeId = extractYouTubeId(lectureData.youtube_url);
+      if (lectureData.youtubeUrl) {
+        youtubeId = extractYouTubeId(lectureData.youtubeUrl);
       }
       
-      // Create updated lecture object while preserving certain fields
+      // Process the date and time if provided
+      let lectureDateTime = null;
+      let dayOfWeek = null;
+      if (lectureData.lectureDate) {
+        // Create date from the provided lecture date and time
+        const dateParts = lectureData.lectureDate.split('-').map(part => parseInt(part, 10));
+        const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Month is 0-indexed
+        
+        // Check if the date is a Friday
+        if (date.getDay() === 5) { // 5 is Friday
+          throw new Error("Lectures cannot be scheduled on Fridays");
+        }
+        
+        // Get day of week
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        dayOfWeek = days[date.getDay()];
+        
+        // If time is provided, set it
+        if (lectureData.lectureTime) {
+          const timeParts = lectureData.lectureTime.split(':').map(part => parseInt(part, 10));
+          date.setHours(timeParts[0], timeParts[1], 0);
+        }
+        
+        lectureDateTime = date;
+      }
+      
+      // Create updated lecture object
       const updatedLecture = {
         ...currentLecture,
-        ...lectureData,
+        // Update fields with new values if provided
+        title: lectureData.lectureName || currentLecture.title,
+        youtube_url: lectureData.youtubeUrl || currentLecture.youtube_url,
         // Keep these fields from original lecture
         id: lectureId,
-        title: currentLecture.title,
         lecture_number: currentLecture.lecture_number,
+        course_id: courseId,
+        // Update date and time if provided
+        date: lectureDateTime ? lectureDateTime.toISOString() : currentLecture.date,
+        time: lectureData.lectureTime || currentLecture.time,
+        // Update day if date was provided, otherwise keep the existing day
+        day: dayOfWeek || currentLecture.day || (currentLecture.date ? new Date(currentLecture.date).toLocaleDateString('en-US', { weekday: 'long' }) : null),
+        delivered: lectureData.delivered !== undefined ? lectureData.delivered : currentLecture.delivered,
         // Add YouTube ID if URL was updated
-        ...(youtubeId && { youtube_id: youtubeId })
+        youtube_id: youtubeId || currentLecture.youtube_id
       };
       
-      // Convert date to ISO string if it's a Date object
-      if (updatedLecture.date instanceof Date) {
-        updatedLecture.date = updatedLecture.date.toISOString();
-      }
-      
       // Send to API
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
       const response = await axios.post(
-        `${API_BASE_URL}/lectures/${courseBatch}/${courseId}`, 
+        `${API_BASE_URL}/lectures/${formattedBatchName}/${courseId}`, 
         { lecture: updatedLecture }
       );
       
@@ -299,7 +476,9 @@ export const LectureProvider = ({ children }) => {
       }
       
       // Send delete request to API
-      await axios.delete(`${API_BASE_URL}/lectures/${courseBatch}/${courseId}/${lectureId}`);
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
+      await axios.delete(`${API_BASE_URL}/lectures/${formattedBatchName}/${courseId}/${lectureId}`);
       
       // Update local state
       setLectures(prev => {
@@ -333,7 +512,7 @@ export const LectureProvider = ({ children }) => {
       // Find the course to get its batch
       let courseBatch = null;
       Object.keys(courses).forEach(batch => {
-        const course = courses[batch].find(c => c.id === courseId);
+        const course = courses[batch].find(c => c.id === parseInt(courseId));
         if (course) {
           courseBatch = course.batch;
         }
@@ -344,7 +523,9 @@ export const LectureProvider = ({ children }) => {
       }
       
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/lectures/${courseBatch}/${courseId}`);
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
+      const response = await axios.get(`${API_BASE_URL}/lectures/${formattedBatchName}/${courseId}`);
       
       // Update only this course's lectures
       setLectures(prev => {
@@ -363,8 +544,327 @@ export const LectureProvider = ({ children }) => {
     }
   };
 
+    // Fetch all announcements for a specific batch
+  const fetchAnnouncementsForBatch = async (batchName) => {
+    try {
+      setLoading(true);
+      // Ensure the batch name is in the correct format (Batch A or Batch B)
+      const formattedBatchName = batchName.includes("Batch") ? batchName : `Batch ${batchName}`;
+      console.log(`Fetching announcements for batch: ${formattedBatchName}`);
+      const response = await axios.get(`${API_BASE_URL}/announcements/${formattedBatchName}`);
+      // Handle the data structure where announcements are nested under 'announcements'
+      if (response.data && response.data.announcements) {
+        setAnnouncements(response.data.announcements || {});
+      } else {
+        setAnnouncements(response.data || {});
+      }
+    } catch (error) {
+      console.error('Error fetching announcements:', error);
+      
+      // Check if the error might be related to an ad blocker
+      if (error.message === 'Network Error' || error.code === 'ERR_BLOCKED_BY_CLIENT') {
+        toast.error(
+          'It seems your ad blocker is preventing API requests. Please disable your ad blocker to use this site properly.',
+          { duration: 6000 }
+        );
+      } else {
+        toast.error('Failed to load announcements');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Add a new announcement
+  const addAnnouncement = async (courseId, announcementData) => {
+    try {
+      setLoading(true);
+      
+      // Find the course to get its batch
+      let courseBatch = null;
+      Object.keys(courses).forEach(batch => {
+        const course = courses[batch].find(c => c.id === courseId);
+        if (course) {
+          courseBatch = course.batch;
+        }
+      });
+      
+      if (!courseBatch) {
+        throw new Error("Course not found");
+      }
+      
+      // Create a new announcement object
+      const newAnnouncement = {
+        course_id: courseId,
+        title: announcementData.title,
+        content: announcementData.content,
+        date: new Date().toISOString(),
+        author: user.name || user.email
+      };
+      
+      // Send to API
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
+      const response = await axios.post(
+        `${API_BASE_URL}/announcements/${formattedBatchName}/${courseId}`, 
+        { announcement: newAnnouncement }
+      );
+      
+      // Update local state with the returned announcement
+      setAnnouncements(prev => {
+        const updatedAnnouncements = { ...prev };
+        if (!updatedAnnouncements[courseId]) {
+          updatedAnnouncements[courseId] = [];
+        }
+        updatedAnnouncements[courseId] = [...updatedAnnouncements[courseId], response.data];
+        return updatedAnnouncements;
+      });
+      
+      toast.success('Announcement added successfully');
+      return response.data;
+    } catch (err) {
+      console.error('Error adding announcement:', err);
+      toast.error(`Failed to add announcement: ${err.response?.data?.message || err.message}`);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Update an existing announcement
+  const updateAnnouncement = async (courseId, announcementId, announcementData) => {
+    try {
+      setLoading(true);
+      
+      // Find the course to get its batch
+      let courseBatch = null;
+      Object.keys(courses).forEach(batch => {
+        const course = courses[batch].find(c => c.id === courseId);
+        if (course) {
+          courseBatch = course.batch;
+        }
+      });
+      
+      if (!courseBatch) {
+        throw new Error("Course not found");
+      }
+      
+      // First, get the current announcement
+      const currentAnnouncement = announcements[courseId]?.find(a => a.id === announcementId);
+      
+      if (!currentAnnouncement) {
+        throw new Error("Announcement not found");
+      }
+      
+      // Create updated announcement object
+      const updatedAnnouncement = {
+        ...currentAnnouncement,
+        title: announcementData.title || currentAnnouncement.title,
+        content: announcementData.content || currentAnnouncement.content,
+        updated_at: new Date().toISOString()
+      };
+      
+      // Send to API
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
+      const response = await axios.post(
+        `${API_BASE_URL}/announcements/${formattedBatchName}/${courseId}`, 
+        { announcement: updatedAnnouncement }
+      );
+      
+      // Update local state
+      setAnnouncements(prev => {
+        const updatedAnnouncements = { ...prev };
+        if (updatedAnnouncements[courseId]) {
+          updatedAnnouncements[courseId] = updatedAnnouncements[courseId].map(announcement => 
+            announcement.id === announcementId ? response.data : announcement
+          );
+        }
+        return updatedAnnouncements;
+      });
+      
+      toast.success('Announcement updated successfully');
+      return response.data;
+    } catch (err) {
+      console.error('Error updating announcement:', err);
+      toast.error(`Failed to update announcement: ${err.response?.data?.message || err.message}`);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete an announcement
+  const deleteAnnouncement = async (courseId, announcementId) => {
+    try {
+      setLoading(true);
+      
+      // Find the course to get its batch
+      let courseBatch = null;
+      Object.keys(courses).forEach(batch => {
+        const course = courses[batch].find(c => c.id === courseId);
+        if (course) {
+          courseBatch = course.batch;
+        }
+      });
+      
+      if (!courseBatch) {
+        throw new Error("Course not found");
+      }
+      
+      // Send delete request to API
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
+      await axios.delete(`${API_BASE_URL}/announcements/${formattedBatchName}/${courseId}/${announcementId}`);
+      
+      // Update local state
+      setAnnouncements(prev => {
+        const updatedAnnouncements = { ...prev };
+        if (updatedAnnouncements[courseId]) {
+          updatedAnnouncements[courseId] = updatedAnnouncements[courseId].filter(announcement => 
+            announcement.id !== announcementId
+          );
+        }
+        return updatedAnnouncements;
+      });
+      
+      toast.success('Announcement deleted successfully');
+    } catch (err) {
+      console.error('Error deleting announcement:', err);
+      toast.error(`Failed to delete announcement: ${err.response?.data?.message || err.message}`);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Get announcements for a specific course
+  const getAnnouncementsForCourse = (courseId) => {
+    return announcements[courseId] || [];
+  };
+  
+  // Fetch announcements for a specific course
+  const fetchAnnouncementsForCourse = async (courseId) => {
+    try {
+      // Find the course to get its batch
+      let courseBatch = null;
+      Object.keys(courses).forEach(batch => {
+        const course = courses[batch].find(c => c.id === parseInt(courseId));
+        if (course) {
+          courseBatch = course.batch;
+        }
+      });
+      
+      if (!courseBatch) {
+        throw new Error("Course not found");
+      }
+      
+      setLoading(true);
+      // Ensure the batch name is formatted correctly
+      const formattedBatchName = courseBatch.includes("Batch") ? courseBatch : `Batch ${courseBatch}`;
+      const response = await axios.get(`${API_BASE_URL}/announcements/${formattedBatchName}/${courseId}`);
+      
+      // Update only this course's announcements
+      setAnnouncements(prev => {
+        const updatedAnnouncements = { ...prev };
+        updatedAnnouncements[courseId] = response.data || [];
+        return updatedAnnouncements;
+      });
+      
+      return response.data || [];
+    } catch (err) {
+      console.error('Error fetching announcements for course:', err);
+      toast.error(`Failed to load announcements: ${err.response?.data?.message || err.message}`);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Determine which courses should have active lectures today based on the rules from "Lecture Delivering System Upgraded.md"
+  const getActiveCoursesForToday = () => {
+    // Use September 13, 2025 for testing/consistency
+    const today = new Date("September 13, 2025");
+    
+    // Use the helper function from courseScheduleRules.js
+    // This ensures consistent application of rules across the app
+    return getCoursesForDate(today);
+  };
+  
+  // Helper function to find a course by ID
+  const findCourseById = (courseId) => {
+    let foundCourse = null;
+    const parsedId = parseInt(courseId, 10);
+    
+    console.log(`Searching for course with ID: ${courseId} (${parsedId})`);
+    
+    // Search in all batches
+    Object.keys(courses).forEach(batchName => {
+      const coursesInBatch = courses[batchName] || [];
+      
+      const course = coursesInBatch.find(c => c.id === parsedId);
+      if (course) {
+        console.log(`Found course:`, course);
+        // Ensure the batch information is included
+        foundCourse = { ...course, batch: batchName };
+      }
+    });
+    
+    return foundCourse;
+  };
+
+  // Check if a course has a lecture scheduled for today
+  const hasTodayLecture = (courseId) => {
+    // Find the course to get its title and batch
+    const course = findCourseById(courseId);
+    if (!course) {
+      console.log(`Course with ID ${courseId} not found`);
+      return false;
+    }
+    
+    const courseTitle = course.title;
+    const courseBatch = course.batch;
+    
+    if (!courseTitle || !courseBatch) {
+      console.log(`Course ${courseId} missing title or batch`, course);
+      return false;
+    }
+    
+    // Use September 13, 2025 for testing/consistency - this is an odd date
+    const today = new Date("September 13, 2025");
+    const isOddDate = today.getDate() % 2 === 1;
+    
+    // Get the list of courses that should have lectures today by batch
+    const activeCoursesMap = getCoursesForDate(today);
+    
+    console.log(`ACTIVE COURSE CHECK - Date: ${today.toDateString()} (${isOddDate ? 'ODD' : 'EVEN'})`);
+    console.log(`Batch A active courses:`, activeCoursesMap["Batch A"]);
+    console.log(`Batch B active courses:`, activeCoursesMap["Batch B"]);
+    console.log(`Checking course "${courseTitle}" in "${courseBatch}"`);
+    
+    // Only check the active courses for THIS course's batch
+    const activeCoursesList = activeCoursesMap[courseBatch] || [];
+    
+    // Check if this specific course should be active today in THIS batch
+    const isActive = activeCoursesList.some(title => {
+      const matches = title.toLowerCase().trim() === courseTitle.toLowerCase().trim();
+      if (matches) {
+        console.log(`MATCH FOUND: "${title}" === "${courseTitle}"`);
+      }
+      return matches;
+    });
+    
+    // Detailed debugging info
+    console.log(`LECTURE CHECK (${today.toDateString()}, ${isOddDate ? 'ODD' : 'EVEN'} date):`);
+    console.log(`Course "${courseTitle}" in ${courseBatch}, ID: ${courseId}`);
+    console.log(`Should have lecture today: ${isActive ? 'YES' : 'NO'}`);
+    
+    return isActive;
+  };
+
   const value = {
     lectures,
+    announcements,
     loading,
     calculateLectureDates,
     isToday,
@@ -373,7 +873,15 @@ export const LectureProvider = ({ children }) => {
     deleteLecture,
     getLecturesForCourse,
     fetchLecturesForBatch,
-    fetchLecturesForCourse
+    fetchLecturesForCourse,
+    addAnnouncement,
+    updateAnnouncement,
+    deleteAnnouncement,
+    getAnnouncementsForCourse,
+    fetchAnnouncementsForBatch,
+    fetchAnnouncementsForCourse,
+    getActiveCoursesForToday,
+    hasTodayLecture
   };
 
   return <LectureContext.Provider value={value}>{children}</LectureContext.Provider>;

@@ -21,7 +21,16 @@ const readLecturesData = () => {
     return JSON.parse(data);
   } catch (err) {
     console.error('Error reading lectures data:', err);
-    return { "Batch A": {}, "Batch B": {} };
+    return { 
+      "Batch A": {
+        lectures: {},
+        announcements: {}
+      }, 
+      "Batch B": {
+        lectures: {},
+        announcements: {}
+      }
+    };
   }
 };
 
@@ -37,13 +46,13 @@ const writeLecturesData = (data) => {
 };
 
 // GET all lectures
-app.get('/api/lectures', (req, res) => {
+app.get('/learnlive/lectures', (req, res) => {
   const lecturesData = readLecturesData();
   res.json(lecturesData);
 });
 
-// GET lectures for a specific batch
-app.get('/api/lectures/:batch', (req, res) => {
+// GET lectures and announcements for a specific batch
+app.get('/learnlive/lectures/:batch', (req, res) => {
   const { batch } = req.params;
   const lecturesData = readLecturesData();
   
@@ -55,19 +64,43 @@ app.get('/api/lectures/:batch', (req, res) => {
 });
 
 // GET lectures for a specific course in a batch
-app.get('/api/lectures/:batch/:courseId', (req, res) => {
+app.get('/learnlive/lectures/:batch/:courseId', (req, res) => {
   const { batch, courseId } = req.params;
   const lecturesData = readLecturesData();
   
-  if (lecturesData[batch] && lecturesData[batch][courseId]) {
-    res.json(lecturesData[batch][courseId]);
+  if (lecturesData[batch] && lecturesData[batch].lectures && lecturesData[batch].lectures[courseId]) {
+    res.json(lecturesData[batch].lectures[courseId]);
   } else {
     res.status(404).json({ message: `Course ${courseId} in batch "${batch}" not found` });
   }
 });
 
+// GET all announcements for a batch
+app.get('/learnlive/announcements/:batch', (req, res) => {
+  const { batch } = req.params;
+  const lecturesData = readLecturesData();
+  
+  if (lecturesData[batch] && lecturesData[batch].announcements) {
+    res.json(lecturesData[batch].announcements);
+  } else {
+    res.json({}); // Return empty object if no announcements for the batch
+  }
+});
+
+// GET announcements for a specific course in a batch
+app.get('/learnlive/announcements/:batch/:courseId', (req, res) => {
+  const { batch, courseId } = req.params;
+  const lecturesData = readLecturesData();
+  
+  if (lecturesData[batch] && lecturesData[batch].announcements && lecturesData[batch].announcements[courseId]) {
+    res.json(lecturesData[batch].announcements[courseId]);
+  } else {
+    res.json([]); // Return empty array if no announcements
+  }
+});
+
 // CREATE/UPDATE lecture for a course in a batch
-app.post('/api/lectures/:batch/:courseId', (req, res) => {
+app.post('/learnlive/lectures/:batch/:courseId', (req, res) => {
   const { batch, courseId } = req.params;
   const { lecture } = req.body;
   
@@ -79,29 +112,37 @@ app.post('/api/lectures/:batch/:courseId', (req, res) => {
   
   // Ensure the batch exists
   if (!lecturesData[batch]) {
-    lecturesData[batch] = {};
+    lecturesData[batch] = {
+      lectures: {},
+      announcements: {}
+    };
   }
   
-  // Ensure the course exists in the batch
-  if (!lecturesData[batch][courseId]) {
-    lecturesData[batch][courseId] = [];
+  // Ensure lectures object exists
+  if (!lecturesData[batch].lectures) {
+    lecturesData[batch].lectures = {};
+  }
+  
+  // Ensure the course exists in the batch's lectures
+  if (!lecturesData[batch].lectures[courseId]) {
+    lecturesData[batch].lectures[courseId] = [];
   }
   
   // If lecture has an ID, it's an update, otherwise it's a new lecture
   if (lecture.id) {
     // Update existing lecture
-    const lectureIndex = lecturesData[batch][courseId].findIndex(l => l.id === lecture.id);
+    const lectureIndex = lecturesData[batch].lectures[courseId].findIndex(l => l.id === lecture.id);
     
     if (lectureIndex >= 0) {
-      lecturesData[batch][courseId][lectureIndex] = lecture;
+      lecturesData[batch].lectures[courseId][lectureIndex] = lecture;
     } else {
       // Lecture not found, add it
-      lecturesData[batch][courseId].push(lecture);
+      lecturesData[batch].lectures[courseId].push(lecture);
     }
   } else {
     // Add new lecture with a generated ID
     lecture.id = Date.now();
-    lecturesData[batch][courseId].push(lecture);
+    lecturesData[batch].lectures[courseId].push(lecture);
   }
   
   if (writeLecturesData(lecturesData)) {
@@ -111,17 +152,71 @@ app.post('/api/lectures/:batch/:courseId', (req, res) => {
   }
 });
 
+// CREATE/UPDATE announcement for a course in a batch
+app.post('/learnlive/announcements/:batch/:courseId', (req, res) => {
+  const { batch, courseId } = req.params;
+  const { announcement } = req.body;
+  
+  if (!announcement) {
+    return res.status(400).json({ message: 'Announcement data is required' });
+  }
+  
+  const lecturesData = readLecturesData();
+  
+  // Ensure the batch exists
+  if (!lecturesData[batch]) {
+    lecturesData[batch] = {
+      lectures: {},
+      announcements: {}
+    };
+  }
+  
+  // Ensure announcements object exists
+  if (!lecturesData[batch].announcements) {
+    lecturesData[batch].announcements = {};
+  }
+  
+  // Ensure the course exists in the batch's announcements
+  if (!lecturesData[batch].announcements[courseId]) {
+    lecturesData[batch].announcements[courseId] = [];
+  }
+  
+  // If announcement has an ID, it's an update, otherwise it's a new announcement
+  if (announcement.id) {
+    // Update existing announcement
+    const announcementIndex = lecturesData[batch].announcements[courseId].findIndex(a => a.id === announcement.id);
+    
+    if (announcementIndex >= 0) {
+      lecturesData[batch].announcements[courseId][announcementIndex] = announcement;
+    } else {
+      // Announcement not found, add it
+      lecturesData[batch].announcements[courseId].push(announcement);
+    }
+  } else {
+    // Add new announcement with a generated ID
+    announcement.id = Date.now();
+    lecturesData[batch].announcements[courseId].push(announcement);
+  }
+  
+  if (writeLecturesData(lecturesData)) {
+    res.status(200).json(announcement);
+  } else {
+    res.status(500).json({ message: 'Error saving announcement data' });
+  }
+});
+
 // DELETE lecture
-app.delete('/api/lectures/:batch/:courseId/:lectureId', (req, res) => {
+app.delete('/learnlive/lectures/:batch/:courseId/:lectureId', (req, res) => {
   const { batch, courseId, lectureId } = req.params;
   const lecturesData = readLecturesData();
   
   if (
     lecturesData[batch] && 
-    lecturesData[batch][courseId]
+    lecturesData[batch].lectures && 
+    lecturesData[batch].lectures[courseId]
   ) {
     const lectureIdNum = parseInt(lectureId);
-    lecturesData[batch][courseId] = lecturesData[batch][courseId].filter(
+    lecturesData[batch].lectures[courseId] = lecturesData[batch].lectures[courseId].filter(
       lecture => lecture.id !== lectureIdNum
     );
     
@@ -132,6 +227,78 @@ app.delete('/api/lectures/:batch/:courseId/:lectureId', (req, res) => {
     }
   } else {
     res.status(404).json({ message: 'Batch, course or lecture not found' });
+  }
+});
+
+// DELETE announcement
+app.delete('/learnlive/announcements/:batch/:courseId/:announcementId', (req, res) => {
+  const { batch, courseId, announcementId } = req.params;
+  const lecturesData = readLecturesData();
+  
+  if (
+    lecturesData[batch] && 
+    lecturesData[batch].announcements && 
+    lecturesData[batch].announcements[courseId]
+  ) {
+    const announcementIdNum = parseInt(announcementId);
+    lecturesData[batch].announcements[courseId] = lecturesData[batch].announcements[courseId].filter(
+      announcement => announcement.id !== announcementIdNum
+    );
+    
+    if (writeLecturesData(lecturesData)) {
+      res.status(200).json({ message: 'Announcement deleted successfully' });
+    } else {
+      res.status(500).json({ message: 'Error deleting announcement' });
+    }
+  } else {
+    res.status(404).json({ message: 'Batch, course or announcement not found' });
+  }
+});
+
+// PUT endpoint to update a lecture by its ID
+app.put('/learnlive/lectures/:lectureId', (req, res) => {
+  const { lectureId } = req.params;
+  const lectureData = req.body;
+  const lectureIdNum = parseInt(lectureId);
+  
+  if (!lectureData) {
+    return res.status(400).json({ message: 'Lecture data is required' });
+  }
+  
+  const lecturesData = readLecturesData();
+  let lectureFound = false;
+  
+  // Search through all batches and courses to find the lecture
+  Object.keys(lecturesData).forEach(batch => {
+    if (lecturesData[batch] && lecturesData[batch].lectures) {
+      Object.keys(lecturesData[batch].lectures).forEach(courseId => {
+        if (Array.isArray(lecturesData[batch].lectures[courseId])) {
+          const lectureIndex = lecturesData[batch].lectures[courseId].findIndex(
+            lecture => lecture.id === lectureIdNum
+          );
+          
+          if (lectureIndex >= 0) {
+            // Update the lecture with new data while preserving the ID
+            lecturesData[batch].lectures[courseId][lectureIndex] = {
+              ...lecturesData[batch].lectures[courseId][lectureIndex],
+              ...lectureData,
+              id: lectureIdNum // Ensure ID is preserved
+            };
+            lectureFound = true;
+          }
+        }
+      });
+    }
+  });
+  
+  if (lectureFound) {
+    if (writeLecturesData(lecturesData)) {
+      res.status(200).json({ message: 'Lecture updated successfully' });
+    } else {
+      res.status(500).json({ message: 'Error updating lecture data' });
+    }
+  } else {
+    res.status(404).json({ message: 'Lecture not found' });
   }
 });
 
