@@ -1,6 +1,6 @@
 import React from "react";
 import { useLecture } from "../contexts/LectureContext";
-import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck } from "react-icons/fa";
+import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck, FaCalendarAlt, FaClock as FaClockCircle } from "react-icons/fa";
 
 const LectureCard = ({ 
   lecture, 
@@ -35,6 +35,29 @@ const LectureCard = ({
     // Fall back to calculating from date
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     return days[date.getDay()];
+  };
+  
+  // Format time from 24h to 12h with AM/PM
+  const formatTimeToAmPm = (time24h) => {
+    if (!time24h) return '';
+    
+    try {
+      // Parse the time in 24-hour format (HH:MM)
+      const [hours24, minutes] = time24h.split(':').map(num => parseInt(num, 10));
+      
+      // Convert to 12-hour format
+      let hours12 = hours24 % 12;
+      if (hours12 === 0) hours12 = 12; // Handle 00:00 (midnight) and 12:00 (noon)
+      
+      // Determine AM or PM
+      const period = hours24 < 12 ? 'AM' : 'PM';
+      
+      // Format as HH:MM AM/PM
+      return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+    } catch (err) {
+      console.error("Invalid time format", err);
+      return time24h; // Return original if parsing fails
+    }
   };
 
   // Get YouTube thumbnail URL if available
@@ -88,10 +111,10 @@ const LectureCard = ({
   // Apply special styling for today's lecture
   const cardClassName = `relative rounded-lg overflow-hidden shadow ${
     isTodayLecture 
-      ? 'bg-white border-2 border-[#0d7c66] transform scale-110 z-10 shadow-lg' // Make today's lecture larger and more prominent
+      ? 'bg-white border-2 border-red-400 transform scale-105 z-10 shadow-lg shadow-red-600/30' // Make today's lecture larger and more prominent
       : isDelivered
-      ? 'bg-white/70 border border-gray-200'
-      : 'bg-white/70 border border-gray-200'
+      ? 'bg-white border border-green-200 shadow-sm'
+      : 'bg-white border border-amber-200 shadow-sm'
   }`;
 
   return (
@@ -117,28 +140,63 @@ const LectureCard = ({
               <FaClock className="text-gray-500" />
               <span>{formatDate(scheduleDate)}</span>
             </div>
-            <div className="text-center text-xs text-gray-600 font-medium">
+            <div className="flex items-center justify-center text-xs text-gray-600 font-medium mt-0.5">
+              <FaCalendarAlt className="mr-1 text-gray-500 text-[10px]" />
               {getDayOfWeek(scheduleDate)}
             </div>
           </div>
         </div>
+        
+        {/* Status Badge at top-right corner */}
+        {lecture?.delivered !== undefined && (
+          <div className={`absolute top-2 right-2 rounded-full px-3 py-1 text-xs font-medium shadow-sm ${
+            lecture.delivered ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'
+          }`}>
+            {lecture.delivered ? (
+              <span className="flex items-center">
+                <FaCheck className="mr-1" />
+                Available
+              </span>
+            ) : (
+              <span className="flex items-center">
+                <FaCalendarAlt className="mr-1" />
+                Coming Soon
+              </span>
+            )}
+          </div>
+        )}
       </div>
       
       {/* Card content */}
       <div className="p-4">
-        <h3 className="mb-2 text-lg font-semibold">
+        <h3 className="mb-2 text-lg font-semibold flex items-center">
           {lecture?.title || `Lecture ${lectureNumber}`}
+          {lecture?.delivered && (
+            <FaCheck className="ml-2 text-green-600 text-sm" title="Delivered" />
+          )}
         </h3>
         
-        {/* Time badge if available */}
-        {lecture?.time && (
-          <div className="mb-1 text-xs text-gray-500">
-            Time: {lecture.time}
+        {/* Info section with organized details */}
+        <div className="mb-3 grid grid-cols-2 gap-y-1">
+          {/* Lecture number display */}
+          <div className="flex items-center text-xs text-gray-600">
+            <FaCalendarAlt className="mr-1 text-gray-500" />
+            <span>Lecture: {lecture?.lecture_number || lectureNumber}</span>
           </div>
-        )}
+          
+          {/* Time badge if available */}
+          {lecture?.time && (
+            <div className="flex items-center text-xs text-gray-600">
+              <FaClockCircle className="mr-1 text-gray-500" />
+              <span>{formatTimeToAmPm(lecture.time)}</span>
+            </div>
+          )}
+          
+          {/* Removed status badge above attend button */}
+        </div>
         
         {/* Actions */}
-        <div className="mt-3 flex justify-between">
+        <div className="mt-4 flex justify-between">
           {isEditable ? (
             <div className="flex flex-wrap gap-2">
               <button 
@@ -181,17 +239,20 @@ const LectureCard = ({
               )}
             </div>
           ) : (
-            <button
-              onClick={() => onAttend(lecture)}
-              disabled={!isLectureToday || !lecture?.youtube_url}
-              className={`flex items-center rounded-md px-4 py-2 text-sm font-medium ${
-                isLectureToday && lecture?.youtube_url
-                  ? 'bg-[#0d7c66] text-white hover:bg-[#0a6a58]'
-                  : 'cursor-not-allowed bg-gray-100 text-gray-400'
-              }`}
-            >
-              {lecture?.youtube_url ? 'Attend' : 'Not Available'}
-            </button>
+            <div className="flex w-full justify-center">
+              <button
+                onClick={() => onAttend(lecture)}
+                disabled={!lecture?.youtube_url || !lecture?.delivered}
+                className={`flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  lecture?.youtube_url && lecture?.delivered
+                    ? 'bg-[#0d7c66] text-white hover:bg-[#0a6a58] shadow-md hover:shadow-lg cursor-pointer'
+                    : 'cursor-not-allowed bg-gray-100 text-gray-400'
+                }`}
+              >
+                <FaPlay className="mr-2 text-sm" style={{ verticalAlign: 'middle' }} />
+                {lecture?.youtube_url && lecture?.delivered ? 'Attend Lecture' : 'Upcoming Lecture'}
+              </button>
+            </div>
           )}
         </div>
       </div>

@@ -279,7 +279,7 @@ export const LectureProvider = ({ children }) => {
         youtube_id: videoId,
         lecture_number: lectureNumber,
         date: lectureDateTime.toISOString(),
-        time: lectureData.lectureTime || '',
+        time: lectureData.lectureTime ? convertTo12HourFormat(lectureData.lectureTime) : '',
         day: dayOfWeek, // Include the day of the week
         delivered: false
       };
@@ -313,6 +313,29 @@ export const LectureProvider = ({ children }) => {
     }
   };
   
+  // Convert time from 24-hour format to 12-hour format with AM/PM
+  const convertTo12HourFormat = (time24h) => {
+    if (!time24h) return '';
+    
+    try {
+      // Parse the time in 24-hour format (HH:MM)
+      const [hours24, minutes] = time24h.split(':').map(num => parseInt(num, 10));
+      
+      // Convert to 12-hour format
+      let hours12 = hours24 % 12;
+      if (hours12 === 0) hours12 = 12; // Handle 00:00 (midnight) and 12:00 (noon)
+      
+      // Determine AM or PM
+      const period = hours24 < 12 ? 'AM' : 'PM';
+      
+      // Format as HH:MM AM/PM
+      return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+    } catch (err) {
+      console.error("Invalid time format", err);
+      return time24h; // Return original if parsing fails
+    }
+  };
+
   // Extract YouTube video ID from various URL formats
   const extractYouTubeId = (url) => {
     if (!url) return null;
@@ -419,7 +442,7 @@ export const LectureProvider = ({ children }) => {
         course_id: courseId,
         // Update date and time if provided
         date: lectureDateTime ? lectureDateTime.toISOString() : currentLecture.date,
-        time: lectureData.lectureTime || currentLecture.time,
+        time: lectureData.lectureTime ? convertTo12HourFormat(lectureData.lectureTime) : currentLecture.time,
         // Update day if date was provided, otherwise keep the existing day
         day: dayOfWeek || currentLecture.day || (currentLecture.date ? new Date(currentLecture.date).toLocaleDateString('en-US', { weekday: 'long' }) : null),
         delivered: lectureData.delivered !== undefined ? lectureData.delivered : currentLecture.delivered,
@@ -738,9 +761,14 @@ export const LectureProvider = ({ children }) => {
     }
   };
 
-  // Get announcements for a specific course
+  // Get announcements for a specific course, sorted by date (newest first)
   const getAnnouncementsForCourse = (courseId) => {
-    return announcements[courseId] || [];
+    const courseAnnouncements = announcements[courseId] || [];
+    
+    // Sort announcements by date (newest first)
+    return [...courseAnnouncements].sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
   };
   
   // Fetch announcements for a specific course

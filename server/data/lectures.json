@@ -1,20 +1,7 @@
 {
   "Batch A": {
     "lectures": {
-      "1": [
-        {
-          "course_id": 1,
-          "title": "Lofi Girl",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "youtube_id": "jfKfPfyJRdk",
-          "lecture_number": 1,
-          "date": "2025-12-09T07:15:00.000Z",
-          "time": "12:15",
-          "delivered": false,
-          "id": 1757763550591,
-          "day": "Tuesday"
-        }
-      ],
+      "1": [],
       "2": [],
       "3": [],
       "4": [],
@@ -31,16 +18,7 @@
       "15": []
     },
     "announcements": {
-      "1": [
-        {
-          "course_id": 1,
-          "title": "Test",
-          "content": "This is Test Announcement",
-          "date": "2025-09-13T11:52:33.482Z",
-          "author": "Mark",
-          "id": 1757764353558
-        }
-      ],
+      "1": [],
       "2": [],
       "3": [],
       "4": [],
@@ -80,12 +58,24 @@
           "title": "Lofi Girl",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
           "youtube_id": "jfKfPfyJRdk",
-          "lecture_number": 1,
-          "date": "2025-09-17T08:30:00.000Z",
-          "time": "13:30",
+          "lecture_number": 2,
+          "date": "2025-09-14T08:30:00.000Z",
+          "time": "1:30 PM",
+          "day": "Sunday",
+          "delivered": true,
+          "id": 1757843428697
+        },
+        {
+          "course_id": 109,
+          "title": "Lofi Girl",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "youtube_id": "jfKfPfyJRdk",
+          "lecture_number": 2,
+          "date": "2025-09-08T19:10:00.000Z",
+          "time": "12:10 AM",
+          "day": "Tuesday",
           "delivered": false,
-          "id": 1757758242488,
-          "day": "Wednesday"
+          "id": 1757865122359
         }
       ]
     },
@@ -108,11 +98,27 @@
       "109": [
         {
           "course_id": 109,
-          "title": "Test",
-          "content": "This is test Announcement",
-          "date": "2025-09-13T11:52:58.275Z",
+          "title": "Announcement",
+          "content": "<h1>Course Introduction</h1><p>Welcome to the course! This semester we'll be covering advanced topics in computer science.</p><p>Please make sure to review the syllabus and course materials before our first lecture.</p>",
+          "date": "2025-09-14T09:48:08.355Z",
           "author": "Mark",
-          "id": 1757764378327
+          "id": 1757843288394
+        },
+        {
+          "course_id": 109,
+          "title": "Announcement",
+          "content": "<h1>Assignment Updates</h1><p>Important update regarding our upcoming assignments:</p><ul><li>Assignment #1 due date extended to September 20</li><li>Assignment #2 requirements updated - please check the course portal</li></ul><p>If you have any questions, feel free to reach out during office hours.</p>",
+          "date": "2025-09-14T16:42:59.777Z",
+          "author": "Mark",
+          "id": 1757868179805
+        },
+        {
+          "course_id": 109,
+          "title": "Announcement",
+          "content": "<h1>Guest Speaker Next Week</h1><p>We're excited to announce that next week's lecture will feature a special guest speaker from the industry.</p><p>Our guest will be discussing real-world applications of the concepts we've been learning in class.</p><blockquote>Don't miss this valuable opportunity to gain insights from an industry expert!</blockquote>",
+          "date": "2025-09-14T18:30:00.000Z",
+          "author": "Mark",
+          "id": 1757870000000
         }
       ]
     }

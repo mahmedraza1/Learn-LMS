@@ -1,0 +1,185 @@
+/* TinyMCE Editor and Announcement Content Styling */
+
+/* Announcement content styles */
+.announcement-content {
+  line-height: 1.6 !important;
+  font-size: 0.875rem !important;
+  color: #92400e !important;
+}
+
+.announcement-content p {
+  margin-bottom: 0.75rem !important;
+}
+
+.announcement-content ul, 
+.announcement-content ol {
+  margin-left: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-left: 0 !important;
+}
+
+.announcement-content ul {
+  list-style-type: disc !important;
+}
+
+.announcement-content ol {
+  list-style-type: decimal !important;
+}
+
+.announcement-content a {
+  color: #0d7c66;
+  text-decoration: underline;
+}
+
+.announcement-content a:hover {
+  color: #0a6a58;
+}
+
+.announcement-content h1,
+.announcement-content h2,
+.announcement-content h3,
+.announcement-content h4,
+.announcement-content h5,
+.announcement-content h6 {
+  font-weight: 700 !important;
+  color: #92400e !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.2 !important;
+}
+
+.announcement-content h1 { 
+  font-size: 1.5rem !important; 
+  border-bottom: 1px solid #f59e0b !important;
+  padding-bottom: 0.25rem !important;
+}
+.announcement-content h2 { font-size: 1.25rem !important; }
+.announcement-content h3 { font-size: 1.125rem !important; }
+.announcement-content h4 { font-size: 1rem !important; }
+
+.announcement-content blockquote {
+  border-left: 3px solid #f59e0b;
+  padding-left: 0.75rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #78350f;
+}
+
+.announcement-content table {
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.announcement-content table th,
+.announcement-content table td {
+  border: 1px solid #fbbf24;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.announcement-content table th {
+  background-color: #fef3c7;
+  font-weight: 600;
+}
+
+.announcement-content code {
+  font-family: monospace;
+  background-color: #fef3c7;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.announcement-content pre {
+  background-color: #fef3c7;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.announcement-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem 0;
+  border-radius: 0.25rem;
+}
+
+/* Editor wrapper styles */
+.editor-wrapper {
+  min-height: 300px;
+  margin-bottom: 1rem;
+}
+
+/* Force styles to apply even with other libraries */
+.announcement-content * {
+  max-width: 100% !important;
+}
+
+/* Ensure these styles take priority */
+.announcement-content strong, 
+.announcement-content b {
+  font-weight: bold !important;
+}
+
+.announcement-content em,
+.announcement-content i {
+  font-style: italic !important;
+}
+
+/* Specific element classes */
+.announcement-h1 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  color: #92400e !important;
+  border-bottom: 1px solid #f59e0b !important;
+  padding-bottom: 0.25rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.announcement-h2 {
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  color: #92400e !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.announcement-ul, .announcement-ol {
+  margin-left: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-left: 0 !important;
+}
+
+.announcement-ul {
+  list-style-type: disc !important;
+}
+
+.announcement-ol {
+  list-style-type: decimal !important;
+}
+
+.announcement-li {
+  margin-bottom: 0.25rem !important;
+}
+
+.announcement-blockquote {
+  border-left: 3px solid #f59e0b !important;
+  padding-left: 0.75rem !important;
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+  margin-bottom: 1rem !important;
+  font-style: italic !important;
+  color: #78350f !important;
+}
+
+.announcement-content blockquote {
+  border-left: 3px solid #f59e0b !important;
+  padding-left: 0.75rem !important;
+  margin-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+  margin-bottom: 1rem !important;
+  font-style: italic !important;
+  color: #78350f !important;
+}

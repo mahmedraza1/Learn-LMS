@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
+import RTE from "./RTE";
 
 const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) => {
   const isEditMode = !!announcement;
@@ -9,20 +10,35 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset
+    reset,
+    control
   } = useForm({
     defaultValues: {
       title: announcement?.title || "",
       content: announcement?.content || ""
+    },
+    // Add validation rule for content
+    rules: {
+      content: {
+        required: "Content is required"
+      }
     }
   });
 
   // Handle form submission
   const submitHandler = async (data) => {
-    await onSubmit({
+    // Log the data being submitted
+    console.log('Submitting announcement data:', data);
+    
+    // Make sure content is a string
+    const formattedData = {
       ...data,
-      id: announcement?.id
-    });
+      id: announcement?.id,
+      content: data.content || ''
+    };
+    
+    // Data already includes content from the Controller
+    await onSubmit(formattedData);
     reset();
     onClose();
   };
@@ -31,7 +47,7 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+      <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-800">
             {isEditMode ? "Edit Announcement" : "Add Announcement"}
@@ -46,46 +62,28 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
         </div>
 
         <form onSubmit={handleSubmit(submitHandler)}>
-          {/* Announcement title field */}
-          <div className="mb-4">
-            <label htmlFor="title" className="mb-1 block text-sm font-medium text-gray-700">
-              Announcement Title
-            </label>
-            <input
-              id="title"
-              type="text"
-              className={`w-full rounded-md border ${
-                errors.title ? "border-red-500" : "border-gray-300"
-              } px-3 py-2 focus:border-[#0d7c66] focus:outline-none focus:ring-1 focus:ring-[#0d7c66]`}
-              placeholder="Enter announcement title"
-              {...register("title", { 
-                required: "Title is required" 
-              })}
-            />
-            {errors.title && (
-              <p className="mt-1 text-xs text-red-500">{errors.title.message}</p>
-            )}
-          </div>
+          {/* Hidden title field - we will use a default placeholder title */}
+          <input
+            type="hidden"
+            {...register("title", { 
+              value: "Announcement" // Default placeholder title 
+            })}
+          />
 
-          {/* Announcement content field */}
+          {/* Announcement content field with React Hook Form Controller */}
           <div className="mb-4">
-            <label htmlFor="content" className="mb-1 block text-sm font-medium text-gray-700">
-              Announcement Content
-            </label>
-            <textarea
-              id="content"
-              rows={5}
-              className={`w-full rounded-md border ${
-                errors.content ? "border-red-500" : "border-gray-300"
-              } px-3 py-2 focus:border-[#0d7c66] focus:outline-none focus:ring-1 focus:ring-[#0d7c66]`}
-              placeholder="Enter announcement content..."
-              {...register("content", { 
-                required: "Content is required" 
-              })}
-            ></textarea>
+            <RTE 
+              name="content"
+              control={control}
+              label="Announcement Content (Use headings for titles)"
+              defaultValue={announcement?.content || ""}
+            />
             {errors.content && (
-              <p className="mt-1 text-xs text-red-500">{errors.content.message}</p>
+              <p className="mt-1 text-xs text-red-500">Content is required</p>
             )}
+            <p className="mt-1 text-xs text-gray-500">
+              Use heading formats (H1, H2, etc.) in the editor for titles, and regular text for content.
+            </p>
           </div>
 
           {/* Action buttons */}
