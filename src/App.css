@@ -5,10 +5,12 @@
   line-height: 1.6 !important;
   font-size: 0.875rem !important;
   color: #92400e !important;
+  font-family: Helvetica, Arial, sans-serif !important;
 }
 
 .announcement-content p {
   margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0 !important;
 }
 
 .announcement-content ul, 
@@ -16,6 +18,7 @@
   margin-left: 1.5rem !important;
   margin-bottom: 0.75rem !important;
   padding-left: 0 !important;
+  border-radius: 0.375rem !important;
 }
 
 .announcement-content ul {
@@ -26,13 +29,27 @@
   list-style-type: decimal !important;
 }
 
+.announcement-content li {
+  margin-bottom: 0.25rem !important;
+  padding: 0.125rem 0 !important;
+}
+
 .announcement-content a {
-  color: #0d7c66;
-  text-decoration: underline;
+  color: #0d7c66 !important;
+  text-decoration: underline !important;
+  border-radius: 0.25rem !important;
+  padding: 0 0.125rem !important;
+  transition: background-color 0.2s, color 0.2s !important;
 }
 
 .announcement-content a:hover {
-  color: #0a6a58;
+  color: #0a6a58 !important;
+  background-color: rgba(13, 124, 102, 0.1) !important;
+}
+
+.announcement-content a:focus {
+  outline: 2px solid #0d7c66 !important;
+  outline-offset: 2px !important;
 }
 
 .announcement-content h1,
@@ -46,76 +63,125 @@
   margin-top: 0.75rem !important;
   margin-bottom: 0.75rem !important;
   line-height: 1.2 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
+  background-color: rgba(245, 158, 11, 0.1) !important;
 }
 
 .announcement-content h1 { 
   font-size: 1.5rem !important; 
-  border-bottom: 1px solid #f59e0b !important;
-  padding-bottom: 0.25rem !important;
+  border-bottom: 2px solid #f59e0b !important;
+  padding-bottom: 0.375rem !important;
 }
 .announcement-content h2 { font-size: 1.25rem !important; }
 .announcement-content h3 { font-size: 1.125rem !important; }
 .announcement-content h4 { font-size: 1rem !important; }
 
 .announcement-content blockquote {
-  border-left: 3px solid #f59e0b;
-  padding-left: 0.75rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 1rem;
-  font-style: italic;
-  color: #78350f;
+  border-left: 3px solid #f59e0b !important;
+  padding: 0.75rem !important;
+  margin: 1rem 0.5rem !important;
+  font-style: italic !important;
+  color: #78350f !important;
+  background-color: rgba(245, 158, 11, 0.05) !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
 .announcement-content table {
-  border-collapse: collapse;
-  margin-bottom: 1rem;
-  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin-bottom: 1rem !important;
+  width: 100% !important;
+  border-radius: 0.375rem !important;
+  overflow: hidden !important;
+  border: 1px solid #fbbf24 !important;
 }
 
 .announcement-content table th,
 .announcement-content table td {
-  border: 1px solid #fbbf24;
-  padding: 0.5rem;
-  text-align: left;
+  border: 1px solid #fbbf24 !important;
+  padding: 0.5rem 0.75rem !important;
+  text-align: left !important;
 }
 
 .announcement-content table th {
-  background-color: #fef3c7;
-  font-weight: 600;
+  background-color: #fef3c7 !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #f59e0b !important;
+}
+
+.announcement-content table tr:hover td {
+  background-color: rgba(245, 158, 11, 0.05) !important;
 }
 
 .announcement-content code {
-  font-family: monospace;
-  background-color: #fef3c7;
-  padding: 0.125rem 0.25rem;
-  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  background-color: #fef3c7 !important;
+  padding: 0.125rem 0.25rem !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid rgba(245, 158, 11, 0.2) !important;
+  color: #92400e !important;
+  font-size: 0.875em !important;
 }
 
 .announcement-content pre {
-  background-color: #fef3c7;
-  padding: 0.75rem;
-  border-radius: 0.375rem;
-  overflow-x: auto;
-  margin-bottom: 1rem;
+  background-color: #fef3c7 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow-x: auto !important;
+  margin-bottom: 1rem !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
 .announcement-content img {
-  max-width: 100%;
-  height: auto;
-  margin: 0.5rem 0;
-  border-radius: 0.25rem;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0.75rem 0 !important;
+  border-radius: 0.375rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
 }
 
 /* Editor wrapper styles */
 .editor-wrapper {
-  min-height: 300px;
-  margin-bottom: 1rem;
+  min-height: 300px !important;
+  margin-bottom: 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* TinyMCE specific styles */
+.tox .tox-edit-area {
+  border-radius: 0 0 0.375rem 0.375rem !important;
+}
+
+.tox .tox-edit-area__iframe {
+  background-color: white !important;
+}
+
+.tox .tox-toolbar,
+.tox .tox-toolbar__primary {
+  background-color: #fef3c7 !important;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+.tox .tox-tbtn {
+  border-radius: 0.25rem !important;
+  color: #92400e !important;
+}
+
+.tox .tox-tbtn:hover {
+  background-color: rgba(245, 158, 11, 0.2) !important;
 }
 
 /* Force styles to apply even with other libraries */
 .announcement-content * {
   max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Ensure these styles take priority */
@@ -134,9 +200,11 @@
   font-size: 1.5rem !important;
   font-weight: bold !important;
   color: #92400e !important;
-  border-bottom: 1px solid #f59e0b !important;
-  padding-bottom: 0.25rem !important;
+  border-bottom: 2px solid #f59e0b !important;
+  padding: 0.375rem 0.5rem !important;
   margin-bottom: 0.75rem !important;
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  border-radius: 0.375rem !important;
 }
 
 .announcement-h2 {
@@ -144,12 +212,26 @@
   font-weight: bold !important;
   color: #92400e !important;
   margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+  background-color: rgba(245, 158, 11, 0.05) !important;
+  border-radius: 0.375rem !important;
+}
+
+.announcement-h3 {
+  font-size: 1.125rem !important;
+  font-weight: bold !important;
+  color: #92400e !important;
+  margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.375rem !important;
 }
 
 .announcement-ul, .announcement-ol {
   margin-left: 1.5rem !important;
   margin-bottom: 0.75rem !important;
   padding-left: 0 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
 }
 
 .announcement-ul {
@@ -162,24 +244,37 @@
 
 .announcement-li {
   margin-bottom: 0.25rem !important;
+  padding: 0.125rem 0 !important;
 }
 
 .announcement-blockquote {
   border-left: 3px solid #f59e0b !important;
-  padding-left: 0.75rem !important;
-  margin-left: 0.5rem !important;
-  margin-right: 0.5rem !important;
-  margin-bottom: 1rem !important;
+  padding: 0.75rem 1rem !important;
+  margin: 1rem 0.5rem !important;
   font-style: italic !important;
   color: #78350f !important;
+  background-color: rgba(245, 158, 11, 0.05) !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
-.announcement-content blockquote {
-  border-left: 3px solid #f59e0b !important;
-  padding-left: 0.75rem !important;
-  margin-left: 0.5rem !important;
-  margin-right: 0.5rem !important;
-  margin-bottom: 1rem !important;
-  font-style: italic !important;
-  color: #78350f !important;
+/* Code formatting */
+.announcement-content pre code {
+  display: block !important;
+  background-color: #fef3c7 !important;
+  padding: 0.75rem 1rem !important;
+  color: #92400e !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  line-height: 1.5 !important;
+  tab-size: 2 !important;
+  overflow-x: auto !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Focus states for accessibility */
+.announcement-content a:focus,
+.announcement-content button:focus {
+  outline: 2px solid #0d7c66 !important;
+  outline-offset: 2px !important;
 }

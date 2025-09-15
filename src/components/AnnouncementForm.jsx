@@ -11,7 +11,8 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    control
+    control,
+    setValue
   } = useForm({
     defaultValues: {
       title: announcement?.title || "",
@@ -24,6 +25,15 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
       }
     }
   });
+  
+  // When in edit mode, ensure form is properly initialized with existing content
+  React.useEffect(() => {
+    if (isEditMode && announcement) {
+      console.log('Setting form values for edit mode:', announcement);
+      setValue("title", announcement.title || "");
+      setValue("content", announcement.content || "");
+    }
+  }, [isEditMode, announcement, setValue]);
 
   // Handle form submission
   const submitHandler = async (data) => {

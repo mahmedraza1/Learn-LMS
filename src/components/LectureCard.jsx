@@ -108,13 +108,15 @@ const LectureCard = ({
   // Determine if this is today's lecture
   const isTodayLecture = isLectureToday;
   
-  // Apply special styling for today's lecture
+  // Apply special styling for today's lecture and delivered lectures
   const cardClassName = `relative rounded-lg overflow-hidden shadow ${
     isTodayLecture 
-      ? 'bg-white border-2 border-red-400 transform scale-105 z-10 shadow-lg shadow-red-600/30' // Make today's lecture larger and more prominent
+      ? isDelivered
+        ? 'bg-white border-2 border-green-400 transform scale-105 z-10 shadow-lg shadow-green-600/30' // Today's delivered lecture
+        : 'bg-white border-2 border-blue-400 transform scale-105 z-10 shadow-lg shadow-blue-600/30' // Today's available but not delivered lecture
       : isDelivered
-      ? 'bg-white border border-green-200 shadow-sm'
-      : 'bg-white border border-amber-200 shadow-sm'
+        ? 'bg-white border border-green-200 shadow-sm' // Delivered lecture
+        : 'bg-white border border-amber-200 shadow-sm' // Upcoming lecture
   }`;
 
   return (
@@ -148,23 +150,30 @@ const LectureCard = ({
         </div>
         
         {/* Status Badge at top-right corner */}
-        {lecture?.delivered !== undefined && (
-          <div className={`absolute top-2 right-2 rounded-full px-3 py-1 text-xs font-medium shadow-sm ${
-            lecture.delivered ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'
-          }`}>
-            {lecture.delivered ? (
-              <span className="flex items-center">
-                <FaCheck className="mr-1" />
-                Available
-              </span>
-            ) : (
-              <span className="flex items-center">
-                <FaCalendarAlt className="mr-1" />
-                Coming Soon
-              </span>
-            )}
-          </div>
-        )}
+        <div className={`absolute top-2 right-2 rounded-full px-3 py-1 text-xs font-medium shadow-sm ${
+          lecture?.delivered 
+            ? 'bg-green-100 text-green-800' 
+            : isTodayLecture 
+              ? 'bg-blue-100 text-blue-800'
+              : 'bg-amber-100 text-amber-800'
+        }`}>
+          {lecture?.delivered ? (
+            <span className="flex items-center">
+              <FaCheck className="mr-1" />
+              Delivered
+            </span>
+          ) : isTodayLecture ? (
+            <span className="flex items-center">
+              <FaClock className="mr-1" />
+              Available
+            </span>
+          ) : (
+            <span className="flex items-center">
+              <FaCalendarAlt className="mr-1" />
+              Coming Soon
+            </span>
+          )}
+        </div>
       </div>
       
       {/* Card content */}
@@ -172,7 +181,10 @@ const LectureCard = ({
         <h3 className="mb-2 text-lg font-semibold flex items-center">
           {lecture?.title || `Lecture ${lectureNumber}`}
           {lecture?.delivered && (
-            <FaCheck className="ml-2 text-green-600 text-sm" title="Delivered" />
+            <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded flex items-center">
+              <FaCheck className="mr-1" />
+              Delivered
+            </span>
           )}
         </h3>
         
@@ -250,7 +262,11 @@ const LectureCard = ({
                 }`}
               >
                 <FaPlay className="mr-2 text-sm" style={{ verticalAlign: 'middle' }} />
-                {lecture?.youtube_url && lecture?.delivered ? 'Attend Lecture' : 'Upcoming Lecture'}
+                {lecture?.youtube_url && lecture?.delivered 
+                  ? 'Watch Lecture' 
+                  : isTodayLecture 
+                    ? 'Join Soon' 
+                    : 'Upcoming Lecture'}
               </button>
             </div>
           )}

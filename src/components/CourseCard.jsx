@@ -21,6 +21,13 @@ const CourseCard = ({
   const { calculateLectureDates, getLecturesForCourse, getAnnouncementsForCourse, addAnnouncement, updateAnnouncement, deleteAnnouncement, hasTodayLecture } = useLecture();
   const { isAdmin: authIsAdmin } = useAuth();
   
+  // Set state variables for pagination
+  const [displayLimit, setDisplayLimit] = useState(10);
+  const [displayedLectures, setDisplayedLectures] = useState([]);
+  
+  // Define initial limit constant
+  const INITIAL_LIMIT = 10;
+  
   // Get lectures for this course
   const lectures = getLecturesForCourse(course.id);
   
@@ -30,8 +37,43 @@ const CourseCard = ({
   // Calculate lecture dates for this course's batch
   const lectureDates = calculateLectureDates(course.batch);
   
+  // Filter lectures for current month
+  const filterLecturesForCurrentMonth = () => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    
+    return lectures.filter(lecture => {
+      const lectureDate = lecture.date ? new Date(lecture.date) : null;
+      return lectureDate && 
+             lectureDate.getMonth() === currentMonth && 
+             lectureDate.getFullYear() === currentYear;
+    });
+  };
+  
+  // Update displayed lectures based on current filter state
+  useEffect(() => {
+    if (isExpanded) {
+      // Filter lectures by current month
+      const currentMonthLectures = filterLecturesForCurrentMonth();
+      
+      // If we have lectures for current month, show those first
+      // Otherwise, show the first INITIAL_LIMIT lectures
+      if (currentMonthLectures.length > 0) {
+        setDisplayedLectures(currentMonthLectures);
+      } else {
+        setDisplayedLectures(lectures.slice(0, displayLimit));
+      }
+    }
+  }, [isExpanded, lectures, displayLimit]);
+  
   // Toggle expand/collapse
   const toggleExpand = () => setIsExpanded(!isExpanded);
+  
+  // Load more lectures
+  const handleLoadMore = () => {
+    setDisplayLimit(prev => prev + INITIAL_LIMIT);
+  };
 
   // Handlers for lecture actions
   const handleEditLecture = (lecture) => {
@@ -71,8 +113,8 @@ const CourseCard = ({
   // Check if this course has a lecture scheduled for today
   const hasScheduledLectureToday = lectures.some(lecture => {
     const lectureDate = new Date(lecture.date);
-    // Use September 13, 2025 for testing consistency
-    const today = new Date("September 13, 2025");
+    // Use current date
+    const today = new Date();
     return (
       lectureDate.getDate() === today.getDate() &&
       lectureDate.getMonth() === today.getMonth() &&
@@ -194,32 +236,52 @@ const CourseCard = ({
             </div>
           )}
           
+          {/* Lecture grid */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {/* Only show lectures that have been added, no placeholders */}
-            {lectures.map((lecture, index) => {
-              const lectureNumber = lecture.lecture_number || index + 1;
-              
-              return (
-                <LectureCard
-                  key={lecture.id || index}
-                  lecture={lecture}
-                  lectureNumber={lectureNumber}
-                  isEditable={isAdmin}
-                  onEdit={handleEditLecture}
-                  onDelete={handleDeleteLecture}
-                  onAttend={isAdmin ? handlePreviewLecture : handleAttendLecture}
-                  onMarkDelivered={handleMarkDelivered}
-                  scheduleDate={new Date(lecture.date)}
-                  isAdmin={isAdmin}
-                />
-              );
-            })}
+            {displayedLectures.length > 0 ? (
+              displayedLectures.map((lecture, index) => {
+                // Find the original index in the full lectures array to get correct lecture number
+                const originalIndex = lectures.findIndex(l => l.id === lecture.id);
+                const lectureNumber = lecture.lecture_number || (originalIndex !== -1 ? originalIndex + 1 : index + 1);
+                
+                return (
+                  <LectureCard
+                    key={lecture.id || index}
+                    lecture={lecture}
+                    lectureNumber={lectureNumber}
+                    isEditable={isAdmin}
+                    onEdit={handleEditLecture}
+                    onDelete={handleDeleteLecture}
+                    onAttend={isAdmin ? handlePreviewLecture : handleAttendLecture}
+                    onMarkDelivered={handleMarkDelivered}
+                    scheduleDate={new Date(lecture.date)}
+                    isAdmin={isAdmin}
+                  />
+                );
+              })
+            ) : (
+              <div className="col-span-full text-center p-8">
+                <p className="text-gray-500 italic">No lectures available for the current period.</p>
+              </div>
+            )}
             
             {lectures.length === 0 && (
               <div className="col-span-full text-center p-8">
                 <p className="text-gray-500 italic">
                   {isAdmin ? "No lectures yet. Click 'Add Lecture' to create one." : "No lectures available yet."}
                 </p>
+              </div>
+            )}
+            
+            {/* Load More button - only shown if there are more lectures to load */}
+            {displayedLectures.length > 0 && lectures.length > displayedLectures.length && (
+              <div className="col-span-full mt-6 flex justify-center">
+                <button 
+                  onClick={handleLoadMore}
+                  className="rounded-md bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100 transition-colors"
+                >
+                  Load More Lectures ({lectures.length - displayedLectures.length} more)
+                </button>
               </div>
             )}
           </div>

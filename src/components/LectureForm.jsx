@@ -30,7 +30,7 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
   // Watch the date field to update selectedDay
   const watchDate = watch("lectureDate");
   
-  // Update the day of week when date changes and validate according to batch rules
+  // Update the day of week when date changes and validate date
   React.useEffect(() => {
     if (watchDate) {
       const date = new Date(watchDate);
@@ -41,6 +41,18 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       // Get the necessary info for validation
       const activeBatch = batch || lecture?.course?.batch || lecture?.batch;
       const courseTitle = lecture?.course?.title || lecture?.title;
+      
+      // Check if the date is in the past
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to beginning of day for fair comparison
+      
+      if (date < today) {
+        setError("lectureDate", {
+          type: "manual",
+          message: "Cannot schedule lectures for past dates"
+        });
+        return;
+      }
       
       // If we have all the info needed for full validation, use the helper function
       if (courseTitle && activeBatch) {
@@ -63,74 +75,41 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
           return;
         }
         
+        // Check batch-specific rules
         const dayOfMonth = date.getDate();
-        const isOddDate = dayOfMonth % 2 === 1;
-      
-      if (activeBatch === "Batch A" && (dayOfMonth > 27)) {
-        setError("lectureDate", {
-          type: "manual",
-          message: "Batch A lectures only run from 1st to 27th of each month"
-        });
-        return;
-      }
-      
-      if (activeBatch === "Batch B") {
-        const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
         
-        // If it's the last day of a month with 31 days, it's a leave day for Batch B
-        if (lastDayOfMonth === 31 && dayOfMonth === 31) {
+        if (activeBatch === "Batch A" && (dayOfMonth > 27)) {
           setError("lectureDate", {
             type: "manual",
-            message: "The 31st is a leave day for Batch B"
+            message: "Batch A lectures only run from 1st to 27th of each month"
           });
           return;
         }
         
-        // Check if the date is within the Batch B schedule (16th to end of month, or 1st to 12th of next month)
-        const isSecondHalfOfMonth = dayOfMonth >= 16;
-        const isFirstHalfOfNextMonth = dayOfMonth <= 12;
-        
-        if (!isSecondHalfOfMonth && !isFirstHalfOfNextMonth) {
-          setError("lectureDate", {
-            type: "manual",
-            message: "Batch B lectures run from 16th to end of month, and 1st to 12th of next month"
-          });
-          return;
+        if (activeBatch === "Batch B") {
+          const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+          
+          // If it's the last day of a month with 31 days, it's a leave day for Batch B
+          if (lastDayOfMonth === 31 && dayOfMonth === 31) {
+            setError("lectureDate", {
+              type: "manual",
+              message: "The 31st is a leave day for Batch B"
+            });
+            return;
+          }
+          
+          // Check if the date is within the Batch B schedule (16th to end of month, or 1st to 12th of next month)
+          const isSecondHalfOfMonth = dayOfMonth >= 16;
+          const isFirstHalfOfNextMonth = dayOfMonth <= 12;
+          
+          if (!isSecondHalfOfMonth && !isFirstHalfOfNextMonth) {
+            setError("lectureDate", {
+              type: "manual",
+              message: "Batch B lectures run from 16th to end of month, and 1st to 12th of next month"
+            });
+            return;
+          }
         }
-      }
-      
-        // Validate according to Classes Arrangement rules from "Lecture Delivering System Upgraded.md"
-      if (courseTitle) {
-        // Course lists for odd dates - using normalized casing to match database values
-        const oddDateBatchA = [
-          "Video Editing", "Digital Marketing", "WordPress", "Search Engine Optimization",
-          "Affiliate Marketing", "Amazon Virtual Assistant", "Graphics Designing", "Content Writing"
-        ];
-        
-        const oddDateBatchB = [
-          "Artificial Intelligence Prompt", "Full Stack Web Development", "Freelancing",
-          "Shopify Dropshipping", "YouTube Creator", "MS Office and Digital Literacy", 
-          "English Language and Communication"
-        ];        // For even dates, these lists are swapped
-        const coursesForBatchA = isOddDate ? oddDateBatchA : oddDateBatchB;
-        const coursesForBatchB = isOddDate ? oddDateBatchB : oddDateBatchA;
-        
-        const coursesForBatch = activeBatch === "Batch A" ? coursesForBatchA : coursesForBatchB;
-        
-        // Check if the course is allowed to have a lecture on this date
-        const isCourseAllowedOnThisDate = coursesForBatch.some(
-          title => title.toLowerCase() === courseTitle.toLowerCase()
-        );
-        
-        if (!isCourseAllowedOnThisDate) {
-          const dateType = isOddDate ? "odd" : "even";
-          setError("lectureDate", {
-            type: "manual",
-            message: `This course is not scheduled for ${dateType} dates according to the Class Arrangement rules`
-          });
-          return;
-        }
-      }
       }
       
       clearErrors("lectureDate");
@@ -139,8 +118,21 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
 
   // Handle form submission
   const submitHandler = async (data) => {
+    const lectureDate = new Date(data.lectureDate);
+    
     // Don't submit if the date is a Friday
-    if (new Date(data.lectureDate).getDay() === 5) {
+    if (lectureDate.getDay() === 5) {
+      return;
+    }
+    
+    // Don't submit if the date is in the past
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to beginning of day for fair comparison
+    if (lectureDate < today) {
+      setError("lectureDate", {
+        type: "manual", 
+        message: "Cannot schedule lectures for past dates"
+      });
       return;
     }
     
@@ -267,7 +259,7 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
             <p>
               <strong>Note:</strong> Batch A lectures run from 1st to 27th of each month. 
               Batch B lectures run from 16th of current month to 12th of next month.
-              Lectures are not held on Fridays.
+              Lectures are not held on Fridays and cannot be scheduled for past dates.
             </p>
           </div>
 

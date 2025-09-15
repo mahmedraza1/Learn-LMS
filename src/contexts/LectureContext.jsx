@@ -811,8 +811,8 @@ export const LectureProvider = ({ children }) => {
 
   // Determine which courses should have active lectures today based on the rules from "Lecture Delivering System Upgraded.md"
   const getActiveCoursesForToday = () => {
-    // Use September 13, 2025 for testing/consistency
-    const today = new Date("September 13, 2025");
+    // Use the current date
+    const today = new Date();
     
     // Use the helper function from courseScheduleRules.js
     // This ensures consistent application of rules across the app
@@ -858,9 +858,13 @@ export const LectureProvider = ({ children }) => {
       return false;
     }
     
-    // Use September 13, 2025 for testing/consistency - this is an odd date
-    const today = new Date("September 13, 2025");
+    // Use current date for determining today's lectures
+    const today = new Date();
     const isOddDate = today.getDate() % 2 === 1;
+    
+    // Following your trick: For even dates, invert the logic
+    // This means: on even dates, show lectures that would be closed on odd dates
+    // and vice versa
     
     // Get the list of courses that should have lectures today by batch
     const activeCoursesMap = getCoursesForDate(today);

@@ -71,6 +71,17 @@ export const shouldCourseHaveLecture = (courseTitle, batchName, date = new Date(
  * @returns {Object} - { isValid: boolean, message: string }
  */
 export const validateDateForCourse = (date, courseTitle, batchName) => {
+  // Check if the date is in the past
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to beginning of day for fair comparison
+  
+  if (date < today) {
+    return {
+      isValid: false,
+      message: "Cannot schedule lectures for past dates"
+    };
+  }
+  
   // Check if the date is a Friday (day 5)
   if (date.getDay() === 5) {
     return {
@@ -110,16 +121,6 @@ export const validateDateForCourse = (date, courseTitle, batchName) => {
         message: "Batch B lectures run from 16th to end of month, and 1st to 12th of next month"
       };
     }
-  }
-  
-  // Check course-specific scheduling based on odd/even date
-  if (!shouldCourseHaveLecture(courseTitle, batchName, date)) {
-    const isOddDate = date.getDate() % 2 === 1;
-    const dateType = isOddDate ? "odd" : "even";
-    return {
-      isValid: false,
-      message: `This course is not scheduled for ${dateType} dates according to the Class Arrangement rules`
-    };
   }
   
   // If we got here, the date is valid
