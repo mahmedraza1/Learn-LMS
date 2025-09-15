@@ -10,6 +10,19 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
   // State to store the selected date's day for validation
   const [selectedDay, setSelectedDay] = useState("");
   
+  // Log lecture data for debugging
+  React.useEffect(() => {
+    if (lecture) {
+      console.log("Lecture data for form:", { 
+        id: lecture.id,
+        title: lecture.title, 
+        date: lecture.date, 
+        time: lecture.time,
+        youtube_url: lecture.youtube_url 
+      });
+    }
+  }, [lecture]);
+  
   const {
     register,
     handleSubmit,
@@ -17,7 +30,8 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
     reset,
     watch,
     setError,
-    clearErrors
+    clearErrors,
+    setValue
   } = useForm({
     defaultValues: {
       lectureName: lecture?.title || "",
@@ -26,6 +40,36 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       youtubeUrl: lecture?.youtube_url || ""
     }
   });
+  
+  // When lecture prop changes, reset form with new values
+  React.useEffect(() => {
+    if (lecture) {
+      console.log('Setting form values with lecture data:', lecture);
+      
+      // Reset the form with new values when lecture changes
+      reset({
+        lectureName: lecture.title || "",
+        lectureDate: lecture.date ? new Date(lecture.date).toISOString().split('T')[0] : "",
+        lectureTime: lecture.time || "",
+        youtubeUrl: lecture.youtube_url || ""
+      });
+      
+      // Also set values individually to ensure the form updates
+      setValue("lectureName", lecture.title || "");
+      if (lecture.date) {
+        setValue("lectureDate", new Date(lecture.date).toISOString().split('T')[0]);
+      }
+      setValue("lectureTime", lecture.time || "");
+      setValue("youtubeUrl", lecture.youtube_url || "");
+      
+      // If we have a date, update the selectedDay
+      if (lecture.date) {
+        const date = new Date(lecture.date);
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        setSelectedDay(days[date.getDay()]);
+      }
+    }
+  }, [lecture, setValue, reset]);
 
   // Watch the date field to update selectedDay
   const watchDate = watch("lectureDate");
@@ -116,6 +160,13 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
     }
   }, [watchDate, setError, clearErrors, lecture, batch]);
 
+  // Reset form when modal is closed
+  React.useEffect(() => {
+    if (!isOpen) {
+      reset();
+    }
+  }, [isOpen, reset]);
+  
   // Handle form submission
   const submitHandler = async (data) => {
     const lectureDate = new Date(data.lectureDate);
@@ -136,10 +187,20 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       return;
     }
     
-    await onSubmit({
-      ...data,
-      id: lecture?.id
-    });
+    // Prepare the data for submission with the correct structure
+    const formattedData = {
+      lectureName: data.lectureName,
+      lectureDate: data.lectureDate,
+      lectureTime: data.lectureTime,
+      youtubeUrl: data.youtubeUrl,
+      // These fields might be used by the update function
+      id: lecture?.id,
+      delivered: lecture?.delivered
+    };
+    
+    console.log("Submitting lecture data:", formattedData);
+    
+    await onSubmit(formattedData);
     reset();
     onClose();
   };
@@ -267,7 +328,10 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
           <div className="flex justify-end space-x-3">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                reset();
+                onClose();
+              }}
               className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Cancel

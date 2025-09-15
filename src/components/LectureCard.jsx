@@ -170,7 +170,7 @@ const LectureCard = ({
           ) : (
             <span className="flex items-center">
               <FaCalendarAlt className="mr-1" />
-              Coming Soon
+              Upcoming Soon
             </span>
           )}
         </div>

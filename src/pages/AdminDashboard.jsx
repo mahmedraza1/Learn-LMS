@@ -60,13 +60,17 @@ const AdminDashboard = () => {
     try {
       const { courseId, lecture } = lectureForm;
       
-      if (lecture && lecture.youtube_url) {
+      console.log("Lecture form submitted with data:", data);
+      console.log("Original lecture data:", lecture);
+      
+      if (lecture && lecture.id && lecture.youtube_url) {
         // Update existing lecture
         await updateLecture(courseId, lecture.id, {
           lectureName: data.lectureName,
           lectureDate: data.lectureDate,
           lectureTime: data.lectureTime,
-          youtubeUrl: data.youtubeUrl
+          youtubeUrl: data.youtubeUrl,
+          delivered: lecture.delivered // preserve delivered status
         });
         toast.success("Lecture updated successfully");
       } else {
