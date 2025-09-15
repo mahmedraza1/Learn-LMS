@@ -125,10 +125,10 @@ export const LectureProvider = ({ children }) => {
       return new Date(year, month + 1, 0).getDate();
     };
     
-    // Function to check if a date is Friday (day 5)
-    const isFriday = (date) => {
-      return date.getDay() === 5; // 5 is Friday (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-    };
+    // Function to check if a date is Friday (day 5) - no longer used as Friday restriction has been removed
+    // const isFriday = (date) => {
+    //   return date.getDay() === 5; // 5 is Friday (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    // };
     
     // Implement the rules from "Lecture Delivering System Upgraded.md"
     if (batchName === "Batch A") {
@@ -141,15 +141,9 @@ export const LectureProvider = ({ children }) => {
         const daysInMonth = Math.min(27, getDaysInMonth(year, month)); // Max day is 27th for Batch A
         let startDay = 1; // Always start from 1st
         
-        // Add dates for this month, excluding Fridays
+        // Add dates for this month (Friday restriction removed)
         for (let day = startDay; day <= daysInMonth && dates.length < 15; day++) {
           const date = new Date(year, month, day);
-          
-          // Skip Fridays
-          if (isFriday(date)) {
-            continue;
-          }
-          
           dates.push(date);
         }
         
@@ -182,15 +176,9 @@ export const LectureProvider = ({ children }) => {
           endDay = 30; // Skip the 31st
         }
         
-        // Add dates for this range, excluding Fridays
+        // Add dates for this range (Friday restriction removed)
         for (let day = startDay; day <= endDay && dates.length < 15; day++) {
           const date = new Date(year, month, day);
-          
-          // Skip Fridays
-          if (isFriday(date)) {
-            continue;
-          }
-          
           dates.push(date);
         }
         
@@ -247,10 +235,7 @@ export const LectureProvider = ({ children }) => {
         const dateParts = lectureData.lectureDate.split('-').map(part => parseInt(part, 10));
         const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Month is 0-indexed
         
-        // Check if the date is a Friday
-        if (date.getDay() === 5) { // 5 is Friday
-          throw new Error("Lectures cannot be scheduled on Fridays");
-        }
+        // Friday validation removed
         
         // If time is provided, set it
         if (lectureData.lectureTime) {
@@ -412,10 +397,7 @@ export const LectureProvider = ({ children }) => {
         const dateParts = lectureData.lectureDate.split('-').map(part => parseInt(part, 10));
         const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Month is 0-indexed
         
-        // Check if the date is a Friday
-        if (date.getDay() === 5) { // 5 is Friday
-          throw new Error("Lectures cannot be scheduled on Fridays");
-        }
+        // Friday validation removed
         
         // Get day of week
         const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];

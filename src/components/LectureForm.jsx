@@ -111,14 +111,6 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
         }
       } else {
         // Basic validation if course title or batch is missing
-        if (date.getDay() === 5) { // 5 is Friday
-          setError("lectureDate", {
-            type: "manual",
-            message: "Lectures are not allowed on Fridays (Leave day)"
-          });
-          return;
-        }
-        
         // Check batch-specific rules
         const dayOfMonth = date.getDate();
         
@@ -170,11 +162,6 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
   // Handle form submission
   const submitHandler = async (data) => {
     const lectureDate = new Date(data.lectureDate);
-    
-    // Don't submit if the date is a Friday
-    if (lectureDate.getDay() === 5) {
-      return;
-    }
     
     // Don't submit if the date is in the past
     const today = new Date();
@@ -262,7 +249,7 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
             />
             {selectedDay && (
               <p className="mt-1 text-xs text-blue-600">
-                Day: {selectedDay} {selectedDay === "Friday" && "⚠️ No lectures on Friday"}
+                Day: {selectedDay}
               </p>
             )}
             {errors.lectureDate && (
@@ -320,7 +307,7 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
             <p>
               <strong>Note:</strong> Batch A lectures run from 1st to 27th of each month. 
               Batch B lectures run from 16th of current month to 12th of next month.
-              Lectures are not held on Fridays and cannot be scheduled for past dates.
+              Lectures cannot be scheduled for past dates.
             </p>
           </div>
 

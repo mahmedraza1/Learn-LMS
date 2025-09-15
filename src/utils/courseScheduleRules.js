@@ -82,14 +82,6 @@ export const validateDateForCourse = (date, courseTitle, batchName) => {
     };
   }
   
-  // Check if the date is a Friday (day 5)
-  if (date.getDay() === 5) {
-    return {
-      isValid: false,
-      message: "Lectures are not allowed on Fridays (Leave day)"
-    };
-  }
-  
   // Get the day of month
   const dayOfMonth = date.getDate();
   
