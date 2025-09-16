@@ -6,7 +6,17 @@ import axios from 'axios';
 import { getCoursesForDate, shouldCourseHaveLecture } from '../utils/courseScheduleRules';
 
 // Using learnlive prefix to match server configuration
-const API_BASE_URL = 'http://localhost:3001/learnlive';
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  // Check if we're running on citea.learn.pk
+  if (typeof window !== 'undefined' && window.location.hostname === 'citea.learn.pk') {
+    return 'https://citea.learn.pk/learnlive';
+  }
+  // Default to localhost
+  return 'http://localhost:3001/learnlive';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const LectureContext = createContext();
 

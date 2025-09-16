@@ -64,7 +64,9 @@ A React-based lecture management system that integrates with a WordPress backend
    ```
 
 4. Access the frontend at [https://lectures.learn.pk:5173](https://lectures.learn.pk:5173)
-5. Backend API runs at [http://localhost:3001](http://localhost:3001)
+5. Backend API runs at:
+   - Production: [https://citea.learn.pk/learnlive](https://citea.learn.pk/learnlive)
+   - Development: [http://localhost:3001/learnlive](http://localhost:3001/learnlive)
 
 ### Production Mode
 
@@ -80,7 +82,9 @@ This will:
    - API endpoints at `/learnlive/*`
    - Frontend static files from the `dist` directory
 
-Access the complete application at [http://localhost:3001](http://localhost:3001)
+Access the complete application at:
+- Production: [https://citea.learn.pk](https://citea.learn.pk)
+- Development: [http://localhost:3001](http://localhost:3001)
 
 ## Project Structure
 
