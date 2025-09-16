@@ -64,7 +64,23 @@ A React-based lecture management system that integrates with a WordPress backend
    ```
 
 4. Access the frontend at [https://lectures.learn.pk:5173](https://lectures.learn.pk:5173)
-5. Backend API runs at [http://localhost:5000](http://localhost:5000)
+5. Backend API runs at [http://localhost:3001](http://localhost:3001)
+
+### Production Mode
+
+To build the frontend and serve it from the backend:
+
+```
+npm run start
+```
+
+This will:
+1. Build the frontend into the `dist` folder
+2. Start the Express server which will serve both:
+   - API endpoints at `/learnlive/*`
+   - Frontend static files from the `dist` directory
+
+Access the complete application at [http://localhost:3001](http://localhost:3001)
 
 ## Project Structure
 

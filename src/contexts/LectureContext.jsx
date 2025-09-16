@@ -6,7 +6,7 @@ import axios from 'axios';
 import { getCoursesForDate, shouldCourseHaveLecture } from '../utils/courseScheduleRules';
 
 // Using learnlive prefix to match server configuration
-const API_BASE_URL = 'http://localhost:5000/learnlive';
+const API_BASE_URL = 'http://localhost:3001/learnlive';
 
 const LectureContext = createContext();
 
