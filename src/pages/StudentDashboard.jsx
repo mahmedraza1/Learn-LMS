@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useBatch } from "../contexts/BatchContext";
 import { useLecture } from "../contexts/LectureContext";
+import { useAnnouncement } from "../contexts/AnnouncementContext";
 import CourseCard from "../components/CourseCard";
+import GlobalAnnouncement from "../components/GlobalAnnouncement";
 import VideoModal from "../components/VideoModal";
 
 const StudentDashboard = () => {
   const { user } = useAuth();
   const { courses, selectedBatch, loading } = useBatch();
+  const { globalAnnouncements } = useAnnouncement();
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
     videoUrl: ""
@@ -73,34 +76,20 @@ const StudentDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">
-        {/* Batch schedule info */}
-        <div className="mb-6 rounded-lg border-l-4 border-[#0d7c66] bg-white p-4 shadow-sm">
-          <h3 className="mb-2 font-medium text-gray-800">Your Lecture Schedule</h3>
-          <p className="text-sm text-gray-600">
-            {formattedBatch === "Batch A" || formattedBatch === "Batch a"
-              ? "Your lectures run from the 1st to the 27th of each month (excluding Fridays and the 31st). Remaining days are leave days."
-              : "Your lectures run from the 16th of the current month to the 12th of the next month (excluding Fridays and the 31st)."}
-          </p>
-          <div className="mt-3 text-sm text-gray-600">
-            <strong>Today's date:</strong> {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            <span className="ml-3">
-              {new Date().getDate() % 2 !== 0 ? 
-                "(Today has 8 lectures from Batch A and 7 from Batch B)" : 
-                "(Today has 7 lectures from Batch A and 8 from Batch B)"
-              }
-            </span>
+        {/* Global Announcements */}
+        {globalAnnouncements.length > 0 && (
+          <div className="mb-8">
+            <h2 className="mb-4 text-xl font-bold text-gray-800">Announcements</h2>
+            <div className="space-y-4">
+              {globalAnnouncements.map((announcement) => (
+                <GlobalAnnouncement
+                  key={announcement.id}
+                  announcement={announcement}
+                />
+              ))}
+            </div>
           </div>
-          <div className="mt-3 text-xs bg-gray-50 p-2 rounded">
-            <p className="font-medium">Lecture Schedule Rules:</p>
-            <ul className="list-disc pl-4 mt-1 space-y-1">
-              <li>Lectures are never scheduled on Fridays</li>
-              <li>Batch A: Runs from 1st to 27th of each month</li>
-              <li>Batch B: Runs from 16th of current month to 12th of next month</li>
-              <li>On odd dates: 8 lectures from Batch A, 7 from Batch B</li>
-              <li>On even dates: 7 lectures from Batch A, 8 from Batch B</li>
-            </ul>
-          </div>
-        </div>
+        )}
         
         <h2 className="mb-6 text-xl font-bold text-gray-800">My Courses</h2>
 

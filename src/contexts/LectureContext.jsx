@@ -438,6 +438,7 @@ export const LectureProvider = ({ children }) => {
         // Update day if date was provided, otherwise keep the existing day
         day: dayOfWeek || currentLecture.day || (currentLecture.date ? new Date(currentLecture.date).toLocaleDateString('en-US', { weekday: 'long' }) : null),
         delivered: lectureData.delivered !== undefined ? lectureData.delivered : currentLecture.delivered,
+        currentlyLive: lectureData.currentlyLive !== undefined ? lectureData.currentlyLive : currentLecture.currentlyLive,
         // Add YouTube ID if URL was updated
         youtube_id: youtubeId || currentLecture.youtube_id
       };

@@ -278,3 +278,248 @@
   outline: 2px solid #0d7c66 !important;
   outline-offset: 2px !important;
 }
+
+/* Global Announcement Content Styles (Green Theme) */
+.global-announcement-content {
+  line-height: 1.6 !important;
+  font-size: 0.875rem !important;
+  color: #047857 !important;
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.global-announcement-content p {
+  margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0 !important;
+}
+
+.global-announcement-content ul, 
+.global-announcement-content ol {
+  margin-left: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-left: 0 !important;
+  border-radius: 0.375rem !important;
+}
+
+.global-announcement-content ul {
+  list-style-type: disc !important;
+}
+
+.global-announcement-content ol {
+  list-style-type: decimal !important;
+}
+
+.global-announcement-content li {
+  margin-bottom: 0.25rem !important;
+  padding: 0.125rem 0 !important;
+}
+
+.global-announcement-content a {
+  color: #059669 !important;
+  text-decoration: underline !important;
+  border-radius: 0.25rem !important;
+  padding: 0 0.125rem !important;
+  transition: background-color 0.2s, color 0.2s !important;
+}
+
+.global-announcement-content a:hover {
+  color: #047857 !important;
+  background-color: rgba(5, 150, 105, 0.1) !important;
+}
+
+.global-announcement-content a:focus {
+  outline: 2px solid #059669 !important;
+  outline-offset: 2px !important;
+}
+
+.global-announcement-content h1,
+.global-announcement-content h2,
+.global-announcement-content h3,
+.global-announcement-content h4,
+.global-announcement-content h5,
+.global-announcement-content h6 {
+  font-weight: 700 !important;
+  color: #047857 !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.2 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.global-announcement-content h1 { 
+  font-size: 1.5rem !important; 
+  border-bottom: 2px solid #10b981 !important;
+  padding-bottom: 0.375rem !important;
+}
+.global-announcement-content h2 { font-size: 1.25rem !important; }
+.global-announcement-content h3 { font-size: 1.125rem !important; }
+.global-announcement-content h4 { font-size: 1rem !important; }
+
+.global-announcement-content blockquote {
+  border-left: 3px solid #10b981 !important;
+  padding: 0.75rem !important;
+  margin: 1rem 0.5rem !important;
+  font-style: italic !important;
+  color: #064e3b !important;
+  background-color: rgba(16, 185, 129, 0.05) !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.global-announcement-content table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin-bottom: 1rem !important;
+  width: 100% !important;
+  border-radius: 0.375rem !important;
+  overflow: hidden !important;
+  border: 1px solid #34d399 !important;
+}
+
+.global-announcement-content table th,
+.global-announcement-content table td {
+  border: 1px solid #34d399 !important;
+  padding: 0.5rem 0.75rem !important;
+  text-align: left !important;
+}
+
+.global-announcement-content table th {
+  background-color: #d1fae5 !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #10b981 !important;
+}
+
+.global-announcement-content table tr:hover td {
+  background-color: rgba(16, 185, 129, 0.05) !important;
+}
+
+.global-announcement-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  background-color: #d1fae5 !important;
+  padding: 0.125rem 0.25rem !important;
+  border-radius: 0.25rem !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: #047857 !important;
+  font-size: 0.875em !important;
+}
+
+.global-announcement-content pre {
+  background-color: #d1fae5 !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow-x: auto !important;
+  margin-bottom: 1rem !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.global-announcement-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0.75rem 0 !important;
+  border-radius: 0.375rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Force styles to apply even with other libraries */
+.global-announcement-content * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure these styles take priority */
+.global-announcement-content strong, 
+.global-announcement-content b {
+  font-weight: bold !important;
+}
+
+.global-announcement-content em,
+.global-announcement-content i {
+  font-style: italic !important;
+}
+
+/* Specific element classes for global announcements */
+.global-announcement-h1 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  color: #047857 !important;
+  border-bottom: 2px solid #10b981 !important;
+  padding: 0.375rem 0.5rem !important;
+  margin-bottom: 0.75rem !important;
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  border-radius: 0.375rem !important;
+}
+
+.global-announcement-h2 {
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  color: #047857 !important;
+  margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+  background-color: rgba(16, 185, 129, 0.05) !important;
+  border-radius: 0.375rem !important;
+}
+
+.global-announcement-h3 {
+  font-size: 1.125rem !important;
+  font-weight: bold !important;
+  color: #047857 !important;
+  margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.375rem !important;
+}
+
+.global-announcement-ul, .global-announcement-ol {
+  margin-left: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-left: 0 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+.global-announcement-ul {
+  list-style-type: disc !important;
+}
+
+.global-announcement-ol {
+  list-style-type: decimal !important;
+}
+
+.global-announcement-li {
+  margin-bottom: 0.25rem !important;
+  padding: 0.125rem 0 !important;
+}
+
+.global-announcement-blockquote {
+  border-left: 3px solid #10b981 !important;
+  padding: 0.75rem 1rem !important;
+  margin: 1rem 0.5rem !important;
+  font-style: italic !important;
+  color: #064e3b !important;
+  background-color: rgba(16, 185, 129, 0.05) !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Code formatting for global announcements */
+.global-announcement-content pre code {
+  display: block !important;
+  background-color: #d1fae5 !important;
+  padding: 0.75rem 1rem !important;
+  color: #047857 !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  line-height: 1.5 !important;
+  tab-size: 2 !important;
+  overflow-x: auto !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Focus states for accessibility in global announcements */
+.global-announcement-content a:focus,
+.global-announcement-content button:focus {
+  outline: 2px solid #059669 !important;
+  outline-offset: 2px !important;
+}

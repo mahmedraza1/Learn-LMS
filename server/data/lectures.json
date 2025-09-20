@@ -1,4 +1,14 @@
 {
+  "globalAnnouncements": [
+    {
+      "title": "",
+      "content": "<h1 style=\"text-align: center;\">Test Annoucement</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+      "author": "Mark",
+      "date": "2025-09-20T04:54:06.253Z",
+      "id": 1758344046253,
+      "updated_at": "2025-09-20T05:02:33.448Z"
+    }
+  ],
   "Batch A": {
     "lectures": {
       "1": [
@@ -99,6 +109,21 @@
       "13": [],
       "14": [],
       "15": [],
+      "101": [
+        {
+          "course_id": 101,
+          "title": "Lofi Girl",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "youtube_id": "jfKfPfyJRdk",
+          "lecture_number": 1,
+          "date": "2025-09-20T05:10:00.000Z",
+          "time": "10:10 AM",
+          "day": "Saturday",
+          "delivered": true,
+          "id": 1758345059995,
+          "currentlyLive": false
+        }
+      ],
       "109": [
         {
           "course_id": 109,
@@ -130,6 +155,17 @@
       "13": [],
       "14": [],
       "15": [],
+      "101": [
+        {
+          "course_id": 101,
+          "title": "",
+          "content": "<h2>Test By Mark</h2>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\n<table style=\"border-collapse: collapse; width: 100%; height: 66.75px;\" border=\"1\"><colgroup><col style=\"width: 33.2096%;\"><col style=\"width: 33.2096%;\"><col style=\"width: 33.2096%;\"></colgroup>\n<tbody>\n<tr style=\"height: 33.375px;\">\n<td style=\"text-align: center;\"><strong>Test</strong></td>\n<td style=\"text-align: center;\"><strong>Test</strong></td>\n<td style=\"text-align: center;\"><strong>Test</strong></td>\n</tr>\n<tr style=\"height: 33.375px;\">\n<td style=\"text-align: center;\">Test</td>\n<td style=\"text-align: center;\">Test</td>\n<td style=\"text-align: center;\">Test</td>\n</tr>\n</tbody>\n</table>\n<ul>\n<li>1</li>\n<li>2</li>\n<li>3</li>\n</ul>\n<ol>\n<li>o</li>\n<li>o</li>\n<li>o</li>\n</ol>",
+          "date": "2025-09-20T05:01:27.454Z",
+          "author": "Mark",
+          "id": 1758344487496,
+          "updated_at": "2025-09-20T05:01:37.463Z"
+        }
+      ],
       "109": [
         {
           "course_id": 109,

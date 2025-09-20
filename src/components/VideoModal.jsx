@@ -63,10 +63,19 @@ const VideoModal = ({ isOpen, onClose, videoUrl }) => {
   if (!isOpen) return null;
 
   const videoId = getYoutubeId(videoUrl);
+
+  // Handle right-click disable
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    return false;
+  };
   
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-      <div className="relative h-[90vh] w-[90vw] max-w-7xl overflow-hidden rounded-lg bg-black">
+      <div 
+        className="relative h-[90vh] w-[90vw] max-w-7xl overflow-hidden rounded-lg bg-black"
+        onContextMenu={handleContextMenu}
+      >
         {/* Close button */}
         <button
           className="absolute right-4 top-4 z-10 rounded-full bg-white/20 p-2 text-white backdrop-blur-sm hover:bg-white/30"
@@ -78,14 +87,18 @@ const VideoModal = ({ isOpen, onClose, videoUrl }) => {
         {/* Video embed */}
         {videoId ? (
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&modestbranding=1&fs=1&cc_load_policy=0&iv_load_policy=3&autohide=0&controls=1`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="h-full w-full"
+            onContextMenu={handleContextMenu}
           ></iframe>
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-900 p-8 text-white">
+          <div 
+            className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-900 p-8 text-white"
+            onContextMenu={handleContextMenu}
+          >
             <p className="text-xl">Invalid or missing YouTube video URL</p>
             <p className="text-center text-sm text-gray-300">
               The lecture might not have a valid YouTube URL assigned yet. Please check back later or contact your instructor.

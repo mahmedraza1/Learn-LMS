@@ -13,6 +13,7 @@ const CourseCard = ({
   onDeleteLecture,
   onAttendLecture,
   onVideoPreview,
+  onStartLecture,
   onMarkDelivered
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -100,6 +101,13 @@ const CourseCard = ({
   const handlePreviewLecture = (lecture) => {
     if (onVideoPreview) {
       onVideoPreview(lecture);
+    }
+  };
+  
+  // Handler for starting lecture
+  const handleStartLecture = (lecture) => {
+    if (onStartLecture) {
+      onStartLecture(lecture);
     }
   };
   
@@ -253,6 +261,7 @@ const CourseCard = ({
                     onEdit={handleEditLecture}
                     onDelete={handleDeleteLecture}
                     onAttend={isAdmin ? handlePreviewLecture : handleAttendLecture}
+                    onStartLecture={handleStartLecture}
                     onMarkDelivered={handleMarkDelivered}
                     scheduleDate={new Date(lecture.date)}
                     isAdmin={isAdmin}

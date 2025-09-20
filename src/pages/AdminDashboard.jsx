@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useBatch } from "../contexts/BatchContext";
 import { useLecture } from "../contexts/LectureContext";
+import { useAnnouncement } from "../contexts/AnnouncementContext";
 import CourseCard from "../components/CourseCard";
 import LectureForm from "../components/LectureForm";
+import AnnouncementForm from "../components/AnnouncementForm";
+import AdminGlobalAnnouncement from "../components/AdminGlobalAnnouncement";
 import VideoModal from "../components/VideoModal";
 import toast from "react-hot-toast";
 
@@ -11,6 +14,7 @@ const AdminDashboard = () => {
   const { user } = useAuth();
   const { batches, courses, selectedBatch, setSelectedBatch } = useBatch();
   const { addLecture, updateLecture, deleteLecture } = useLecture();
+  const { globalAnnouncements, addGlobalAnnouncement, updateGlobalAnnouncement, deleteGlobalAnnouncement } = useAnnouncement();
   
   // State for lecture form and video modal
   const [lectureForm, setLectureForm] = useState({
@@ -22,6 +26,12 @@ const AdminDashboard = () => {
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
     videoUrl: ""
+  });
+
+  // State for announcement form
+  const [announcementForm, setAnnouncementForm] = useState({
+    isOpen: false,
+    announcement: null
   });
   
   // Handler for editing lecture - now handles both editing and adding lectures
@@ -88,17 +98,49 @@ const AdminDashboard = () => {
     }
   };
   
-  // Handler for marking lecture as delivered
+  // Handler for starting lecture (marking as live/in progress)
+  const handleStartLecture = async (lecture, courseId) => {
+    try {
+      console.log("Starting lecture:", lecture.title, "Course ID:", courseId);
+      console.log("Current lecture state:", lecture);
+      
+      await updateLecture(courseId, lecture.id, {
+        currentlyLive: true,
+        delivered: false // Reset delivered status when starting
+      });
+      
+      console.log("Lecture started successfully");
+      toast.success("Lecture started - now live!");
+    } catch (error) {
+      console.error("Error starting lecture:", error);
+      toast.error("Failed to start lecture");
+    }
+  };
+
+  // Handler for marking lecture as delivered (automatically ends live status)
   const handleMarkDelivered = async (lecture, courseId) => {
     try {
-      await updateLecture(courseId, lecture.id, {
-        delivered: !lecture.delivered // Toggle delivered status
-      });
-      toast.success(lecture.delivered ? "Lecture marked as not delivered" : "Lecture marked as delivered");
+      if (lecture.delivered) {
+        // Toggle back to not delivered
+        await updateLecture(courseId, lecture.id, {
+          delivered: false,
+          currentlyLive: false
+        });
+        toast.success("Lecture marked as not delivered");
+      } else {
+        // Mark as delivered and end live status
+        await updateLecture(courseId, lecture.id, {
+          delivered: true,
+          currentlyLive: false // Always end live status when marking as delivered
+        });
+        toast.success("Lecture delivered successfully!");
+      }
     } catch (error) {
       toast.error("Failed to update lecture status");
     }
   };
+
+
   
   // Handler for opening video preview
   const handleVideoPreview = (lecture) => {
@@ -107,6 +149,61 @@ const AdminDashboard = () => {
         isOpen: true,
         videoUrl: lecture.youtube_url
       });
+    }
+  };
+
+  // Handler for adding global announcement
+  const handleAddAnnouncement = () => {
+    setAnnouncementForm({
+      isOpen: true,
+      announcement: null
+    });
+  };
+
+  // Handler for editing global announcement
+  const handleEditAnnouncement = (announcement) => {
+    setAnnouncementForm({
+      isOpen: true,
+      announcement: announcement
+    });
+  };
+
+  // Handler for deleting global announcement
+  const handleDeleteAnnouncement = async (announcementId) => {
+    if (window.confirm("Are you sure you want to delete this global announcement?")) {
+      try {
+        await deleteGlobalAnnouncement(announcementId);
+        toast.success("Global announcement deleted successfully");
+      } catch (error) {
+        toast.error(`Failed to delete announcement: ${error.message}`);
+      }
+    }
+  };
+
+  // Handler for global announcement submission
+  const handleAnnouncementSubmit = async (data) => {
+    try {
+      if (announcementForm.announcement) {
+        // Update existing announcement
+        await updateGlobalAnnouncement(announcementForm.announcement.id, {
+          title: data.title,
+          content: data.content,
+          author: user.name || "Admin"
+        });
+        toast.success("Global announcement updated successfully");
+      } else {
+        // Add new announcement
+        await addGlobalAnnouncement({
+          title: data.title,
+          content: data.content,
+          author: user.name || "Admin"
+        });
+        toast.success("Global announcement added successfully");
+      }
+      
+      setAnnouncementForm({ isOpen: false, announcement: null });
+    } catch (error) {
+      toast.error(`Failed to save announcement: ${error.message}`);
     }
   };
   
@@ -151,26 +248,43 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main content */}
-      <main className="container mx-auto px-4 py-8">
-        {/* Batch schedule info */}
-        <div className="mb-6 rounded-lg border-l-4 border-[#0d7c66] bg-white p-4 shadow-sm">
-          <h3 className="mb-2 font-medium text-gray-800">Current Batch Schedule</h3>
-          <p className="text-sm text-gray-600">
-            {selectedBatch === "Batch A" 
-              ? "Batch A lectures are scheduled on odd dates (1st, 3rd, 5th...) starting from the 1st of the current month, continuing into future months and years as needed."
-              : "Batch B lectures are scheduled on even dates (16th, 18th, 20th...) starting from the 16th of the current month, continuing into future months and years as needed."}
-          </p>
-          <p className="mt-2 text-sm text-gray-600">
-            <strong>Today's date:</strong> {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
-          <p className="mt-1 text-xs text-gray-500 italic">
-            Note: When adding lectures, the system will automatically assign dates based on the batch schedule.
-          </p>
+      <main className="container mx-auto px-4 py-8">        
+        {/* Global Announcements Section */}
+        <div className="mb-8">
+          <div className="mb-4 flex justify-between items-center">
+            <h2 className="text-xl font-bold text-gray-800">Global Announcements</h2>
+            <button
+              onClick={handleAddAnnouncement}
+              className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            >
+              Add Global Announcement
+            </button>
+          </div>
+          
+          {globalAnnouncements && globalAnnouncements.length > 0 ? (
+            <div className="space-y-4">
+              {globalAnnouncements.map((announcement) => (
+                <AdminGlobalAnnouncement
+                  key={announcement.id}
+                  announcement={announcement}
+                  onEdit={handleEditAnnouncement}
+                  onDelete={handleDeleteAnnouncement}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-lg bg-white p-6 text-center shadow-sm">
+              <p className="text-gray-600">No global announcements yet. Create one to get started!</p>
+            </div>
+          )}
         </div>
-        
-        <h2 className="mb-6 text-xl font-bold text-gray-800">
-          Courses for {selectedBatch}
-        </h2>
+
+        {/* Courses Section */}
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-6">
+            Courses for {selectedBatch}
+          </h2>
+        </div>
 
         {batchCourses.length === 0 ? (
           <div className="rounded-lg bg-white p-8 text-center shadow-sm">
@@ -187,6 +301,7 @@ const AdminDashboard = () => {
               onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
               onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
               onVideoPreview={handleVideoPreview}
+              onStartLecture={(lecture) => handleStartLecture(lecture, course.id)}
               onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
             />
           ))
@@ -200,6 +315,14 @@ const AdminDashboard = () => {
         onSubmit={handleLectureFormSubmit}
         lecture={lectureForm.lecture}
         batch={selectedBatch}
+      />
+
+      {/* Global Announcement Form Modal */}
+      <AnnouncementForm
+        isOpen={announcementForm.isOpen}
+        onClose={() => setAnnouncementForm({ isOpen: false, announcement: null })}
+        onSubmit={handleAnnouncementSubmit}
+        announcement={announcementForm.announcement}
       />
 
       {/* Video Modal */}

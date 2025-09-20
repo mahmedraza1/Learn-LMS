@@ -302,6 +302,106 @@ app.put('/learnlive/lectures/:lectureId', (req, res) => {
   }
 });
 
+// GET global announcements
+app.get('/api/global-announcements', (req, res) => {
+  const lecturesData = readLecturesData();
+  res.json(lecturesData.globalAnnouncements || []);
+});
+
+// POST new global announcement
+app.post('/api/global-announcements', (req, res) => {
+  try {
+    const lecturesData = readLecturesData();
+    const newAnnouncement = req.body;
+    
+    // Initialize globalAnnouncements if it doesn't exist
+    if (!lecturesData.globalAnnouncements) {
+      lecturesData.globalAnnouncements = [];
+    }
+    
+    // Add the new announcement
+    lecturesData.globalAnnouncements.push(newAnnouncement);
+    
+    if (writeLecturesData(lecturesData)) {
+      res.status(201).json(newAnnouncement);
+    } else {
+      res.status(500).json({ message: 'Failed to save announcement' });
+    }
+  } catch (error) {
+    console.error('Error adding global announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// PUT/UPDATE global announcement
+app.put('/api/global-announcements/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedAnnouncement = req.body;
+    const lecturesData = readLecturesData();
+    
+    if (!lecturesData.globalAnnouncements) {
+      return res.status(404).json({ message: 'No global announcements found' });
+    }
+    
+    const announcementIndex = lecturesData.globalAnnouncements.findIndex(
+      announcement => announcement.id === parseInt(id)
+    );
+    
+    if (announcementIndex === -1) {
+      return res.status(404).json({ message: 'Announcement not found' });
+    }
+    
+    // Update the announcement while preserving the original ID and date
+    lecturesData.globalAnnouncements[announcementIndex] = {
+      ...lecturesData.globalAnnouncements[announcementIndex],
+      ...updatedAnnouncement,
+      id: parseInt(id), // Preserve original ID
+      updated_at: new Date().toISOString()
+    };
+    
+    if (writeLecturesData(lecturesData)) {
+      res.json(lecturesData.globalAnnouncements[announcementIndex]);
+    } else {
+      res.status(500).json({ message: 'Failed to update announcement' });
+    }
+  } catch (error) {
+    console.error('Error updating global announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE global announcement
+app.delete('/api/global-announcements/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const lecturesData = readLecturesData();
+    
+    if (!lecturesData.globalAnnouncements) {
+      return res.status(404).json({ message: 'No global announcements found' });
+    }
+    
+    const announcementIndex = lecturesData.globalAnnouncements.findIndex(
+      announcement => announcement.id === parseInt(id)
+    );
+    
+    if (announcementIndex === -1) {
+      return res.status(404).json({ message: 'Announcement not found' });
+    }
+    
+    lecturesData.globalAnnouncements.splice(announcementIndex, 1);
+    
+    if (writeLecturesData(lecturesData)) {
+      res.json({ message: 'Announcement deleted successfully' });
+    } else {
+      res.status(500).json({ message: 'Failed to delete announcement' });
+    }
+  } catch (error) {
+    console.error('Error deleting global announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 

@@ -7,6 +7,7 @@ import App from './App.jsx'
 import { AuthProvider } from './contexts/AuthContext'
 import { BatchProvider } from './contexts/BatchContext'
 import { LectureProvider } from './contexts/LectureContext'
+import { AnnouncementProvider } from './contexts/AnnouncementContext'
 import { Toaster } from 'react-hot-toast'
 
 createRoot(document.getElementById('root')).render(
@@ -14,8 +15,10 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <BatchProvider>
         <LectureProvider>
-          <App />
-          <Toaster position="bottom-right" />
+          <AnnouncementProvider>
+            <App />
+            <Toaster position="bottom-right" />
+          </AnnouncementProvider>
         </LectureProvider>
       </BatchProvider>
     </AuthProvider>

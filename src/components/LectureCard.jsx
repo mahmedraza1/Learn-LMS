@@ -1,6 +1,6 @@
 import React from "react";
 import { useLecture } from "../contexts/LectureContext";
-import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck, FaCalendarAlt, FaClock as FaClockCircle } from "react-icons/fa";
+import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck, FaCalendarAlt, FaClock as FaClockCircle, FaStop } from "react-icons/fa";
 
 const LectureCard = ({ 
   lecture, 
@@ -10,6 +10,7 @@ const LectureCard = ({
   onEdit,
   onDelete,
   onAttend,
+  onStartLecture,
   onMarkDelivered,
   scheduleDate
 }) => {
@@ -102,20 +103,23 @@ const LectureCard = ({
     return null;
   };
 
-  // Determine if this lecture has been delivered
+  // Determine lecture status
   const isDelivered = lecture?.delivered;
+  const isCurrentlyLive = lecture?.currentlyLive;
 
   // Determine if this is today's lecture
   const isTodayLecture = isLectureToday;
   
   // Apply special styling for today's lecture and delivered lectures
   const cardClassName = `relative rounded-lg overflow-hidden shadow ${
-    isTodayLecture 
-      ? isDelivered
-        ? 'bg-white border-2 border-green-400 transform scale-105 z-10 shadow-lg shadow-green-600/30' // Today's delivered lecture
-        : 'bg-white border-2 border-blue-400 transform scale-105 z-10 shadow-lg shadow-blue-600/30' // Today's available but not delivered lecture
-      : isDelivered
-        ? 'bg-white border border-green-200 shadow-sm' // Delivered lecture
+    isCurrentlyLive
+      ? 'bg-white border-2 border-red-500 transform scale-105 z-20 shadow-lg shadow-red-600/40 animate-pulse' // Currently live lecture - red with pulse
+      : isTodayLecture 
+        ? isDelivered
+          ? 'bg-white border-2 border-green-400 transform scale-105 z-10 shadow-lg shadow-green-600/30' // Today's delivered lecture
+          : 'bg-white border-2 border-blue-400 transform scale-105 z-10 shadow-lg shadow-blue-600/30' // Today's available but not delivered lecture
+        : isDelivered
+          ? 'bg-white border border-green-200 shadow-sm' // Delivered lecture
         : 'bg-white border border-amber-200 shadow-sm' // Upcoming lecture
   }`;
 
@@ -236,38 +240,84 @@ const LectureCard = ({
                     <FaTrash className="mr-1" /> Delete
                   </button>
                   {isAdmin && (
-                    <button 
-                      onClick={() => onMarkDelivered && onMarkDelivered(lecture)}
-                      className={`flex items-center rounded-md px-3 py-1.5 text-xs font-medium ${
-                        lecture.delivered 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-amber-50 text-amber-700'
-                      }`}
-                    >
-                      <FaCheck className="mr-1" /> {lecture.delivered ? 'Delivered' : 'Mark Delivered'}
-                    </button>
+                    <>
+                      {/* Debug info */}
+                      {console.log("LectureCard debug:", {
+                        lectureTitle: lecture.title,
+                        isDelivered,
+                        isCurrentlyLive,
+                        delivered: lecture?.delivered,
+                        currentlyLive: lecture?.currentlyLive
+                      })}
+                      
+                      {/* Status indicator */}
+                      {isCurrentlyLive && (
+                        <div className="flex items-center rounded-md px-2 py-1 text-xs font-medium bg-red-100 text-red-800 animate-pulse">
+                          <div className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-ping"></div>
+                          LIVE NOW
+                        </div>
+                      )}
+                      
+                      {/* Lecture control buttons */}
+                      {!isDelivered && !isCurrentlyLive && (
+                        <button 
+                          onClick={() => {
+                            console.log("Start Lecture clicked for:", lecture);
+                            onStartLecture && onStartLecture(lecture);
+                          }}
+                          className="flex items-center rounded-md px-3 py-1.5 text-xs font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
+                        >
+                          <FaPlay className="mr-1" /> Start Lecture
+                        </button>
+                      )}
+                      
+                      {/* Mark Delivered button - show when live or when delivered (to toggle) */}
+                      {(isCurrentlyLive || isDelivered) && (
+                        <button 
+                          onClick={() => onMarkDelivered && onMarkDelivered(lecture)}
+                          className={`flex items-center rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                            isDelivered 
+                              ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                              : 'bg-blue-600 text-white hover:bg-blue-700'
+                          }`}
+                        >
+                          <FaCheck className="mr-1" /> 
+                          {isDelivered ? 'Delivered' : 'Mark Delivered'}
+                        </button>
+                      )}
+                    </>
                   )}
                 </>
               )}
             </div>
           ) : (
             <div className="flex w-full justify-center">
-              <button
-                onClick={() => onAttend(lecture)}
-                disabled={!lecture?.youtube_url || !lecture?.delivered}
-                className={`flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
-                  lecture?.youtube_url && lecture?.delivered
-                    ? 'bg-[#0d7c66] text-white hover:bg-[#0a6a58] shadow-md hover:shadow-lg cursor-pointer'
-                    : 'cursor-not-allowed bg-gray-100 text-gray-400'
-                }`}
-              >
-                <FaPlay className="mr-2 text-sm" style={{ verticalAlign: 'middle' }} />
-                {lecture?.youtube_url && lecture?.delivered 
-                  ? 'Watch Lecture' 
-                  : isTodayLecture 
-                    ? 'Join Soon' 
-                    : 'Upcoming Lecture'}
-              </button>
+              {isCurrentlyLive ? (
+                <button
+                  onClick={() => onAttend(lecture)}
+                  className="flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-all duration-200 bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg cursor-pointer animate-pulse"
+                >
+                  <FaPlay className="mr-2 text-sm animate-bounce" style={{ verticalAlign: 'middle' }} />
+                  Join Live Lecture
+                </button>
+              ) : (
+                <button
+                  onClick={() => onAttend(lecture)}
+                  disabled={!lecture?.youtube_url || !lecture?.delivered}
+                  className={`flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                    lecture?.youtube_url && lecture?.delivered
+                      ? 'bg-[#0d7c66] text-white hover:bg-[#0a6a58] shadow-md hover:shadow-lg cursor-pointer'
+                      : 'cursor-not-allowed bg-gray-100 text-gray-400'
+                  }`}
+                >
+                  <FaPlay className="mr-2 text-sm" style={{ verticalAlign: 'middle' }} />
+                  {lecture?.youtube_url && lecture?.delivered 
+                    ? 'Watch Lecture' 
+                    : isTodayLecture 
+                      ? 'Join Soon' 
+                      : 'Upcoming Lecture'}
+                </button>
+              )}
             </div>
           )}
         </div>
