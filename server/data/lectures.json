@@ -122,6 +122,19 @@
           "delivered": true,
           "id": 1758345059995,
           "currentlyLive": false
+        },
+        {
+          "course_id": 101,
+          "title": "Lofi Girl",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "youtube_id": "jfKfPfyJRdk",
+          "lecture_number": 2,
+          "date": "2025-09-20T12:09:00.000Z",
+          "time": "5:09 PM",
+          "day": "Saturday",
+          "delivered": true,
+          "id": 1758370143589,
+          "currentlyLive": false
         }
       ],
       "109": [
