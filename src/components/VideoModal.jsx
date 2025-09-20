@@ -71,28 +71,30 @@ const VideoModal = ({ isOpen, onClose, videoUrl }) => {
   };
   
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+    <div className="fixed inset-0 z-50 bg-black">
       <div 
-        className="relative h-[90vh] w-[90vw] max-w-7xl overflow-hidden rounded-lg bg-black"
+        className="relative h-screen w-screen overflow-hidden bg-black"
         onContextMenu={handleContextMenu}
       >
         {/* Close button */}
         <button
-          className="absolute right-4 top-4 z-10 rounded-full bg-white/20 p-2 text-white backdrop-blur-sm hover:bg-white/30"
+          className="absolute right-6 top-6 z-20 rounded-full bg-black/60 p-3 text-white backdrop-blur-sm hover:bg-black/80 transition-all duration-200 border-2 border-white/20"
           onClick={onClose}
+          onContextMenu={handleContextMenu}
         >
-          <FaTimes size={24} />
+          <FaTimes size={28} />
         </button>
         
         {/* Video embed */}
         {videoId ? (
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&modestbranding=1&fs=1&cc_load_policy=0&iv_load_policy=3&autohide=0&controls=1`}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&showinfo=0&modestbranding=1&fs=0&cc_load_policy=0&iv_load_policy=3&disablekb=1&loop=0&playlist=${videoId}&start=0&end=0&enablejsapi=0&origin=${window.location.origin}&title=0&byline=0&portrait=0&color=ffffff&autopause=0&muted=0&playsinline=1&dnt=1&widget_referrer=${window.location.origin}`}
             title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="h-full w-full"
+            allow="autoplay; encrypted-media"
+            allowFullScreen={false}
+            className="h-full w-full border-0"
             onContextMenu={handleContextMenu}
+            style={{ pointerEvents: 'auto' }}
           ></iframe>
         ) : (
           <div 
