@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import LectureCard from "./LectureCard";
 import Announcement from "./Announcement";
 import AnnouncementForm from "./AnnouncementForm";
-import { useLecture } from "../contexts/LectureContext";
-import { useAuth } from "../contexts/AuthContext";
+import { useLecture, useAuth } from "../hooks/reduxHooks";
+import { useAppSelector } from "../store/hooks";
+import { selectLectures, selectAnnouncements } from "../store/slices/lectureSlice";
 import { FaAngleDown, FaAngleUp, FaPlus } from "react-icons/fa";
 
 const CourseCard = ({ 
@@ -19,7 +20,7 @@ const CourseCard = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
-  const { calculateLectureDates, getLecturesForCourse, getAnnouncementsForCourse, addAnnouncement, updateAnnouncement, deleteAnnouncement, hasTodayLecture } = useLecture();
+  const { calculateLectureDates, addAnnouncement, updateAnnouncement, deleteAnnouncement, hasTodayLecture } = useLecture();
   const { isAdmin: authIsAdmin } = useAuth();
   
   // Set state variables for pagination
@@ -29,17 +30,30 @@ const CourseCard = ({
   // Define initial limit constant
   const INITIAL_LIMIT = 10;
   
-  // Get lectures for this course
-  const lectures = getLecturesForCourse(course.id);
+  // Direct Redux selectors for real-time updates
+  const allLectures = useAppSelector(selectLectures);
+  const allAnnouncements = useAppSelector(selectAnnouncements);
   
-  // Get announcements for this course
-  const announcements = getAnnouncementsForCourse(course.id);
+  // Get lectures for this course (reactive to Redux changes)
+  const lectures = useMemo(() => {
+    const courseIdString = String(course.id);
+    return allLectures[courseIdString] || [];
+  }, [allLectures, course.id]);
+  
+  // Get announcements for this course (reactive to Redux changes)
+  const announcements = useMemo(() => {
+    const courseIdString = String(course.id);
+    const courseAnnouncements = allAnnouncements[courseIdString] || [];
+    return [...courseAnnouncements].sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+  }, [allAnnouncements, course.id]);
   
   // Calculate lecture dates for this course's batch
   const lectureDates = calculateLectureDates(course.batch);
   
-  // Filter lectures for current month
-  const filterLecturesForCurrentMonth = () => {
+  // Memoize current month lectures to prevent infinite re-renders
+  const currentMonthLectures = useMemo(() => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
     const currentYear = currentDate.getFullYear();
@@ -50,14 +64,11 @@ const CourseCard = ({
              lectureDate.getMonth() === currentMonth && 
              lectureDate.getFullYear() === currentYear;
     });
-  };
+  }, [lectures]);
   
   // Update displayed lectures based on current filter state
   useEffect(() => {
     if (isExpanded) {
-      // Filter lectures by current month
-      const currentMonthLectures = filterLecturesForCurrentMonth();
-      
       // If we have lectures for current month, show those first
       // Otherwise, show the first INITIAL_LIMIT lectures
       if (currentMonthLectures.length > 0) {
@@ -66,7 +77,7 @@ const CourseCard = ({
         setDisplayedLectures(lectures.slice(0, displayLimit));
       }
     }
-  }, [isExpanded, lectures, displayLimit]);
+  }, [isExpanded, lectures, displayLimit, currentMonthLectures]);
   
   // Toggle expand/collapse
   const toggleExpand = () => setIsExpanded(!isExpanded);
@@ -132,9 +143,6 @@ const CourseCard = ({
   
   // Check if this course should have a lecture today according to the rules
   const shouldHaveLectureToday = hasTodayLecture(course.id);
-  
-  // More detailed debug information to help diagnose the issue
-  console.log(`COURSE CARD: ${course.title} (${course.id}) in ${course.batch}, shouldHaveLecture: ${shouldHaveLectureToday}`);
   
   // Don't auto-expand any courses as per the requirement
 

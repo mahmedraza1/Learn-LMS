@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { useBatch } from "../contexts/BatchContext";
-import { useLecture } from "../contexts/LectureContext";
-import { useAnnouncement } from "../contexts/AnnouncementContext";
+import { useAuth, useBatch, useLecture, useAnnouncement } from "../hooks/reduxHooks";
 import CourseCard from "../components/CourseCard";
 import GlobalAnnouncement from "../components/GlobalAnnouncement";
 import VideoModal from "../components/VideoModal";

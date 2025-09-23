@@ -33,17 +33,47 @@ import './App.css'
 // }
 
 // export default App
-import React from "react";
-import { useAuth } from "./contexts/AuthContext";
-import { useBatch } from "./contexts/BatchContext";
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { fetchUserData, selectUser, selectIsAdmin, selectIsStudent, selectIsGuest, selectAuthLoading } from "./store/slices/authSlice";
+import { initializeBatchData, selectSelectedBatch } from "./store/slices/batchSlice";
+import { fetchLecturesForBatch, fetchAnnouncementsForBatch } from "./store/slices/lectureSlice";
+import { fetchGlobalAnnouncements } from "./store/slices/announcementSlice";
 import GuestView from "./pages/GuestView";
 import StudentPendingView from "./pages/StudentPendingView";
 import StudentDashboard from "./pages/StudentDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-  const { user, isAdmin, isStudent, isGuest, loading } = useAuth();
-  const { selectedBatch } = useBatch();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const isAdmin = useAppSelector(selectIsAdmin);
+  const isStudent = useAppSelector(selectIsStudent);
+  const isGuest = useAppSelector(selectIsGuest);
+  const loading = useAppSelector(selectAuthLoading);
+  const selectedBatch = useAppSelector(selectSelectedBatch);
+
+  useEffect(() => {
+    // Fetch user data on app initialization
+    dispatch(fetchUserData());
+    // Fetch global announcements
+    dispatch(fetchGlobalAnnouncements());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Initialize batch data when user is loaded
+    if (user) {
+      dispatch(initializeBatchData({ user, isAdmin }));
+    }
+  }, [user, isAdmin, dispatch]);
+
+  useEffect(() => {
+    // Fetch lectures and announcements when batch is selected
+    if (selectedBatch) {
+      dispatch(fetchLecturesForBatch(selectedBatch));
+      dispatch(fetchAnnouncementsForBatch(selectedBatch));
+    }
+  }, [selectedBatch, dispatch]);
 
   if (loading) {
     return (

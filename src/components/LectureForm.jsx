@@ -10,19 +10,6 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
   // State to store the selected date's day for validation
   const [selectedDay, setSelectedDay] = useState("");
   
-  // Log lecture data for debugging
-  React.useEffect(() => {
-    if (lecture) {
-      console.log("Lecture data for form:", { 
-        id: lecture.id,
-        title: lecture.title, 
-        date: lecture.date, 
-        time: lecture.time,
-        youtube_url: lecture.youtube_url 
-      });
-    }
-  }, [lecture]);
-  
   const {
     register,
     handleSubmit,
@@ -44,8 +31,6 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
   // When lecture prop changes, reset form with new values
   React.useEffect(() => {
     if (lecture) {
-      console.log('Setting form values with lecture data:', lecture);
-      
       // Reset the form with new values when lecture changes
       reset({
         lectureName: lecture.title || "",
@@ -184,8 +169,6 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       id: lecture?.id,
       delivered: lecture?.delivered
     };
-    
-    console.log("Submitting lecture data:", formattedData);
     
     await onSubmit(formattedData);
     reset();

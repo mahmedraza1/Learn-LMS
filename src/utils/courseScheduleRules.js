@@ -3,20 +3,16 @@
  * This file serves as a single source of truth for course scheduling rules
  */
 
-// Courses for Batch A on odd dates
-export const ODD_DATE_BATCH_A_COURSES = [
+// All 15 courses in order
+export const ALL_COURSES = [
   "Video Editing",
-  "Digital Marketing", // Normalized casing for compatibility
+  "Digital Marketing",
   "WordPress",
   "Search Engine Optimization",
   "Affiliate Marketing",
   "Amazon Virtual Assistant",
   "Graphics Designing",
-  "Content Writing"
-];
-
-// Courses for Batch B on odd dates
-export const ODD_DATE_BATCH_B_COURSES = [
+  "Content Writing",
   "Artificial Intelligence Prompt",
   "Full Stack Web Development",
   "Freelancing",
@@ -25,6 +21,12 @@ export const ODD_DATE_BATCH_B_COURSES = [
   "MS Office and Digital Literacy",
   "English Language and Communication"
 ];
+
+// First 8 courses (for Batch A on odd dates, Batch B on even dates)
+export const FIRST_8_COURSES = ALL_COURSES.slice(0, 8);
+
+// Last 7 courses (for Batch B on odd dates, Batch A on even dates)
+export const LAST_7_COURSES = ALL_COURSES.slice(8);
 
 /**
  * Get courses that should have lectures on a specific date for each batch
@@ -35,11 +37,11 @@ export const getCoursesForDate = (date = new Date()) => {
   // Determine if the date is odd or even
   const isOddDate = date.getDate() % 2 === 1;
   
-  // For odd dates: Batch A gets oddDateBatchA, Batch B gets oddDateBatchB
-  // For even dates: Batch A gets oddDateBatchB, Batch B gets oddDateBatchA
+  // Odd dates: Batch A gets first 8 courses, Batch B gets last 7 courses
+  // Even dates: Batch A gets last 7 courses, Batch B gets first 8 courses
   return {
-    "Batch A": isOddDate ? ODD_DATE_BATCH_A_COURSES : ODD_DATE_BATCH_B_COURSES,
-    "Batch B": isOddDate ? ODD_DATE_BATCH_B_COURSES : ODD_DATE_BATCH_A_COURSES
+    "Batch A": isOddDate ? FIRST_8_COURSES : LAST_7_COURSES,
+    "Batch B": isOddDate ? LAST_7_COURSES : FIRST_8_COURSES
   };
 };
 

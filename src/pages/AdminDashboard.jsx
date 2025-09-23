@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { useBatch } from "../contexts/BatchContext";
-import { useLecture } from "../contexts/LectureContext";
-import { useAnnouncement } from "../contexts/AnnouncementContext";
+import { useAuth, useBatch, useLecture, useAnnouncement } from "../hooks/reduxHooks";
 import CourseCard from "../components/CourseCard";
 import LectureForm from "../components/LectureForm";
 import AnnouncementForm from "../components/AnnouncementForm";
@@ -13,7 +10,7 @@ import toast from "react-hot-toast";
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { batches, courses, selectedBatch, setSelectedBatch } = useBatch();
-  const { addLecture, updateLecture, deleteLecture } = useLecture();
+  const { addLecture, updateLecture, deleteLecture, getLecturesForCourse } = useLecture();
   const { globalAnnouncements, addGlobalAnnouncement, updateGlobalAnnouncement, deleteGlobalAnnouncement } = useAnnouncement();
   
   // State for lecture form and video modal
@@ -57,7 +54,7 @@ const AdminDashboard = () => {
   const handleDeleteLecture = async (lecture, courseId) => {
     if (window.confirm("Are you sure you want to delete this lecture?")) {
       try {
-        await deleteLecture(courseId, lecture.id);
+        await deleteLecture(lecture.id, courseId);
         toast.success("Lecture deleted successfully");
       } catch (error) {
         toast.error("Failed to delete lecture");
@@ -70,16 +67,13 @@ const AdminDashboard = () => {
     try {
       const { courseId, lecture } = lectureForm;
       
-      console.log("Lecture form submitted with data:", data);
-      console.log("Original lecture data:", lecture);
-      
       if (lecture && lecture.id && lecture.youtube_url) {
         // Update existing lecture
         await updateLecture(courseId, lecture.id, {
-          lectureName: data.lectureName,
-          lectureDate: data.lectureDate,
-          lectureTime: data.lectureTime,
-          youtubeUrl: data.youtubeUrl,
+          title: data.lectureName,
+          date: data.lectureDate,
+          time: data.lectureTime,
+          youtube_url: data.youtubeUrl,
           delivered: lecture.delivered // preserve delivered status
         });
         toast.success("Lecture updated successfully");
@@ -91,6 +85,7 @@ const AdminDashboard = () => {
           lectureTime: data.lectureTime,
           youtubeUrl: data.youtubeUrl
         });
+        
         toast.success("Lecture added successfully");
       }
     } catch (error) {
@@ -101,15 +96,11 @@ const AdminDashboard = () => {
   // Handler for starting lecture (marking as live/in progress)
   const handleStartLecture = async (lecture, courseId) => {
     try {
-      console.log("Starting lecture:", lecture.title, "Course ID:", courseId);
-      console.log("Current lecture state:", lecture);
-      
       await updateLecture(courseId, lecture.id, {
         currentlyLive: true,
         delivered: false // Reset delivered status when starting
       });
       
-      console.log("Lecture started successfully");
       toast.success("Lecture started - now live!");
     } catch (error) {
       console.error("Error starting lecture:", error);
@@ -135,6 +126,7 @@ const AdminDashboard = () => {
         });
         toast.success("Lecture delivered successfully!");
       }
+      
     } catch (error) {
       toast.error("Failed to update lecture status");
     }

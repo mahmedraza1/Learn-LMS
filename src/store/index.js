@@ -1,0 +1,24 @@
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice';
+import batchReducer from './slices/batchSlice';
+import lectureReducer from './slices/lectureSlice';
+import announcementReducer from './slices/announcementSlice';
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    batch: batchReducer,
+    lecture: lectureReducer,
+    announcement: announcementReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      },
+    }),
+});
+
+// Export store instance for use in components
+export default store;

@@ -1,6 +1,10 @@
-# Learn Live - Lecture Management System
+# Learn LMS
 
-A React-based lecture management system that integrates with a WordPress backend API for user authentication and provides a dedicated Express backend for lecture data storage.
+A comprehensive Learning Management System built with React and Node.js.
+
+## Overview
+
+Learn LMS is a modern, feature-rich learning management system designed to facilitate online education and course delivery. The platform provides tools for instructors to manage courses, lectures, and announcements, while offering students an intuitive interface to access learning materials.
 
 ## Features
 
@@ -34,8 +38,8 @@ A React-based lecture management system that integrates with a WordPress backend
 
 1. Clone the repository:
    ```
-   git clone https://github.com/mahmedraza1/Learn-Live.git
-   cd Learn-Live
+   git clone https://github.com/mahmedraza1/Learn-LMS.git
+   cd Learn-LMS
    ```
 
 2. Install all dependencies (frontend and backend):

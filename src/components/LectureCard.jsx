@@ -1,5 +1,5 @@
 import React from "react";
-import { useLecture } from "../contexts/LectureContext";
+import { useLecture } from "../hooks/reduxHooks";
 import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck, FaCalendarAlt, FaClock as FaClockCircle, FaStop } from "react-icons/fa";
 
 const LectureCard = ({ 
@@ -241,15 +241,6 @@ const LectureCard = ({
                   </button>
                   {isAdmin && (
                     <>
-                      {/* Debug info */}
-                      {console.log("LectureCard debug:", {
-                        lectureTitle: lecture.title,
-                        isDelivered,
-                        isCurrentlyLive,
-                        delivered: lecture?.delivered,
-                        currentlyLive: lecture?.currentlyLive
-                      })}
-                      
                       {/* Status indicator */}
                       {isCurrentlyLive && (
                         <div className="flex items-center rounded-md px-2 py-1 text-xs font-medium bg-red-100 text-red-800 animate-pulse">

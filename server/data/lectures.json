@@ -2,11 +2,18 @@
   "globalAnnouncements": [
     {
       "title": "",
-      "content": "<h1 style=\"text-align: center;\">Test Annoucement</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+      "content": "<h1 style=\"text-align: center;\">Test Annoucement 00</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
       "author": "Mark",
       "date": "2025-09-20T04:54:06.253Z",
       "id": 1758344046253,
-      "updated_at": "2025-09-20T05:02:33.448Z"
+      "updated_at": "2025-09-23T06:42:14.565Z"
+    },
+    {
+      "title": "",
+      "content": "<h1 style=\"text-align: center;\">Test Annoucement 02</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+      "author": "Mark",
+      "date": "2025-09-23T03:47:02.908Z",
+      "id": 1758599222908
     }
   ],
   "Batch A": {
@@ -67,13 +74,11 @@
     "announcements": {
       "1": [
         {
-          "course_id": 1,
           "title": "",
-          "content": "<h1>Announcement 01</h1>\n<p>This is an announcement regarding you class.</p>\n<p><strong>Following rules must be followed:</strong></p>\n<ul>\n<li>Don't Misbehave with teachers.</li>\n<li>Ask Question in relevent Facebook Group.</li>\n</ul>\n<table style=\"border-collapse: collapse; width: 100%; height: 43.375px;\" border=\"1\"><colgroup><col style=\"width: 49.9072%;\"><col style=\"width: 49.9072%;\"></colgroup>\n<tbody>\n<tr style=\"height: 33.375px;\">\n<td style=\"text-align: center;\"><strong>Course Name</strong></td>\n<td style=\"text-align: center;\"><strong>Lecture</strong></td>\n</tr>\n<tr style=\"height: 10px;\">\n<td style=\"text-align: center;\">Video Editing</td>\n<td style=\"text-align: center;\">Lecture 01</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>",
-          "date": "2025-09-15T05:13:59.776Z",
-          "author": "Mark",
-          "id": 1757913239826,
-          "updated_at": "2025-09-15T05:14:43.736Z"
+          "content": "<h1>Announcement 00</h1>\n<p>This is an announcement regarding you class.</p>\n<p><strong>Following rules must be followed:</strong></p>\n<ul>\n<li>Don't Misbehave with teachers.</li>\n<li>Ask Question in relevent Facebook Group.</li>\n</ul>\n<table style=\"border-collapse: collapse; width: 100%; height: 43.375px;\" border=\"1\"><colgroup><col style=\"width: 49.9072%;\"><col style=\"width: 49.9072%;\"></colgroup>\n<tbody>\n<tr style=\"height: 33.375px;\">\n<td style=\"text-align: center;\"><strong>Course Name</strong></td>\n<td style=\"text-align: center;\"><strong>Lecture</strong></td>\n</tr>\n<tr style=\"height: 10px;\">\n<td style=\"text-align: center;\">Video Editing</td>\n<td style=\"text-align: center;\">Lecture 01</td>\n</tr>\n</tbody>\n</table>\n<p>&nbsp;</p>",
+          "id": 1758609978036,
+          "date": "2025-09-23T06:46:18.036Z",
+          "courseId": 1
         }
       ],
       "2": [],
@@ -149,6 +154,34 @@
           "day": "Sunday",
           "delivered": true,
           "id": 1757843428697
+        },
+        {
+          "title": "Mark Maverick",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-09-23",
+          "time": "11:17",
+          "day": "Tuesday",
+          "course_id": 109,
+          "batch": "Batch B",
+          "delivered": true,
+          "currentlyLive": false,
+          "id": 1758608284290
+        },
+        {
+          "title": "Mark Dude",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-09-26",
+          "time": "11:24",
+          "day": "Friday",
+          "course_id": 109,
+          "batch": "Batch B",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1758608644251,
+          "lectureName": "Mark Dude",
+          "lectureDate": "2025-09-26",
+          "lectureTime": "11:24",
+          "youtubeUrl": "https://youtu.be/jfKfPfyJRdk"
         }
       ]
     },
@@ -203,8 +236,65 @@
           "date": "2025-09-14T18:30:00.000Z",
           "author": "Mark",
           "id": 1757870000000
+        },
+        {
+          "title": "Announcement",
+          "content": "<h1>Guest Speaker Next Week 01</h1>\n<p>We're excited to announce that next week's lecture will feature a special guest speaker from the industry.</p>\n<p>Our guest will be discussing real-world applications of the concepts we've been learning in class.</p>\n<blockquote>Don't miss this valuable opportunity to gain insights from an industry expert!</blockquote>",
+          "id": 1758600207490,
+          "date": "2025-09-23T04:03:27.490Z",
+          "courseId": 109
+        },
+        {
+          "title": "",
+          "content": "<h1>Mark Maverick</h1>\n<p>This is test announcement.</p>",
+          "id": 1758609767672,
+          "date": "2025-09-23T06:42:47.672Z",
+          "courseId": 109
         }
       ]
     }
+  },
+  "undefined": {
+    "lectures": {
+      "undefined": [
+        {
+          "id": 1758600236204,
+          "date": "2025-09-23",
+          "day": "Tuesday",
+          "courseId": null
+        },
+        {
+          "id": 1758601280390,
+          "date": "2025-09-23",
+          "day": "Tuesday",
+          "courseId": null
+        },
+        {
+          "id": 1758607685522,
+          "date": "2025-09-23",
+          "day": "Tuesday",
+          "courseId": null
+        },
+        {
+          "id": 1758607767710,
+          "date": "2025-09-23",
+          "day": "Tuesday",
+          "courseId": null
+        },
+        {
+          "id": 1758607942371,
+          "date": "2025-09-23",
+          "day": "Tuesday",
+          "courseId": null
+        },
+        {
+          "id": 1758608116295,
+          "date": "2025-09-23",
+          "day": "Tuesday",
+          "courseId": null
+        }
+      ]
+    },
+    "announcements": {}
   }
 }

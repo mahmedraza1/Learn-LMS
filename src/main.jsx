@@ -4,23 +4,15 @@ import './index.css'
 import './App.css' // Ensure App.css is imported here as well
 import React from 'react'
 import App from './App.jsx'
-import { AuthProvider } from './contexts/AuthContext'
-import { BatchProvider } from './contexts/BatchContext'
-import { LectureProvider } from './contexts/LectureContext'
-import { AnnouncementProvider } from './contexts/AnnouncementContext'
+import { Provider } from 'react-redux'
+import { store } from './store'
 import { Toaster } from 'react-hot-toast'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <BatchProvider>
-        <LectureProvider>
-          <AnnouncementProvider>
-            <App />
-            <Toaster position="bottom-right" />
-          </AnnouncementProvider>
-        </LectureProvider>
-      </BatchProvider>
-    </AuthProvider>
+    <Provider store={store}>
+      <App />
+      <Toaster position="bottom-right" />
+    </Provider>
   </StrictMode>,
 )

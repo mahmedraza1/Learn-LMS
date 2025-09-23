@@ -1,7 +1,7 @@
 {
-  "name": "learnlive-server",
+  "name": "learn-lms-server",
   "version": "1.0.0",
-  "description": "Simple backend API for the Learn Live app",
+  "description": "Learn LMS Server - Backend API for the learning management system",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
