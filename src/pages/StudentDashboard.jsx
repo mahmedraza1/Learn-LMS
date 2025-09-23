@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { useAuth, useBatch, useLecture, useAnnouncement } from "../hooks/reduxHooks";
+import { useAuth, useBatch, useLecture } from "../hooks/reduxHooks";
 import CourseCard from "../components/CourseCard";
-import GlobalAnnouncement from "../components/GlobalAnnouncement";
 import VideoModal from "../components/VideoModal";
 
 const StudentDashboard = () => {
   const { user } = useAuth();
   const { courses, selectedBatch, loading } = useBatch();
-  const { globalAnnouncements } = useAnnouncement();
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
     videoUrl: ""
@@ -73,21 +71,6 @@ const StudentDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">
-        {/* Global Announcements */}
-        {globalAnnouncements.length > 0 && (
-          <div className="mb-8">
-            <h2 className="mb-4 text-xl font-bold text-gray-800">Announcements</h2>
-            <div className="space-y-4">
-              {globalAnnouncements.map((announcement) => (
-                <GlobalAnnouncement
-                  key={announcement.id}
-                  announcement={announcement}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        
         <h2 className="mb-6 text-xl font-bold text-gray-800">My Courses</h2>
 
         {batchCourses.length === 0 ? (

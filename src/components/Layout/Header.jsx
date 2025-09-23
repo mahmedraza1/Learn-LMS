@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { 
+  MdArrowBack, 
+  MdSearch, 
+  MdNotifications, 
+  MdSettings 
+} from 'react-icons/md';
 import { useAppSelector } from '../../store/hooks';
 import { selectUser } from '../../store/slices/authSlice';
+import { selectGlobalAnnouncements } from '../../store/slices/announcementSlice';
+import NotificationPopup from '../NotificationPopup';
+import FastAnnouncementModal from '../FastAnnouncementModal';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector(selectUser);
+  const globalAnnouncements = useAppSelector(selectGlobalAnnouncements);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const notificationButtonRef = useRef(null);
+
+  // Count unread notifications (for demo, we'll consider all as unread)
+  const unreadCount = globalAnnouncements ? globalAnnouncements.length : 0;
+
+  // Handle announcement click from notification popup
+  const handleAnnouncementClick = (announcement) => {
+    setSelectedAnnouncement(announcement);
+    setShowAnnouncementModal(true);
+    setShowNotifications(false); // Close notifications popup
+  };
+
+  // Close announcement modal
+  const closeAnnouncementModal = () => {
+    setShowAnnouncementModal(false);
+    setSelectedAnnouncement(null);
+  };
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -49,9 +79,7 @@ const Header = () => {
             onClick={() => navigate(-1)}
             className="text-gray-500 hover:text-gray-700 transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <MdArrowBack className="w-5 h-5" />
           </button>
           <div>
             <h1 className="text-xl font-semibold text-gray-900">{getPageTitle()}</h1>
@@ -63,9 +91,7 @@ const Header = () => {
         <div className="flex-1 max-w-md mx-8">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+              <MdSearch className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="text"
@@ -78,18 +104,31 @@ const Header = () => {
         {/* Right side - User info */}
         <div className="flex items-center space-x-4">
           {/* Notifications */}
-          <button className="text-gray-500 hover:text-gray-700 transition-colors relative">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 19H6.334A2.334 2.334 0 014 16.666V4.334A2.334 2.334 0 016.334 2h7.332A2.334 2.334 0 0116 4.334v7.332" />
-            </svg>
-          </button>
+          <div className="relative">
+            <button 
+              ref={notificationButtonRef}
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="text-gray-500 hover:text-gray-700 transition-colors relative p-2 rounded-lg hover:bg-gray-100"
+            >
+              <MdNotifications className="w-6 h-6" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
+            
+            <NotificationPopup 
+              isOpen={showNotifications}
+              onClose={() => setShowNotifications(false)}
+              onAnnouncementClick={handleAnnouncementClick}
+              triggerRef={notificationButtonRef}
+            />
+          </div>
 
           {/* Settings */}
           <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+            <MdSettings className="w-6 h-6" />
           </button>
 
           {/* User profile */}
@@ -106,6 +145,13 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+      {/* Announcement Modal - Rendered at Header level */}
+      <FastAnnouncementModal 
+        isOpen={showAnnouncementModal}
+        onClose={closeAnnouncementModal}
+        announcement={selectedAnnouncement}
+      />
     </header>
   );
 };

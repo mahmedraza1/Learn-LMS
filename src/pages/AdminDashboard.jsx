@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { useAuth, useBatch, useLecture, useAnnouncement } from "../hooks/reduxHooks";
+import { useAuth, useBatch, useLecture } from "../hooks/reduxHooks";
+import { useAppDispatch } from "../store/hooks";
+import { addGlobalAnnouncement, updateGlobalAnnouncement } from "../store/slices/announcementSlice";
 import CourseCard from "../components/CourseCard";
 import LectureForm from "../components/LectureForm";
 import AnnouncementForm from "../components/AnnouncementForm";
-import AdminGlobalAnnouncement from "../components/AdminGlobalAnnouncement";
 import VideoModal from "../components/VideoModal";
 import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
+  const dispatch = useAppDispatch();
   const { user } = useAuth();
   const { batches, courses, selectedBatch, setSelectedBatch } = useBatch();
   const { addLecture, updateLecture, deleteLecture, getLecturesForCourse } = useLecture();
-  const { globalAnnouncements, addGlobalAnnouncement, updateGlobalAnnouncement, deleteGlobalAnnouncement } = useAnnouncement();
   
   // State for lecture form and video modal
   const [lectureForm, setLectureForm] = useState({
@@ -144,53 +145,20 @@ const AdminDashboard = () => {
     }
   };
 
-  // Handler for adding global announcement
-  const handleAddAnnouncement = () => {
-    setAnnouncementForm({
-      isOpen: true,
-      announcement: null
-    });
-  };
-
-  // Handler for editing global announcement
-  const handleEditAnnouncement = (announcement) => {
-    setAnnouncementForm({
-      isOpen: true,
-      announcement: announcement
-    });
-  };
-
-  // Handler for deleting global announcement
-  const handleDeleteAnnouncement = async (announcementId) => {
-    if (window.confirm("Are you sure you want to delete this global announcement?")) {
-      try {
-        await deleteGlobalAnnouncement(announcementId);
-        toast.success("Global announcement deleted successfully");
-      } catch (error) {
-        toast.error(`Failed to delete announcement: ${error.message}`);
-      }
-    }
-  };
-
-  // Handler for global announcement submission
+  // Handler for global announcement form submission
   const handleAnnouncementSubmit = async (data) => {
     try {
       if (announcementForm.announcement) {
-        // Update existing announcement
-        await updateGlobalAnnouncement(announcementForm.announcement.id, {
-          title: data.title,
-          content: data.content,
-          author: user.name || "Admin"
-        });
-        toast.success("Global announcement updated successfully");
+        // Edit existing announcement
+        await dispatch(updateGlobalAnnouncement({
+          id: announcementForm.announcement.id,
+          data
+        })).unwrap();
+        toast.success("Announcement updated successfully");
       } else {
         // Add new announcement
-        await addGlobalAnnouncement({
-          title: data.title,
-          content: data.content,
-          author: user.name || "Admin"
-        });
-        toast.success("Global announcement added successfully");
+        await dispatch(addGlobalAnnouncement(data)).unwrap();
+        toast.success("Announcement added successfully");
       }
       
       setAnnouncementForm({ isOpen: false, announcement: null });
@@ -241,36 +209,6 @@ const AdminDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">        
-        {/* Global Announcements Section */}
-        <div className="mb-8">
-          <div className="mb-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-800">Global Announcements</h2>
-            <button
-              onClick={handleAddAnnouncement}
-              className="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            >
-              Add Global Announcement
-            </button>
-          </div>
-          
-          {globalAnnouncements && globalAnnouncements.length > 0 ? (
-            <div className="space-y-4">
-              {globalAnnouncements.map((announcement) => (
-                <AdminGlobalAnnouncement
-                  key={announcement.id}
-                  announcement={announcement}
-                  onEdit={handleEditAnnouncement}
-                  onDelete={handleDeleteAnnouncement}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-lg bg-white p-6 text-center shadow-sm">
-              <p className="text-gray-600">No global announcements yet. Create one to get started!</p>
-            </div>
-          )}
-        </div>
-
         {/* Courses Section */}
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">
