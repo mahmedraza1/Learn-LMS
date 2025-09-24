@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 // Path to data files
 const dataFilePath = path.join(__dirname, 'data', 'lectures.json');
 const coursesFilePath = path.join(__dirname, 'data', 'courses.json');
+const miscFilePath = path.join(__dirname, 'data', 'miscellaneous.json');
 
 // Helper function to read the lectures data
 const readLecturesData = () => {
@@ -65,6 +66,39 @@ const writeCoursesData = (data) => {
     return true;
   } catch (err) {
     console.error('Error writing courses data:', err);
+    return false;
+  }
+};
+
+// Helper function to read the miscellaneous data
+const readMiscData = () => {
+  try {
+    const data = fs.readFileSync(miscFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading miscellaneous data:', err);
+    return { 
+      dashboardVideo: {
+        title: "Welcome to Learn-Live Platform",
+        description: "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
+        videoUrl: "https://youtu.be/jfKfPfyJRdk",
+        videoType: "youtube",
+        isActive: true,
+        updatedAt: new Date().toISOString(),
+        updatedBy: "System"
+      }
+    };
+  }
+};
+
+// Helper function to write the miscellaneous data
+const writeMiscData = (data) => {
+  try {
+    fs.writeFileSync(miscFilePath, JSON.stringify(data, null, 2), 'utf8');
+    console.log('Miscellaneous data written successfully');
+    return true;
+  } catch (err) {
+    console.error('Error writing miscellaneous data:', err);
     return false;
   }
 };
@@ -628,6 +662,87 @@ app.delete('/api/courses/:id', (req, res) => {
     }
   } catch (error) {
     console.error('Error deleting course:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET dashboard videos
+app.get('/api/dashboard-videos', (req, res) => {
+  try {
+    const miscData = readMiscData();
+    res.json(miscData.dashboardVideo);
+  } catch (error) {
+    console.error('Error getting dashboard videos:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// UPDATE dashboard video (admin only)
+app.put('/api/dashboard-videos', (req, res) => {
+  try {
+    const { title, description, videoUrl, videoType, isActive, updatedBy } = req.body;
+    
+    const miscData = readMiscData();
+    
+    // Update the video configuration
+    miscData.dashboardVideo = {
+      title,
+      description,
+      videoUrl,
+      videoType, // 'youtube', 'embed', or 'direct'
+      isActive,
+      updatedAt: new Date().toISOString(),
+      updatedBy
+    };
+    
+    if (writeMiscData(miscData)) {
+      res.json(miscData.dashboardVideo);
+    } else {
+      res.status(500).json({ message: 'Failed to update video configuration' });
+    }
+  } catch (error) {
+    console.error('Error updating dashboard video:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET dashboard statistics
+app.get('/api/dashboard-stats', (req, res) => {
+  try {
+    const lecturesData = readLecturesData();
+    const coursesData = readCoursesData();
+    
+    // Count total courses
+    const totalCourses = coursesData.courses.length;
+    
+    // Count currently live classes across all batches
+    let liveClassesCount = 0;
+    
+    // Iterate through all batches
+    Object.keys(lecturesData).forEach(batchKey => {
+      if (batchKey !== 'globalAnnouncements' && batchKey !== 'liveClassAnnouncement' && lecturesData[batchKey].lectures) {
+        const batchLectures = lecturesData[batchKey].lectures;
+        
+        // Iterate through courses in batch
+        Object.keys(batchLectures).forEach(courseId => {
+          const courseLectures = batchLectures[courseId];
+          if (Array.isArray(courseLectures)) {
+            // Count lectures that are currently live
+            liveClassesCount += courseLectures.filter(lecture => lecture.currentlyLive === true).length;
+          }
+        });
+      }
+    });
+    
+    res.json({
+      totalCourses,
+      liveClassesCount,
+      totalBatches: Object.keys(lecturesData).filter(key => 
+        key !== 'globalAnnouncements' && key !== 'liveClassAnnouncement'
+      ).length
+    });
+  } catch (error) {
+    console.error('Error getting dashboard statistics:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

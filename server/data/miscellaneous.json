@@ -1,0 +1,11 @@
+{
+  "dashboardVideo": {
+    "title": "Welcome to Learn-Live Platform",
+    "description": "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
+    "videoUrl": "https://youtu.be/jfKfPfyJRdk",
+    "videoType": "youtube",
+    "isActive": true,
+    "updatedAt": "2025-09-24T16:34:00.749Z",
+    "updatedBy": "Mark"
+  }
+}
