@@ -1,0 +1,65 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "Complete Web Development Bootcamp",
+      "thumbnail": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400",
+      "description": "Learn full-stack web development from scratch with HTML, CSS, JavaScript, React, Node.js and more.",
+      "enrolledStudents": 245,
+      "duration": "12 weeks",
+      "level": "Beginner to Advanced",
+      "instructor": "John Smith",
+      "rating": 4.8,
+      "totalRatings": 156,
+      "tags": [
+        "Web Development",
+        "JavaScript",
+        "React",
+        "Node.js"
+      ],
+      "createdAt": "2025-09-01T10:00:00.000Z",
+      "updatedAt": "2025-09-20T15:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Full Stack Digital Marketing",
+      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
+      "description": "Master digital marketing strategies including SEO, social media marketing, PPC, and analytics.",
+      "enrolledStudents": 189,
+      "duration": "8 weeks",
+      "level": "Intermediate",
+      "instructor": "Sarah Johnson",
+      "rating": 4.6,
+      "totalRatings": 98,
+      "tags": [
+        "Marketing",
+        "SEO",
+        "Social Media",
+        "Analytics"
+      ],
+      "createdAt": "2025-08-15T14:20:00.000Z",
+      "updatedAt": "2025-09-24T14:48:55.451Z",
+      "price": "$199"
+    },
+    {
+      "id": 3,
+      "name": "UI/UX Design Fundamentals",
+      "thumbnail": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400",
+      "description": "Learn the principles of user interface and user experience design with hands-on projects.",
+      "enrolledStudents": 167,
+      "duration": "10 weeks",
+      "level": "Beginner",
+      "instructor": "Mike Chen",
+      "rating": 4.7,
+      "totalRatings": 134,
+      "tags": [
+        "Design",
+        "UI/UX",
+        "Figma",
+        "Prototyping"
+      ],
+      "createdAt": "2025-07-10T11:15:00.000Z",
+      "updatedAt": "2025-09-22T16:20:00.000Z"
+    }
+  ]
+}

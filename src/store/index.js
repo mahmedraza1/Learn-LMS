@@ -4,6 +4,7 @@ import batchReducer from './slices/batchSlice';
 import lectureReducer from './slices/lectureSlice';
 import announcementReducer from './slices/announcementSlice';
 import liveClassAnnouncementReducer from './slices/liveClassAnnouncementSlice';
+import coursesReducer from './slices/coursesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     lecture: lectureReducer,
     announcement: announcementReducer,
     liveClassAnnouncement: liveClassAnnouncementReducer,
+    courses: coursesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -11,8 +11,9 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Path to data file
+// Path to data files
 const dataFilePath = path.join(__dirname, 'data', 'lectures.json');
+const coursesFilePath = path.join(__dirname, 'data', 'courses.json');
 
 // Helper function to read the lectures data
 const readLecturesData = () => {
@@ -41,6 +42,29 @@ const writeLecturesData = (data) => {
     return true;
   } catch (err) {
     console.error('Error writing lectures data:', err);
+    return false;
+  }
+};
+
+// Helper function to read the courses data
+const readCoursesData = () => {
+  try {
+    const data = fs.readFileSync(coursesFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading courses data:', err);
+    return { courses: [] };
+  }
+};
+
+// Helper function to write the courses data
+const writeCoursesData = (data) => {
+  try {
+    fs.writeFileSync(coursesFilePath, JSON.stringify(data, null, 2), 'utf8');
+    console.log('Courses data written successfully');
+    return true;
+  } catch (err) {
+    console.error('Error writing courses data:', err);
     return false;
   }
 };
@@ -497,6 +521,113 @@ app.delete('/api/learnlive/live-class-announcement', (req, res) => {
     }
   } catch (error) {
     console.error('Error clearing live class announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ===== COURSES ENDPOINTS =====
+
+// GET all courses
+app.get('/api/courses', (req, res) => {
+  const coursesData = readCoursesData();
+  res.json(coursesData.courses || []);
+});
+
+// GET a single course by ID
+app.get('/api/courses/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const coursesData = readCoursesData();
+    const course = coursesData.courses.find(c => c.id === parseInt(id));
+    
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    
+    res.json(course);
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST a new course
+app.post('/api/courses', (req, res) => {
+  try {
+    const coursesData = readCoursesData();
+    const newCourse = {
+      ...req.body,
+      id: Date.now(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (!coursesData.courses) {
+      coursesData.courses = [];
+    }
+    
+    coursesData.courses.push(newCourse);
+    
+    if (writeCoursesData(coursesData)) {
+      res.status(201).json(newCourse);
+    } else {
+      res.status(500).json({ message: 'Failed to save course' });
+    }
+  } catch (error) {
+    console.error('Error creating course:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// PUT update a course
+app.put('/api/courses/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const coursesData = readCoursesData();
+    const courseIndex = coursesData.courses.findIndex(c => c.id === parseInt(id));
+    
+    if (courseIndex === -1) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    
+    coursesData.courses[courseIndex] = {
+      ...coursesData.courses[courseIndex],
+      ...req.body,
+      id: parseInt(id),
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (writeCoursesData(coursesData)) {
+      res.json(coursesData.courses[courseIndex]);
+    } else {
+      res.status(500).json({ message: 'Failed to update course' });
+    }
+  } catch (error) {
+    console.error('Error updating course:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE a course
+app.delete('/api/courses/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const coursesData = readCoursesData();
+    const courseIndex = coursesData.courses.findIndex(c => c.id === parseInt(id));
+    
+    if (courseIndex === -1) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    
+    coursesData.courses.splice(courseIndex, 1);
+    
+    if (writeCoursesData(coursesData)) {
+      res.json({ message: 'Course deleted successfully' });
+    } else {
+      res.status(500).json({ message: 'Failed to delete course' });
+    }
+  } catch (error) {
+    console.error('Error deleting course:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
