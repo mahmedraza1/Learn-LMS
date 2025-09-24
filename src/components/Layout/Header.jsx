@@ -6,11 +6,13 @@ import {
   MdNotifications, 
   MdSettings 
 } from 'react-icons/md';
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectUser } from '../../store/slices/authSlice';
-import { selectGlobalAnnouncements } from '../../store/slices/announcementSlice';
+import { selectGlobalAnnouncements, addGlobalAnnouncement, updateGlobalAnnouncement } from '../../store/slices/announcementSlice';
+import toast from 'react-hot-toast';
 import NotificationPopup from '../NotificationPopup';
 import FastAnnouncementModal from '../FastAnnouncementModal';
+import AnnouncementForm from '../AnnouncementForm';
 
 // Helper function to get display role from roles array
 const getDisplayRole = (roles) => {
@@ -24,6 +26,7 @@ const getDisplayRole = (roles) => {
 };
 
 const Header = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector(selectUser);
@@ -31,6 +34,8 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
+  const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
+  const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const notificationButtonRef = useRef(null);
 
   // Count unread notifications (for demo, we'll consider all as unread)
@@ -47,6 +52,52 @@ const Header = () => {
   const closeAnnouncementModal = () => {
     setShowAnnouncementModal(false);
     setSelectedAnnouncement(null);
+  };
+
+  // Handle add announcement from notification popup
+  const handleAddAnnouncement = () => {
+    setEditingAnnouncement(null);
+    setShowAnnouncementForm(true);
+  };
+
+  // Handle edit announcement from notification popup
+  const handleEditAnnouncement = (announcement) => {
+    setEditingAnnouncement(announcement);
+    setShowAnnouncementForm(true);
+  };
+
+  // Close announcement form
+  const closeAnnouncementForm = () => {
+    setShowAnnouncementForm(false);
+    setEditingAnnouncement(null);
+  };
+
+  // Handle announcement form submission
+  const handleAnnouncementSubmit = async (data) => {
+    try {
+      if (editingAnnouncement) {
+        // Update existing announcement
+        await dispatch(updateGlobalAnnouncement({
+          id: editingAnnouncement.id,
+          updatedData: {
+            ...data,
+            author: user?.name || 'Admin',
+            updated_at: new Date().toISOString()
+          }
+        })).unwrap();
+        toast.success('Announcement updated successfully');
+      } else {
+        // Add new announcement
+        await dispatch(addGlobalAnnouncement({
+          ...data,
+          author: user?.name || 'Admin'
+        })).unwrap();
+        toast.success('Announcement added successfully');
+      }
+      closeAnnouncementForm();
+    } catch (error) {
+      toast.error(`Failed to ${editingAnnouncement ? 'update' : 'add'} announcement: ${error}`);
+    }
   };
 
   const getPageTitle = () => {
@@ -133,6 +184,8 @@ const Header = () => {
               isOpen={showNotifications}
               onClose={() => setShowNotifications(false)}
               onAnnouncementClick={handleAnnouncementClick}
+              onAddAnnouncement={handleAddAnnouncement}
+              onEditAnnouncement={handleEditAnnouncement}
               triggerRef={notificationButtonRef}
             />
           </div>
@@ -162,6 +215,14 @@ const Header = () => {
         isOpen={showAnnouncementModal}
         onClose={closeAnnouncementModal}
         announcement={selectedAnnouncement}
+      />
+
+      {/* Announcement Form Modal for Add/Edit */}
+      <AnnouncementForm
+        isOpen={showAnnouncementForm}
+        onClose={closeAnnouncementForm}
+        onSubmit={handleAnnouncementSubmit}
+        announcement={editingAnnouncement}
       />
     </header>
   );

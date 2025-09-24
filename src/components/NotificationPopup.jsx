@@ -1,10 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MdClose, MdCampaign, MdNotifications } from 'react-icons/md';
-import { useAppSelector } from '../store/hooks';
-import { selectGlobalAnnouncements } from '../store/slices/announcementSlice';
+import { MdClose, MdCampaign, MdNotifications, MdAdd, MdEdit, MdDelete } from 'react-icons/md';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { selectGlobalAnnouncements, deleteGlobalAnnouncement } from '../store/slices/announcementSlice';
+import { selectIsAdmin } from '../store/slices/authSlice';
+import toast from 'react-hot-toast';
 
-const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef }) => {
+const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef, onAddAnnouncement, onEditAnnouncement }) => {
+  const dispatch = useAppDispatch();
   const globalAnnouncements = useAppSelector(selectGlobalAnnouncements);
+  const isAdmin = useAppSelector(selectIsAdmin);
   const popupRef = useRef(null);
   const [preloadedAnnouncement, setPreloadedAnnouncement] = useState(null);
 
@@ -16,6 +20,35 @@ const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef })
   // Preload announcement on hover for faster opening
   const handleNotificationHover = (announcement) => {
     setPreloadedAnnouncement(announcement);
+  };
+
+  // Handle admin actions
+  const handleAddAnnouncement = () => {
+    if (onAddAnnouncement) {
+      onAddAnnouncement();
+      onClose();
+    }
+  };
+
+  const handleEditAnnouncement = (e, announcement) => {
+    e.stopPropagation(); // Prevent triggering the notification click
+    if (onEditAnnouncement) {
+      onEditAnnouncement(announcement);
+      onClose();
+    }
+  };
+
+  const handleDeleteAnnouncement = async (e, announcementId) => {
+    e.stopPropagation(); // Prevent triggering the notification click
+    
+    if (confirm('Are you sure you want to delete this announcement?')) {
+      try {
+        await dispatch(deleteGlobalAnnouncement(announcementId)).unwrap();
+        toast.success('Announcement deleted successfully');
+      } catch (error) {
+        toast.error('Failed to delete announcement');
+      }
+    }
   };
 
   // Close popup when clicking outside
@@ -62,12 +95,33 @@ const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef })
       if (isNaN(date.getTime())) return 'Unknown date';
       
       const now = new Date();
-      const diffTime = Math.abs(now - date);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffTime = now - date; // Remove Math.abs to get actual direction
+      const diffMinutes = Math.floor(diffTime / (1000 * 60));
+      const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
       
+      // Handle future dates (shouldn't happen but just in case)
+      if (diffTime < 0) return date.toLocaleDateString();
+      
+      // Less than 1 minute
+      if (diffMinutes < 1) return 'Just now';
+      
+      // Less than 1 hour
+      if (diffMinutes < 60) return `${diffMinutes}m ago`;
+      
+      // Less than 24 hours (same day)
+      if (diffHours < 24) return `${diffHours}h ago`;
+      
+      // 1 day ago
       if (diffDays === 1) return 'Yesterday';
-      if (diffDays < 7) return `${diffDays} days ago`;
-      if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+      
+      // Less than 7 days
+      if (diffDays < 7) return `${diffDays}d ago`;
+      
+      // Less than 30 days
+      if (diffDays < 30) return `${Math.ceil(diffDays / 7)}w ago`;
+      
+      // Older than 30 days
       return date.toLocaleDateString();
     } catch (error) {
       return 'Unknown date';
@@ -99,12 +153,24 @@ const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef })
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
-        <button
-          onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <MdClose className="w-5 h-5" />
-        </button>
+        <div className="flex items-center space-x-2">
+          {isAdmin && (
+            <button
+              onClick={handleAddAnnouncement}
+              className="text-emerald-600 hover:text-emerald-700 transition-colors flex items-center gap-1 text-sm font-medium"
+              title="Add Announcement"
+            >
+              <MdAdd className="w-4 h-4" />
+              Add
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <MdClose className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Notifications list */}
@@ -130,9 +196,29 @@ const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef })
                       <h4 className="text-sm font-medium text-gray-900 truncate">
                         {getAnnouncementTitle(announcement)}
                       </h4>
-                      <span className="text-xs text-gray-500 ml-2">
-                        {formatDate(announcement.date || announcement.createdAt || announcement.updated_at)}
-                      </span>
+                      <div className="flex items-center space-x-2 ml-2">
+                        {isAdmin && (
+                          <>
+                            <button
+                              onClick={(e) => handleEditAnnouncement(e, announcement)}
+                              className="text-blue-600 hover:text-blue-700 transition-colors"
+                              title="Edit Announcement"
+                            >
+                              <MdEdit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={(e) => handleDeleteAnnouncement(e, announcement.id)}
+                              className="text-red-600 hover:text-red-700 transition-colors"
+                              title="Delete Announcement"
+                            >
+                              <MdDelete className="w-4 h-4" />
+                            </button>
+                          </>
+                        )}
+                        <span className="text-xs text-gray-500">
+                          {formatDate(announcement.updated_at || announcement.date || announcement.createdAt)}
+                        </span>
+                      </div>
                     </div>
                     <div className="text-sm text-gray-600 mt-1 line-clamp-2">
                       {truncateText(stripHtmlTags(announcement.content), 80)}
