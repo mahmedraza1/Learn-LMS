@@ -523,3 +523,140 @@
   outline: 2px solid #059669 !important;
   outline-offset: 2px !important;
 }
+
+/* Live Class Announcement Content Styles (Orange Theme) */
+.live-announcement-content {
+  line-height: 1.6 !important;
+  font-size: 0.875rem !important;
+  color: #c2410c !important;
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.live-announcement-content p {
+  margin-bottom: 0.75rem !important;
+  padding: 0.25rem 0 !important;
+}
+
+.live-announcement-content ul, 
+.live-announcement-content ol {
+  margin-left: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-left: 0 !important;
+  border-radius: 0.375rem !important;
+}
+
+.live-announcement-content ul {
+  list-style-type: disc !important;
+}
+
+.live-announcement-content ol {
+  list-style-type: decimal !important;
+}
+
+.live-announcement-content li {
+  margin-bottom: 0.25rem !important;
+  padding: 0.125rem 0 !important;
+}
+
+.live-announcement-content a {
+  color: #ea580c !important;
+  text-decoration: underline !important;
+  border-radius: 0.25rem !important;
+  padding: 0 0.125rem !important;
+  transition: background-color 0.2s, color 0.2s !important;
+}
+
+.live-announcement-content a:hover {
+  color: #c2410c !important;
+  background-color: rgba(234, 88, 12, 0.1) !important;
+}
+
+.live-announcement-content a:focus {
+  outline: 2px solid #ea580c !important;
+  outline-offset: 2px !important;
+}
+
+.live-announcement-content h1,
+.live-announcement-content h2,
+.live-announcement-content h3,
+.live-announcement-content h4,
+.live-announcement-content h5,
+.live-announcement-content h6 {
+  font-weight: 700 !important;
+  color: #c2410c !important;
+  margin-top: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.2 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
+  background-color: rgba(254, 215, 170, 0.3) !important;
+}
+
+.live-announcement-content h1 { 
+  font-size: 1.5rem !important; 
+  border-bottom: 2px solid #f97316 !important;
+  padding-bottom: 0.375rem !important;
+}
+.live-announcement-content h2 { font-size: 1.25rem !important; }
+.live-announcement-content h3 { font-size: 1.125rem !important; }
+.live-announcement-content h4 { font-size: 1rem !important; }
+
+.live-announcement-content blockquote {
+  border-left: 3px solid #f97316 !important;
+  padding: 0.75rem !important;
+  margin: 1rem 0.5rem !important;
+  font-style: italic !important;
+  color: #9a3412 !important;
+  background-color: rgba(254, 215, 170, 0.1) !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.live-announcement-content table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin-bottom: 1rem !important;
+  width: 100% !important;
+  border-radius: 0.375rem !important;
+  overflow: hidden !important;
+  border: 1px solid #fb923c !important;
+}
+
+.live-announcement-content table th,
+.live-announcement-content table td {
+  border: 1px solid #fb923c !important;
+  padding: 0.5rem 0.75rem !important;
+  text-align: left !important;
+}
+
+.live-announcement-content table th {
+  background-color: #fed7aa !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #f97316 !important;
+}
+
+.live-announcement-content table tr:hover td {
+  background-color: rgba(254, 215, 170, 0.1) !important;
+}
+
+.live-announcement-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  background-color: #fed7aa !important;
+  padding: 0.125rem 0.25rem !important;
+  border-radius: 0.25rem !important;
+  color: #9a3412 !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+
+.live-announcement-content pre code {
+  display: block !important;
+  background-color: #fed7aa !important;
+  padding: 0.75rem 1rem !important;
+  color: #9a3412 !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  line-height: 1.5 !important;
+  tab-size: 2 !important;
+  overflow-x: auto !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}

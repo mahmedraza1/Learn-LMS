@@ -3,6 +3,7 @@ import authReducer from './slices/authSlice';
 import batchReducer from './slices/batchSlice';
 import lectureReducer from './slices/lectureSlice';
 import announcementReducer from './slices/announcementSlice';
+import liveClassAnnouncementReducer from './slices/liveClassAnnouncementSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     batch: batchReducer,
     lecture: lectureReducer,
     announcement: announcementReducer,
+    liveClassAnnouncement: liveClassAnnouncementReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

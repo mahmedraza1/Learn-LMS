@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth, useBatch, useLecture } from "../hooks/reduxHooks";
 import CourseCard from "../components/CourseCard";
 import VideoModal from "../components/VideoModal";
+import LiveClassAnnouncement from "../components/LiveClassAnnouncement";
 
 const StudentDashboard = () => {
   const { user } = useAuth();
@@ -71,6 +72,9 @@ const StudentDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Live Class Announcement */}
+        <LiveClassAnnouncement isAdmin={false} />
+        
         <h2 className="mb-6 text-xl font-bold text-gray-800">My Courses</h2>
 
         {batchCourses.length === 0 ? (

@@ -1,4 +1,11 @@
 {
+  "liveClassAnnouncement": {
+    "title": "Mark Maverick",
+    "content": "<p>This is Test announcement by Mark Maverick</p>",
+    "author": "Mark",
+    "id": 1758688039119,
+    "date": "2025-09-24T04:27:19.119Z"
+  },
   "globalAnnouncements": [
     {
       "title": "",

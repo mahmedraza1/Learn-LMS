@@ -9,6 +9,17 @@ import {
 import { useAppSelector } from '../../store/hooks';
 import { selectUser } from '../../store/slices/authSlice';
 
+// Helper function to get display role from roles array
+const getDisplayRole = (roles) => {
+  if (!roles || !Array.isArray(roles)) return 'Student';
+  
+  if (roles.includes('administrator')) return 'Administrator';
+  if (roles.includes('instructor')) return 'Instructor';
+  if (roles.includes('student')) return 'Student';
+  
+  return 'Student'; // Default fallback
+};
+
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -91,8 +102,8 @@ const Sidebar = () => {
             <p className="text-sm font-medium text-white truncate">
               {user?.name || 'User'}
             </p>
-            <p className="text-xs text-slate-400 capitalize truncate">
-              {user?.role || 'Student'}
+            <p className="text-xs text-slate-400 truncate">
+              {getDisplayRole(user?.roles)}
             </p>
           </div>
         </div>

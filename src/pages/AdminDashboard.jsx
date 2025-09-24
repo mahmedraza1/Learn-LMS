@@ -6,6 +6,7 @@ import CourseCard from "../components/CourseCard";
 import LectureForm from "../components/LectureForm";
 import AnnouncementForm from "../components/AnnouncementForm";
 import VideoModal from "../components/VideoModal";
+import LiveClassAnnouncement from "../components/LiveClassAnnouncement";
 import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
@@ -209,6 +210,9 @@ const AdminDashboard = () => {
 
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">        
+        {/* Live Class Announcement */}
+        <LiveClassAnnouncement isAdmin={true} />
+        
         {/* Courses Section */}
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">

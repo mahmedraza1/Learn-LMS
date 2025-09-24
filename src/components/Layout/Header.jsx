@@ -12,6 +12,17 @@ import { selectGlobalAnnouncements } from '../../store/slices/announcementSlice'
 import NotificationPopup from '../NotificationPopup';
 import FastAnnouncementModal from '../FastAnnouncementModal';
 
+// Helper function to get display role from roles array
+const getDisplayRole = (roles) => {
+  if (!roles || !Array.isArray(roles)) return 'Student';
+  
+  if (roles.includes('administrator')) return 'Administrator';
+  if (roles.includes('instructor')) return 'Instructor';
+  if (roles.includes('student')) return 'Student';
+  
+  return 'Student'; // Default fallback
+};
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -133,9 +144,9 @@ const Header = () => {
 
           {/* User profile */}
           <div className="flex items-center space-x-3">
-            <div className="text-right">
+            <div className="text-left">
               <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
-              <p className="text-xs text-gray-500 capitalize">{user?.role || 'Student'}</p>
+              <p className="text-xs text-gray-500">{getDisplayRole(user?.roles)}</p>
             </div>
             <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-medium">

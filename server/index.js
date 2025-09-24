@@ -444,11 +444,64 @@ app.delete('/api/global-announcements/:id', (req, res) => {
     } else {
       res.status(500).json({ message: 'Failed to delete announcement' });
     }
-  } catch (error) {
+    } catch (error) {
     console.error('Error deleting global announcement:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// ===== LIVE CLASS ANNOUNCEMENT ENDPOINTS =====
+
+// GET live class announcement
+app.get('/api/learnlive/live-class-announcement', (req, res) => {
+  const lecturesData = readLecturesData();
+  res.json(lecturesData.liveClassAnnouncement || null);
+});
+
+// POST/SET live class announcement (only one at a time)
+app.post('/api/learnlive/live-class-announcement', (req, res) => {
+  try {
+    const lecturesData = readLecturesData();
+    const newAnnouncement = {
+      ...req.body,
+      id: Date.now(),
+      date: new Date().toISOString()
+    };
+    
+    // Replace any existing live class announcement (only one allowed)
+    lecturesData.liveClassAnnouncement = newAnnouncement;
+    
+    if (writeLecturesData(lecturesData)) {
+      res.status(201).json(newAnnouncement);
+    } else {
+      res.status(500).json({ message: 'Failed to save live class announcement' });
+    }
+  } catch (error) {
+    console.error('Error setting live class announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE/CLEAR live class announcement
+app.delete('/api/learnlive/live-class-announcement', (req, res) => {
+  try {
+    const lecturesData = readLecturesData();
+    
+    // Clear the live class announcement
+    lecturesData.liveClassAnnouncement = null;
+    
+    if (writeLecturesData(lecturesData)) {
+      res.json({ message: 'Live class announcement cleared successfully' });
+    } else {
+      res.status(500).json({ message: 'Failed to clear live class announcement' });
+    }
+  } catch (error) {
+    console.error('Error clearing live class announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Start the server
 
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '..', 'dist')));
