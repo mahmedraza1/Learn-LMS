@@ -5,6 +5,7 @@ import lectureReducer from './slices/lectureSlice';
 import announcementReducer from './slices/announcementSlice';
 import liveClassAnnouncementReducer from './slices/liveClassAnnouncementSlice';
 import coursesReducer from './slices/coursesSlice';
+import groupsReducer from './slices/groupsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     announcement: announcementReducer,
     liveClassAnnouncement: liveClassAnnouncementReducer,
     courses: coursesReducer,
+    groups: groupsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

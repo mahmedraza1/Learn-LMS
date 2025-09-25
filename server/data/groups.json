@@ -1,0 +1,39 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "name": "Full Stack Web Development ",
+      "link": "https://discord.gg/webdev123",
+      "description": "Join our web development community for discussions, project collaborations, and peer learning.",
+      "platform": "WhatsApp",
+      "isActive": true,
+      "createdAt": "2025-09-15T10:30:00.000Z",
+      "updatedAt": "2025-09-25T05:28:39.387Z",
+      "createdBy": "Admin",
+      "updatedBy": "Mark"
+    },
+    {
+      "id": 2,
+      "name": "UI/UX Design Hub",
+      "link": "https://t.me/uxdesignhub",
+      "description": "Connect with fellow designers, share your work, and get feedback from the community.",
+      "platform": "Facebook",
+      "isActive": true,
+      "createdAt": "2025-09-10T08:15:00.000Z",
+      "updatedAt": "2025-09-25T05:28:48.285Z",
+      "createdBy": "Admin",
+      "updatedBy": "Mark"
+    },
+    {
+      "id": 3,
+      "name": "Digital Marketing Network",
+      "link": "https://slack.com/channels/marketing",
+      "description": "Share marketing strategies, discuss campaigns, and network with marketing professionals.",
+      "platform": "Slack",
+      "isActive": true,
+      "createdAt": "2025-09-05T12:00:00.000Z",
+      "updatedAt": "2025-09-22T11:30:00.000Z",
+      "createdBy": "Admin"
+    }
+  ]
+}

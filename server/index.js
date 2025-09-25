@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 const dataFilePath = path.join(__dirname, 'data', 'lectures.json');
 const coursesFilePath = path.join(__dirname, 'data', 'courses.json');
 const miscFilePath = path.join(__dirname, 'data', 'miscellaneous.json');
+const groupsFilePath = path.join(__dirname, 'data', 'groups.json');
 
 // Helper function to read the lectures data
 const readLecturesData = () => {
@@ -99,6 +100,29 @@ const writeMiscData = (data) => {
     return true;
   } catch (err) {
     console.error('Error writing miscellaneous data:', err);
+    return false;
+  }
+};
+
+// Helper function to read the groups data
+const readGroupsData = () => {
+  try {
+    const data = fs.readFileSync(groupsFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading groups data:', err);
+    return { groups: [] };
+  }
+};
+
+// Helper function to write the groups data
+const writeGroupsData = (data) => {
+  try {
+    fs.writeFileSync(groupsFilePath, JSON.stringify(data, null, 2), 'utf8');
+    console.log('Groups data written successfully');
+    return true;
+  } catch (err) {
+    console.error('Error writing groups data:', err);
     return false;
   }
 };
@@ -662,6 +686,114 @@ app.delete('/api/courses/:id', (req, res) => {
     }
   } catch (error) {
     console.error('Error deleting course:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET all groups
+app.get('/api/groups', (req, res) => {
+  try {
+    const groupsData = readGroupsData();
+    res.json(groupsData.groups);
+  } catch (error) {
+    console.error('Error getting groups:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// CREATE a new group
+app.post('/api/groups', (req, res) => {
+  try {
+    const { name, link, description, platform, createdBy } = req.body;
+    const groupsData = readGroupsData();
+    
+    // Generate new ID
+    const newId = groupsData.groups.length > 0 
+      ? Math.max(...groupsData.groups.map(g => g.id)) + 1 
+      : 1;
+    
+    const newGroup = {
+      id: newId,
+      name,
+      link,
+      description: description || '',
+      platform: platform || 'Other',
+      memberCount: 0,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      createdBy: createdBy || 'Admin'
+    };
+    
+    groupsData.groups.push(newGroup);
+    
+    if (writeGroupsData(groupsData)) {
+      res.status(201).json(newGroup);
+    } else {
+      res.status(500).json({ message: 'Failed to create group' });
+    }
+  } catch (error) {
+    console.error('Error creating group:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// UPDATE a group
+app.put('/api/groups/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, link, description, platform, memberCount, isActive, updatedBy } = req.body;
+    const groupsData = readGroupsData();
+    
+    const groupIndex = groupsData.groups.findIndex(g => g.id === parseInt(id));
+    if (groupIndex === -1) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+    
+    // Update the group
+    groupsData.groups[groupIndex] = {
+      ...groupsData.groups[groupIndex],
+      name: name || groupsData.groups[groupIndex].name,
+      link: link || groupsData.groups[groupIndex].link,
+      description: description !== undefined ? description : groupsData.groups[groupIndex].description,
+      platform: platform || groupsData.groups[groupIndex].platform,
+      memberCount: memberCount !== undefined ? memberCount : groupsData.groups[groupIndex].memberCount,
+      isActive: isActive !== undefined ? isActive : groupsData.groups[groupIndex].isActive,
+      updatedAt: new Date().toISOString(),
+      updatedBy: updatedBy || 'Admin'
+    };
+    
+    if (writeGroupsData(groupsData)) {
+      res.json(groupsData.groups[groupIndex]);
+    } else {
+      res.status(500).json({ message: 'Failed to update group' });
+    }
+  } catch (error) {
+    console.error('Error updating group:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE a group
+app.delete('/api/groups/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const groupsData = readGroupsData();
+    const groupIndex = groupsData.groups.findIndex(g => g.id === parseInt(id));
+    
+    if (groupIndex === -1) {
+      return res.status(404).json({ message: 'Group not found' });
+    }
+    
+    groupsData.groups.splice(groupIndex, 1);
+    
+    if (writeGroupsData(groupsData)) {
+      res.json({ message: 'Group deleted successfully' });
+    } else {
+      res.status(500).json({ message: 'Failed to delete group' });
+    }
+  } catch (error) {
+    console.error('Error deleting group:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
