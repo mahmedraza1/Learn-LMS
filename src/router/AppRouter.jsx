@@ -4,6 +4,7 @@ import AuthWrapper from '../components/AuthWrapper';
 import Layout from '../components/Layout/Layout';
 import Dashboard from '../pages/Dashboard';
 import Courses from '../pages/Courses';
+import CourseDetail from '../pages/CourseDetail';
 import LiveLecture from '../pages/LiveLecture';
 import Groups from '../pages/Groups';
 
@@ -16,6 +17,7 @@ const AppRouter = () => {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="courses" element={<Courses />} />
+            <Route path="courses/:courseId" element={<CourseDetail />} />
             <Route path="live-lecture" element={<LiveLecture />} />
             <Route path="groups" element={<Groups />} />
           </Route>

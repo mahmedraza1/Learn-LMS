@@ -60,6 +60,27 @@
       ],
       "createdAt": "2025-07-10T11:15:00.000Z",
       "updatedAt": "2025-09-22T16:20:00.000Z"
+    },
+    {
+      "name": "Graphics Designing",
+      "thumbnail": "https://static.vecteezy.com/system/resources/thumbnails/038/940/906/small_2x/ai-generated-graphic-design-workspace-with-colorful-illustration-photo.jpeg",
+      "description": "Learn the principles of user interface and user experience design with hands-on projects.",
+      "enrolledStudents": 167,
+      "duration": "10 weeks",
+      "level": "Beginner",
+      "instructor": "Mark Maverick",
+      "rating": 4.7,
+      "totalRatings": 134,
+      "tags": [
+        "Graphics Designing",
+        "Design",
+        "UI/UX",
+        "Figma",
+        "Prototyping"
+      ],
+      "id": 1758809659026,
+      "createdAt": "2025-09-25T14:14:19.026Z",
+      "updatedAt": "2025-09-25T14:14:19.027Z"
     }
   ]
 }
