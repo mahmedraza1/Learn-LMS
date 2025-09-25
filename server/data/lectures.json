@@ -1,10 +1,10 @@
 {
   "liveClassAnnouncement": {
-    "title": "",
-    "content": "<h1>Mark Maverick</h1>\n<p>This is Test announcement by Mark.</p>",
-    "author": "instructor",
-    "id": 1758728770453,
-    "date": "2025-09-24T15:46:10.453Z"
+    "title": "Mark Maverick",
+    "content": "<h1>Mark</h1>\n<p>THis is test</p>",
+    "author": "Mark",
+    "id": 1758793121665,
+    "date": "2025-09-25T09:38:41.665Z"
   },
   "globalAnnouncements": [
     {
