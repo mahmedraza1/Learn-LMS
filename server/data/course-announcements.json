@@ -1,0 +1,20 @@
+{
+  "announcements": {
+    "3": [
+      {
+        "id": 1758820494208,
+        "title": "Welcome to “Mastering UI/UX Design”",
+        "content": "<p>We are excited to welcome you to the UI/UX Design course! This course will guide you through the essentials of creating user-friendly, visually appealing, and impactful digital experiences. In the first week, we will explore the foundations of user-centered design, learn the key differences between UI and UX, and practice evaluating <strong>existing</strong> interfaces. Throughout the course, you&rsquo;ll also gain hands-on experience with wireframing, prototyping, and usability testing. Please take a moment to review the course syllabus available in the overview section and introduce yourself in the community space. We look forward to working together to design engaging and meaningful user experiences!&nbsp;&nbsp;</p>",
+        "createdAt": "2025-09-25T17:14:54.208Z",
+        "updatedAt": "2025-09-25T17:31:25.564Z"
+      },
+      {
+        "id": 1758821514940,
+        "title": "Test 2 ",
+        "content": "<h1>Test Annoucement 20</h1>\n<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+        "createdAt": "2025-09-25T17:31:54.940Z",
+        "updatedAt": "2025-09-25T17:31:54.940Z"
+      }
+    ]
+  }
+}

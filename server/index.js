@@ -16,6 +16,8 @@ const dataFilePath = path.join(__dirname, 'data', 'lectures.json');
 const coursesFilePath = path.join(__dirname, 'data', 'courses.json');
 const miscFilePath = path.join(__dirname, 'data', 'miscellaneous.json');
 const groupsFilePath = path.join(__dirname, 'data', 'groups.json');
+const courseOverviewsFilePath = path.join(__dirname, 'data', 'course-overviews.json');
+const courseAnnouncementsFilePath = path.join(__dirname, 'data', 'course-announcements.json');
 
 // Helper function to read the lectures data
 const readLecturesData = () => {
@@ -123,6 +125,52 @@ const writeGroupsData = (data) => {
     return true;
   } catch (err) {
     console.error('Error writing groups data:', err);
+    return false;
+  }
+};
+
+// Helper function to read the course overviews data
+const readCourseOverviewsData = () => {
+  try {
+    const data = fs.readFileSync(courseOverviewsFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading course overviews data:', err);
+    return { overviews: {} };
+  }
+};
+
+// Helper function to write the course overviews data
+const writeCourseOverviewsData = (data) => {
+  try {
+    fs.writeFileSync(courseOverviewsFilePath, JSON.stringify(data, null, 2), 'utf8');
+    console.log('Course overviews data written successfully');
+    return true;
+  } catch (err) {
+    console.error('Error writing course overviews data:', err);
+    return false;
+  }
+};
+
+// Helper function to read the course announcements data
+const readCourseAnnouncementsData = () => {
+  try {
+    const data = fs.readFileSync(courseAnnouncementsFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading course announcements data:', err);
+    return { announcements: {} };
+  }
+};
+
+// Helper function to write the course announcements data
+const writeCourseAnnouncementsData = (data) => {
+  try {
+    fs.writeFileSync(courseAnnouncementsFilePath, JSON.stringify(data, null, 2), 'utf8');
+    console.log('Course announcements data written successfully');
+    return true;
+  } catch (err) {
+    console.error('Error writing course announcements data:', err);
     return false;
   }
 };
@@ -686,6 +734,175 @@ app.delete('/api/courses/:id', (req, res) => {
     }
   } catch (error) {
     console.error('Error deleting course:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ===== COURSE OVERVIEWS ENDPOINTS =====
+
+// GET course overview by course ID
+app.get('/api/courses/:courseId/overview', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const overviewsData = readCourseOverviewsData();
+    const overview = overviewsData.overviews[courseId];
+    
+    if (!overview) {
+      return res.json({ content: '' });
+    }
+    
+    res.json(overview);
+  } catch (error) {
+    console.error('Error fetching course overview:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST/PUT course overview by course ID
+app.post('/api/courses/:courseId/overview', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { content } = req.body;
+    
+    const overviewsData = readCourseOverviewsData();
+    
+    overviewsData.overviews[courseId] = {
+      content,
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (writeCourseOverviewsData(overviewsData)) {
+      res.json({ message: 'Course overview saved successfully', overview: overviewsData.overviews[courseId] });
+    } else {
+      res.status(500).json({ message: 'Failed to save course overview' });
+    }
+  } catch (error) {
+    console.error('Error saving course overview:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ===== COURSE ANNOUNCEMENTS ENDPOINTS =====
+
+// GET course announcements by course ID
+app.get('/api/courses/:courseId/announcements', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const announcementsData = readCourseAnnouncementsData();
+    const announcements = announcementsData.announcements[courseId] || [];
+    
+    // Sort by creation date (newest first)
+    announcements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    res.json(announcements);
+  } catch (error) {
+    console.error('Error fetching course announcements:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST new course announcement
+app.post('/api/courses/:courseId/announcements', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { title, content } = req.body;
+    
+    const announcementsData = readCourseAnnouncementsData();
+    
+    if (!announcementsData.announcements[courseId]) {
+      announcementsData.announcements[courseId] = [];
+    }
+    
+    const newAnnouncement = {
+      id: Date.now(),
+      title,
+      content,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    announcementsData.announcements[courseId].push(newAnnouncement);
+    
+    if (writeCourseAnnouncementsData(announcementsData)) {
+      res.json({ message: 'Announcement created successfully', announcement: newAnnouncement });
+    } else {
+      res.status(500).json({ message: 'Failed to create announcement' });
+    }
+  } catch (error) {
+    console.error('Error creating course announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// PUT update course announcement
+app.put('/api/courses/:courseId/announcements/:announcementId', (req, res) => {
+  try {
+    const { courseId, announcementId } = req.params;
+    const { title, content } = req.body;
+    
+    const announcementsData = readCourseAnnouncementsData();
+    
+    if (!announcementsData.announcements[courseId]) {
+      return res.status(404).json({ message: 'Course announcements not found' });
+    }
+    
+    const announcementIndex = announcementsData.announcements[courseId].findIndex(
+      a => a.id === parseInt(announcementId)
+    );
+    
+    if (announcementIndex === -1) {
+      return res.status(404).json({ message: 'Announcement not found' });
+    }
+    
+    announcementsData.announcements[courseId][announcementIndex] = {
+      ...announcementsData.announcements[courseId][announcementIndex],
+      title,
+      content,
+      updatedAt: new Date().toISOString()
+    };
+    
+    if (writeCourseAnnouncementsData(announcementsData)) {
+      res.json({ 
+        message: 'Announcement updated successfully', 
+        announcement: announcementsData.announcements[courseId][announcementIndex] 
+      });
+    } else {
+      res.status(500).json({ message: 'Failed to update announcement' });
+    }
+  } catch (error) {
+    console.error('Error updating course announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE course announcement
+app.delete('/api/courses/:courseId/announcements/:announcementId', (req, res) => {
+  try {
+    const { courseId, announcementId } = req.params;
+    
+    const announcementsData = readCourseAnnouncementsData();
+    
+    if (!announcementsData.announcements[courseId]) {
+      return res.status(404).json({ message: 'Course announcements not found' });
+    }
+    
+    const announcementIndex = announcementsData.announcements[courseId].findIndex(
+      a => a.id === parseInt(announcementId)
+    );
+    
+    if (announcementIndex === -1) {
+      return res.status(404).json({ message: 'Announcement not found' });
+    }
+    
+    announcementsData.announcements[courseId].splice(announcementIndex, 1);
+    
+    if (writeCourseAnnouncementsData(announcementsData)) {
+      res.json({ message: 'Announcement deleted successfully' });
+    } else {
+      res.status(500).json({ message: 'Failed to delete announcement' });
+    }
+  } catch (error) {
+    console.error('Error deleting course announcement:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
