@@ -11,7 +11,6 @@ import LiveLectures from '../components/course-tabs/LiveLectures';
 import Notes from '../components/course-tabs/Notes';
 import AnnouncementsNews from '../components/course-tabs/AnnouncementsNews';
 import QNA from '../components/course-tabs/QNA';
-import Discussion from '../components/course-tabs/Discussion';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -43,8 +42,7 @@ const CourseDetail = () => {
     { id: 'live', label: 'Live Lectures', component: LiveLectures },
     { id: 'notes', label: 'Notes', component: Notes },
     { id: 'announcements', label: 'Announcements and News', component: AnnouncementsNews },
-    { id: 'qna', label: 'QNA', component: QNA },
-    { id: 'discussion', label: 'Discussion', component: Discussion }
+    { id: 'qna', label: 'QNA', component: QNA }
   ];
 
   // Loading state

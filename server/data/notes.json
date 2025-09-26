@@ -1,0 +1,124 @@
+{
+  "1": [
+    {
+      "id": 1,
+      "fileName": "Introduction to Web Development - Chapter 1",
+      "description": "Basic HTML and CSS concepts",
+      "fileUrl": "https://drive.google.com/file/d/1abcdef123456/view",
+      "fileType": "pdf",
+      "fileSize": "2.4 MB",
+      "uploadDate": "2024-01-15",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "html",
+        "css",
+        "basics"
+      ]
+    },
+    {
+      "id": 2,
+      "fileName": "JavaScript Fundamentals - Notes",
+      "description": "Complete guide to JavaScript fundamentals",
+      "fileUrl": "https://example.com/notes/js-fundamentals.pdf",
+      "fileType": "pdf",
+      "fileSize": "3.2 MB",
+      "uploadDate": "2024-01-20",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "javascript",
+        "fundamentals"
+      ]
+    },
+    {
+      "id": 3,
+      "fileName": "JavaScript Fundamentals - Notes",
+      "description": "Complete guide to JavaScript fundamentals",
+      "fileUrl": "https://example.com/notes/js-fundamentals.pdf",
+      "fileType": "pdf",
+      "fileSize": "3.2 MB",
+      "uploadDate": "2024-01-20",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "javascript",
+        "fundamentals"
+      ]
+    },
+    {
+      "id": 1758880989223,
+      "fileName": "CS301 Handouts",
+      "description": "Handouts of CS301",
+      "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
+      "fileType": "pdf",
+      "fileSize": "3.25 MB",
+      "uploadDate": "2025-09-26",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "CS301",
+        "Data Structure"
+      ]
+    },
+    {
+      "fileName": "CS301 Handouts",
+      "description": "",
+      "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
+      "fileType": "pdf",
+      "fileSize": "3.25",
+      "tags": [
+        "data structure"
+      ],
+      "uploadDate": "2025-09-26",
+      "uploadedBy": "Learn PK",
+      "id": 1758882183355
+    }
+  ],
+  "2": [
+    {
+      "id": 3,
+      "fileName": "React Components Guide",
+      "description": "Comprehensive guide to React components",
+      "fileUrl": "https://example.com/notes/react-components.png",
+      "fileType": "image",
+      "fileSize": "1.8 MB",
+      "uploadDate": "2024-01-25",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "react",
+        "components"
+      ]
+    }
+  ],
+  "101": [
+    {
+      "id": 4,
+      "fileName": "Backend Development - Node.js",
+      "description": "Server-side development with Node.js and Express",
+      "fileUrl": "https://example.com/notes/nodejs-backend.pdf",
+      "fileType": "pdf",
+      "fileSize": "4.1 MB",
+      "uploadDate": "2024-02-01",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "nodejs",
+        "backend",
+        "express"
+      ]
+    }
+  ],
+  "102": [
+    {
+      "id": 5,
+      "fileName": "Database Design Principles",
+      "description": "SQL and database design fundamentals",
+      "fileUrl": "https://example.com/notes/database-design.pdf",
+      "fileType": "pdf",
+      "fileSize": "2.9 MB",
+      "uploadDate": "2024-02-05",
+      "uploadedBy": "Learn PK",
+      "tags": [
+        "database",
+        "sql",
+        "design"
+      ]
+    }
+  ]
+}

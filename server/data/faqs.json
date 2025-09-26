@@ -1,0 +1,80 @@
+{
+  "1": [
+    {
+      "id": 1,
+      "question": "What software will I need for video editing?",
+      "answer": "You'll need Adobe Premiere Pro, After Effects, and access to stock footage. We'll provide detailed installation guides and free alternatives if needed. ",
+      "category": "Software",
+      "createdDate": "2025-09-26",
+      "updatedDate": "2025-09-26",
+      "createdBy": "Learn PK",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "question": "Do I need prior experience in video editing?",
+      "answer": "No prior experience is required. This course starts from the basics and gradually progresses to advanced techniques. We cover everything from interface navigation to professional editing workflows.",
+      "category": "Prerequisites",
+      "createdDate": "2024-01-20",
+      "updatedDate": "2024-01-20",
+      "createdBy": "Learn PK",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "question": "How long will it take to complete the course?",
+      "answer": "The course is designed to be completed in 4-6 weeks with 2-3 hours of study per week. However, you can go at your own pace as you have lifetime access to all materials.",
+      "category": "Duration",
+      "createdDate": "2024-01-25",
+      "updatedDate": "2024-01-25",
+      "createdBy": "Learn PK",
+      "isActive": true
+    },
+    {
+      "question": "Hello World",
+      "answer": "This is mark maverick.",
+      "category": "General",
+      "createdDate": "2025-09-26",
+      "updatedDate": "2025-09-26",
+      "createdBy": "Learn PK",
+      "isActive": true,
+      "id": 1758882767922
+    }
+  ],
+  "2": [
+    {
+      "id": 4,
+      "question": "What version of React should I use?",
+      "answer": "We recommend using React 18 or later as it includes the latest features and improvements. The course covers React Hooks, Context API, and modern React patterns.",
+      "category": "Technical",
+      "createdDate": "2024-02-01",
+      "updatedDate": "2024-02-01",
+      "createdBy": "Learn PK",
+      "isActive": true
+    }
+  ],
+  "101": [
+    {
+      "id": 5,
+      "question": "What is the difference between Node.js and JavaScript?",
+      "answer": "JavaScript is a programming language, while Node.js is a runtime environment that allows you to run JavaScript on the server-side. Node.js extends JavaScript's capabilities beyond the browser.",
+      "category": "Concepts",
+      "createdDate": "2024-02-05",
+      "updatedDate": "2024-02-05",
+      "createdBy": "Learn PK",
+      "isActive": true
+    }
+  ],
+  "102": [
+    {
+      "id": 6,
+      "question": "Which database should I learn first?",
+      "answer": "We recommend starting with MySQL or PostgreSQL for relational databases. These are widely used in the industry and provide a solid foundation for database concepts.",
+      "category": "Database",
+      "createdDate": "2024-02-10",
+      "updatedDate": "2024-02-10",
+      "createdBy": "Learn PK",
+      "isActive": true
+    }
+  ]
+}

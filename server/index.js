@@ -1242,6 +1242,283 @@ app.delete('/api/recorded-lectures/:lectureId', (req, res) => {
   }
 });
 
+// Notes Endpoints
+const notesFilePath = path.join(__dirname, 'data', 'notes.json');
+
+// Helper function to read notes data
+const readNotesData = () => {
+  try {
+    const data = fs.readFileSync(notesFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading notes data:', err);
+    return {};
+  }
+};
+
+// Helper function to write notes data
+const writeNotesData = (data) => {
+  try {
+    fs.writeFileSync(notesFilePath, JSON.stringify(data, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    console.error('Error writing notes data:', err);
+    return false;
+  }
+};
+
+// Get notes for a course
+app.get('/api/notes/:courseId', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const notesData = readNotesData();
+    const courseNotes = notesData[courseId] || [];
+    res.json(courseNotes);
+  } catch (error) {
+    console.error('Error fetching notes:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Add new note
+app.post('/api/notes/:courseId', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const noteData = req.body;
+    
+    const notesData = readNotesData();
+    
+    // Initialize course notes array if it doesn't exist
+    if (!notesData[courseId]) {
+      notesData[courseId] = [];
+    }
+    
+    // Generate unique ID
+    const newId = Date.now();
+    const newNote = {
+      ...noteData,
+      id: newId
+    };
+    
+    notesData[courseId].push(newNote);
+    
+    if (writeNotesData(notesData)) {
+      res.status(201).json({ id: newId, ...newNote });
+    } else {
+      res.status(500).json({ error: 'Failed to save note' });
+    }
+  } catch (error) {
+    console.error('Error creating note:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update note
+app.put('/api/notes/:noteId', (req, res) => {
+  try {
+    const { noteId } = req.params;
+    const noteData = req.body;
+    const notesData = readNotesData();
+    
+    let updated = false;
+    
+    // Find and update the note in any course
+    for (const courseId in notesData) {
+      const notes = notesData[courseId];
+      const noteIndex = notes.findIndex(n => n.id === parseInt(noteId));
+      
+      if (noteIndex !== -1) {
+        notesData[courseId][noteIndex] = {
+          ...notes[noteIndex],
+          ...noteData,
+          id: parseInt(noteId)
+        };
+        updated = true;
+        break;
+      }
+    }
+    
+    if (updated && writeNotesData(notesData)) {
+      res.json({ message: 'Note updated successfully' });
+    } else {
+      res.status(404).json({ error: 'Note not found' });
+    }
+  } catch (error) {
+    console.error('Error updating note:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete note
+app.delete('/api/notes/:noteId', (req, res) => {
+  try {
+    const { noteId } = req.params;
+    const notesData = readNotesData();
+    
+    let deleted = false;
+    
+    // Find and delete the note from any course
+    for (const courseId in notesData) {
+      const notes = notesData[courseId];
+      const noteIndex = notes.findIndex(n => n.id === parseInt(noteId));
+      
+      if (noteIndex !== -1) {
+        notesData[courseId].splice(noteIndex, 1);
+        deleted = true;
+        break;
+      }
+    }
+    
+    if (deleted && writeNotesData(notesData)) {
+      res.json({ message: 'Note deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Note not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting note:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// FAQ Endpoints
+const faqsFilePath = path.join(__dirname, 'data', 'faqs.json');
+
+// Helper function to read FAQs data
+const readFaqsData = () => {
+  try {
+    const data = fs.readFileSync(faqsFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading FAQs data:', err);
+    return {};
+  }
+};
+
+// Helper function to write FAQs data
+const writeFaqsData = (data) => {
+  try {
+    fs.writeFileSync(faqsFilePath, JSON.stringify(data, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    console.error('Error writing FAQs data:', err);
+    return false;
+  }
+};
+
+// Get FAQs for a course
+app.get('/api/faqs/:courseId', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const faqsData = readFaqsData();
+    const courseFaqs = faqsData[courseId] || [];
+    res.json(courseFaqs);
+  } catch (error) {
+    console.error('Error fetching FAQs:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Add new FAQ
+app.post('/api/faqs/:courseId', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const faqData = req.body;
+    
+    const faqsData = readFaqsData();
+    
+    // Initialize course FAQs array if it doesn't exist
+    if (!faqsData[courseId]) {
+      faqsData[courseId] = [];
+    }
+    
+    // Generate unique ID
+    const newId = Date.now();
+    const newFaq = {
+      ...faqData,
+      id: newId
+    };
+    
+    faqsData[courseId].push(newFaq);
+    
+    if (writeFaqsData(faqsData)) {
+      res.status(201).json({ id: newId, ...newFaq });
+    } else {
+      res.status(500).json({ error: 'Failed to save FAQ' });
+    }
+  } catch (error) {
+    console.error('Error creating FAQ:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update FAQ
+app.put('/api/faqs/:faqId', (req, res) => {
+  try {
+    const { faqId } = req.params;
+    const faqData = req.body;
+    const faqsData = readFaqsData();
+    
+    let updated = false;
+    
+    // Find and update the FAQ in any course
+    for (const courseId in faqsData) {
+      const faqs = faqsData[courseId];
+      const faqIndex = faqs.findIndex(f => f.id === parseInt(faqId));
+      
+      if (faqIndex !== -1) {
+        faqsData[courseId][faqIndex] = {
+          ...faqs[faqIndex],
+          ...faqData,
+          id: parseInt(faqId),
+          updatedDate: new Date().toISOString().split('T')[0]
+        };
+        updated = true;
+        break;
+      }
+    }
+    
+    if (updated && writeFaqsData(faqsData)) {
+      res.json({ message: 'FAQ updated successfully' });
+    } else {
+      res.status(404).json({ error: 'FAQ not found' });
+    }
+  } catch (error) {
+    console.error('Error updating FAQ:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete FAQ
+app.delete('/api/faqs/:faqId', (req, res) => {
+  try {
+    const { faqId } = req.params;
+    const faqsData = readFaqsData();
+    
+    let deleted = false;
+    
+    // Find and delete the FAQ from any course
+    for (const courseId in faqsData) {
+      const faqs = faqsData[courseId];
+      const faqIndex = faqs.findIndex(f => f.id === parseInt(faqId));
+      
+      if (faqIndex !== -1) {
+        faqsData[courseId].splice(faqIndex, 1);
+        deleted = true;
+        break;
+      }
+    }
+    
+    if (deleted && writeFaqsData(faqsData)) {
+      res.json({ message: 'FAQ deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'FAQ not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting FAQ:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
