@@ -1,86 +1,306 @@
 {
   "courses": [
     {
-      "id": 1,
-      "name": "Complete Web Development Bootcamp",
-      "thumbnail": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400",
-      "description": "Learn full-stack web development from scratch with HTML, CSS, JavaScript, React, Node.js and more.",
-      "enrolledStudents": 245,
-      "duration": "12 weeks",
+      "id": 7,
+      "name": "Graphics Designing",
+      "thumbnail": "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400",
+      "description": "Master the art of visual communication through comprehensive graphics designing techniques and industry-standard tools.",
+      "enrolledStudents": 3200,
+      "duration": "30 days",
       "level": "Beginner to Advanced",
-      "instructor": "John Smith",
+      "instructor": "Learn PK",
       "rating": 4.8,
-      "totalRatings": 156,
+      "totalRatings": 256,
+      "tags": [
+        "Graphics Design",
+        "Adobe Creative Suite",
+        "Visual Design",
+        "Branding"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "name": "Artificial Intelligence Prompt",
+      "thumbnail": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400",
+      "description": "Learn to craft effective AI prompts and harness the power of artificial intelligence for various applications.",
+      "enrolledStudents": 3450,
+      "duration": "30 days",
+      "level": "Beginner to Intermediate",
+      "instructor": "Learn PK",
+      "rating": 4.9,
+      "totalRatings": 324,
+      "tags": [
+        "AI",
+        "Prompt Engineering",
+        "Machine Learning",
+        "ChatGPT"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Affiliate Marketing",
+      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
+      "description": "Build a profitable affiliate marketing business and learn proven strategies to generate passive income online.",
+      "enrolledStudents": 3800,
+      "duration": "30 days",
+      "level": "Beginner",
+      "instructor": "Learn PK",
+      "rating": 4.7,
+      "totalRatings": 412,
+      "tags": [
+        "Affiliate Marketing",
+        "Digital Marketing",
+        "Passive Income",
+        "Online Business"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "name": "Content Writing",
+      "thumbnail": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400",
+      "description": "Master the art of compelling content creation for websites, blogs, social media, and marketing campaigns.",
+      "enrolledStudents": 3150,
+      "duration": "30 days",
+      "level": "Beginner to Intermediate",
+      "instructor": "Learn PK",
+      "rating": 4.8,
+      "totalRatings": 298,
+      "tags": [
+        "Content Writing",
+        "Copywriting",
+        "SEO Writing",
+        "Creative Writing"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 15,
+      "name": "English Language and Communication",
+      "thumbnail": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400",
+      "description": "Improve your English language skills and communication abilities for professional and personal growth.",
+      "enrolledStudents": 4200,
+      "duration": "30 days",
+      "level": "All Levels",
+      "instructor": "Learn PK",
+      "rating": 4.9,
+      "totalRatings": 567,
+      "tags": [
+        "English Language",
+        "Communication Skills",
+        "Grammar",
+        "Speaking"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 12,
+      "name": "Shopify Dropshipping",
+      "thumbnail": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400",
+      "description": "Build and scale a successful Shopify dropshipping business from product research to customer acquisition.",
+      "enrolledStudents": 3650,
+      "duration": "30 days",
+      "level": "Beginner",
+      "instructor": "Learn PK",
+      "rating": 4.6,
+      "totalRatings": 389,
+      "tags": [
+        "Shopify",
+        "Dropshipping",
+        "E-commerce",
+        "Online Store"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 10,
+      "name": "Full Stack Web Development",
+      "thumbnail": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400",
+      "description": "Complete full-stack web development course covering frontend, backend, databases, and modern frameworks.",
+      "enrolledStudents": 4500,
+      "duration": "30 days",
+      "level": "Beginner to Advanced",
+      "instructor": "Learn PK",
+      "rating": 4.9,
+      "totalRatings": 623,
       "tags": [
         "Web Development",
         "JavaScript",
         "React",
-        "Node.js"
+        "Node.js",
+        "Full Stack"
       ],
-      "createdAt": "2025-09-01T10:00:00.000Z",
-      "updatedAt": "2025-09-20T15:30:00.000Z"
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
     },
     {
-      "id": 2,
-      "name": "Full Stack Digital Marketing",
-      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
-      "description": "Master digital marketing strategies including SEO, social media marketing, PPC, and analytics.",
-      "enrolledStudents": 189,
-      "duration": "8 weeks",
+      "id": 4,
+      "name": "Search Engine Optimization",
+      "thumbnail": "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=400",
+      "description": "Master SEO techniques to improve website rankings and drive organic traffic from search engines.",
+      "enrolledStudents": 3300,
+      "duration": "30 days",
       "level": "Intermediate",
-      "instructor": "Sarah Johnson",
-      "rating": 4.6,
-      "totalRatings": 98,
+      "instructor": "Learn PK",
+      "rating": 4.7,
+      "totalRatings": 445,
       "tags": [
-        "Marketing",
         "SEO",
-        "Social Media",
-        "Analytics"
+        "Digital Marketing",
+        "Google Analytics",
+        "Keyword Research"
       ],
-      "createdAt": "2025-08-15T14:20:00.000Z",
-      "updatedAt": "2025-09-24T14:48:55.451Z",
-      "price": "$199"
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 14,
+      "name": "MS Office and Digital Literacy",
+      "thumbnail": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400",
+      "description": "Comprehensive training in Microsoft Office suite and essential digital literacy skills for the modern workplace.",
+      "enrolledStudents": 5200,
+      "duration": "30 days",
+      "level": "Beginner",
+      "instructor": "Learn PK",
+      "rating": 4.8,
+      "totalRatings": 734,
+      "tags": [
+        "MS Office",
+        "Excel",
+        "Word",
+        "PowerPoint",
+        "Digital Literacy"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Amazon Virtual Assistant",
+      "thumbnail": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400",
+      "description": "Learn to become a skilled Amazon Virtual Assistant and help sellers optimize their Amazon business operations.",
+      "enrolledStudents": 3100,
+      "duration": "30 days",
+      "level": "Beginner to Intermediate",
+      "instructor": "Learn PK",
+      "rating": 4.6,
+      "totalRatings": 287,
+      "tags": [
+        "Amazon VA",
+        "E-commerce",
+        "Product Research",
+        "Amazon FBA"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 13,
+      "name": "YouTube Creator",
+      "thumbnail": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400",
+      "description": "Master YouTube content creation, optimization, and monetization strategies to build a successful channel.",
+      "enrolledStudents": 4100,
+      "duration": "30 days",
+      "level": "Beginner",
+      "instructor": "Learn PK",
+      "rating": 4.8,
+      "totalRatings": 512,
+      "tags": [
+        "YouTube",
+        "Content Creation",
+        "Video Marketing",
+        "Social Media"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 11,
+      "name": "Freelancing",
+      "thumbnail": "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400",
+      "description": "Build a successful freelancing career with proven strategies for finding clients and delivering quality work.",
+      "enrolledStudents": 3900,
+      "duration": "30 days",
+      "level": "Beginner",
+      "instructor": "Learn PK",
+      "rating": 4.7,
+      "totalRatings": 456,
+      "tags": [
+        "Freelancing",
+        "Remote Work",
+        "Client Management",
+        "Online Business"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
     },
     {
       "id": 3,
-      "name": "UI/UX Design Fundamentals",
-      "thumbnail": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=400",
-      "description": "Learn the principles of user interface and user experience design with hands-on projects.",
-      "enrolledStudents": 167,
-      "duration": "10 weeks",
-      "level": "Beginner",
-      "instructor": "Mike Chen",
-      "rating": 4.7,
-      "totalRatings": 134,
+      "name": "WordPress",
+      "thumbnail": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400",
+      "description": "Create professional websites using WordPress with themes, plugins, customization, and content management.",
+      "enrolledStudents": 3700,
+      "duration": "30 days",
+      "level": "Beginner to Intermediate",
+      "instructor": "Learn PK",
+      "rating": 4.8,
+      "totalRatings": 423,
       "tags": [
-        "Design",
-        "UI/UX",
-        "Figma",
-        "Prototyping"
+        "WordPress",
+        "Website Development",
+        "CMS",
+        "Web Design"
       ],
-      "createdAt": "2025-07-10T11:15:00.000Z",
-      "updatedAt": "2025-09-22T16:20:00.000Z"
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
     },
     {
-      "name": "Graphics Designing",
-      "thumbnail": "https://static.vecteezy.com/system/resources/thumbnails/038/940/906/small_2x/ai-generated-graphic-design-workspace-with-colorful-illustration-photo.jpeg",
-      "description": "Learn the principles of user interface and user experience design with hands-on projects.",
-      "enrolledStudents": 167,
-      "duration": "10 weeks",
-      "level": "Beginner",
-      "instructor": "Mark Maverick",
-      "rating": 4.7,
-      "totalRatings": 134,
+      "id": 2,
+      "name": "Digital Marketing",
+      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
+      "description": "Comprehensive digital marketing course covering all channels including social media, PPC, email, and content marketing.",
+      "enrolledStudents": 4300,
+      "duration": "30 days",
+      "level": "Beginner to Advanced",
+      "instructor": "Learn PK",
+      "rating": 4.9,
+      "totalRatings": 589,
       "tags": [
-        "Graphics Designing",
-        "Design",
-        "UI/UX",
-        "Figma",
-        "Prototyping"
+        "Digital Marketing",
+        "Social Media Marketing",
+        "PPC",
+        "Email Marketing"
       ],
-      "id": 1758809659026,
-      "createdAt": "2025-09-25T14:14:19.026Z",
-      "updatedAt": "2025-09-25T14:14:19.027Z"
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
+    },
+    {
+      "id": 1,
+      "name": "Video Editing",
+      "thumbnail": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400",
+      "description": "Learn professional video editing techniques using industry-standard software to create engaging video content.",
+      "enrolledStudents": 3600,
+      "duration": "30 days",
+      "level": "Beginner to Intermediate",
+      "instructor": "Learn PK",
+      "rating": 4.8,
+      "totalRatings": 398,
+      "tags": [
+        "Video Editing",
+        "Adobe Premiere",
+        "After Effects",
+        "Content Creation"
+      ],
+      "createdAt": "2025-09-26T10:00:00.000Z",
+      "updatedAt": "2025-09-26T10:00:00.000Z"
     }
   ]
 }
