@@ -1,10 +1,319 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth, useBatch } from '../../hooks/reduxHooks';
+import { FaPlus } from 'react-icons/fa';
+import RecordedLectureCard from '../RecordedLectureCard';
+import RecordedLectureForm from '../RecordedLectureForm';
+import VideoModal from '../VideoModal';
+import VideoPlayerModal from '../VideoPlayerModal';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
+const API_BASE_URL = 'http://localhost:3001/api';
 
 const RecordedLectures = ({ course }) => {
+  const [recordedLectures, setRecordedLectures] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lectureForm, setLectureForm] = useState({
+    isOpen: false,
+    lecture: null
+  });
+  const [videoModal, setVideoModal] = useState({
+    isOpen: false,
+    videoUrl: '',
+    title: ''
+  });
+  const [videoPlayerModal, setVideoPlayerModal] = useState({
+    isOpen: false,
+    videoUrl: '',
+    title: ''
+  });
+
+  // Call hooks with fallback values
+  const authData = useAuth() || { user: null, isAdmin: false };
+  const batchData = useBatch() || { selectedBatch: 'Batch A' };
+
+  // Safely destructure with defaults
+  const user = authData?.user || null;
+  const isAdmin = authData?.isAdmin || false;
+  const selectedBatch = batchData?.selectedBatch || 'Batch A';
+
+  // Determine video type
+  const getVideoType = (url) => {
+    if (!url) return 'unknown';
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      return 'youtube';
+    }
+    const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.mkv'];
+    const lowerUrl = url.toLowerCase();
+    if (videoExtensions.some(ext => lowerUrl.includes(ext))) {
+      return 'raw';
+    }
+    return 'unknown';
+  };
+
+  // Fetch recorded lectures
+  const fetchRecordedLectures = async () => {
+    try {
+      setLoading(true);
+      
+      // First, try to load from localStorage
+      const stored = localStorage.getItem(`recorded-lectures-${course.id}`);
+      if (stored) {
+        try {
+          const parsedData = JSON.parse(stored);
+          setRecordedLectures(parsedData);
+          return;
+        } catch (parseError) {
+          console.warn('Error parsing stored recorded lectures:', parseError);
+        }
+      }
+
+      // If no localStorage data, try to load from server data file
+      try {
+        const response = await fetch('/server/data/recorded-lectures.json');
+        if (response.ok) {
+          const data = await response.json();
+          const courseLectures = data[course.id.toString()] || [];
+          setRecordedLectures(courseLectures);
+          // Store in localStorage for future use
+          localStorage.setItem(`recorded-lectures-${course.id}`, JSON.stringify(courseLectures));
+          return;
+        }
+      } catch (fetchError) {
+        console.warn('Error loading recorded lectures from data file:', fetchError);
+      }
+
+      // Fallback: try API endpoint (when available)
+      try {
+        const response = await axios.get(`${API_BASE_URL}/recorded-lectures/${course.id}`);
+        setRecordedLectures(response.data || []);
+      } catch (apiError) {
+        console.warn('API endpoint not available, using empty array');
+        setRecordedLectures([]);
+      }
+    } catch (error) {
+      console.error('Error fetching recorded lectures:', error);
+      setRecordedLectures([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (course?.id) {
+      fetchRecordedLectures();
+    }
+  }, [course?.id]);
+
+  // Handle adding new lecture
+  const handleAddLecture = () => {
+    if (!isAdmin) return;
+    setLectureForm({
+      isOpen: true,
+      lecture: null
+    });
+  };
+
+  // Handle editing lecture
+  const handleEditLecture = (lecture) => {
+    if (!isAdmin) return;
+    setLectureForm({
+      isOpen: true,
+      lecture
+    });
+  };
+
+  // Handle deleting lecture
+  const handleDeleteLecture = async (lecture) => {
+    if (!isAdmin) return;
+    
+    try {
+      // Try API call first
+      await axios.delete(`${API_BASE_URL}/recorded-lectures/${lecture.id}`);
+      toast.success('Lecture deleted successfully');
+    } catch (error) {
+      console.warn('API delete failed, using local storage');
+    }
+    
+    // Update local state and localStorage
+    const updatedLectures = recordedLectures.filter(l => l.id !== lecture.id);
+    setRecordedLectures(updatedLectures);
+    localStorage.setItem(`recorded-lectures-${course.id}`, JSON.stringify(updatedLectures));
+    
+    if (!error) {
+      toast.success('Lecture deleted successfully');
+    }
+  };
+
+  // Handle playing lecture
+  const handlePlayLecture = (lecture) => {
+    const videoUrl = lecture.videoUrl || lecture.video_url;
+    const title = lecture.lectureName || lecture.title || `Lecture ${lecture.lecture_number}`;
+    const videoType = getVideoType(videoUrl);
+
+    if (videoType === 'youtube') {
+      setVideoModal({
+        isOpen: true,
+        videoUrl,
+        title
+      });
+    } else if (videoType === 'raw') {
+      setVideoPlayerModal({
+        isOpen: true,
+        videoUrl,
+        title
+      });
+    } else {
+      toast.error('Unsupported video format');
+    }
+  };
+
+  // Handle form submission
+  const handleFormSubmit = async (lectureData) => {
+    try {
+      let updatedLectures;
+      
+      if (lectureForm.lecture) {
+        // Update existing lecture
+        const lectureId = lectureForm.lecture.id;
+        
+        try {
+          await axios.put(`${API_BASE_URL}/recorded-lectures/${lectureId}`, lectureData);
+        } catch (error) {
+          console.warn('API update failed, using local storage');
+        }
+        
+        updatedLectures = recordedLectures.map(l => 
+          l.id === lectureId ? { ...l, ...lectureData, id: lectureId } : l
+        );
+        toast.success('Lecture updated successfully');
+      } else {
+        // Add new lecture
+        const newLecture = {
+          ...lectureData,
+          id: Date.now(), // Simple ID generation
+          course_id: course.id
+        };
+        
+        try {
+          const response = await axios.post(`${API_BASE_URL}/recorded-lectures`, newLecture);
+          if (response.data?.id) {
+            newLecture.id = response.data.id;
+          }
+        } catch (error) {
+          console.warn('API create failed, using local storage');
+        }
+        
+        updatedLectures = [...recordedLectures, newLecture];
+        toast.success('Lecture added successfully');
+      }
+      
+      setRecordedLectures(updatedLectures);
+      localStorage.setItem(`recorded-lectures-${course.id}`, JSON.stringify(updatedLectures));
+      
+    } catch (error) {
+      console.error('Error saving lecture:', error);
+      toast.error('Failed to save lecture');
+      throw error;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Recorded Lectures</h2>
+        <div className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+          <span className="ml-2 text-gray-600">Loading recorded lectures...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Recorded Lectures</h2>
-      <p className="text-gray-600">Recorded Lectures component content will be implemented here.</p>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Recorded Lectures</h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Course: {course.name} • {recordedLectures.length} lecture{recordedLectures.length !== 1 ? 's' : ''}
+          </p>
+        </div>
+        {isAdmin && (
+          <button
+            onClick={handleAddLecture}
+            className="flex items-center px-4 py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors"
+          >
+            <FaPlus className="mr-2" />
+            Add Lecture
+          </button>
+        )}
+      </div>
+
+      {/* Content */}
+      {recordedLectures.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-gray-400 text-6xl mb-4">🎬</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No recorded lectures yet</h3>
+          <p className="text-gray-600 mb-4">
+            {isAdmin 
+              ? 'Get started by adding your first recorded lecture.'
+              : 'Recorded lectures will appear here once they are added by the instructor.'
+            }
+          </p>
+          {isAdmin && (
+            <button
+              onClick={handleAddLecture}
+              className="inline-flex items-center px-4 py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors"
+            >
+              <FaPlus className="mr-2" />
+              Add First Lecture
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {recordedLectures
+            .sort((a, b) => (a.lecture_number || 0) - (b.lecture_number || 0))
+            .map((lecture) => (
+              <RecordedLectureCard
+                key={lecture.id}
+                lecture={lecture}
+                isAdmin={isAdmin}
+                onPlay={handlePlayLecture}
+                onEdit={handleEditLecture}
+                onDelete={handleDeleteLecture}
+              />
+            ))}
+        </div>
+      )}
+
+      {/* Lecture Form Modal */}
+      <RecordedLectureForm
+        isOpen={lectureForm.isOpen}
+        onClose={() => setLectureForm({ isOpen: false, lecture: null })}
+        onSubmit={handleFormSubmit}
+        lecture={lectureForm.lecture}
+        existingLectures={recordedLectures}
+        course={course}
+      />
+
+      {/* YouTube Video Modal */}
+      <VideoModal
+        isOpen={videoModal.isOpen}
+        onClose={() => setVideoModal({ isOpen: false, videoUrl: '', title: '' })}
+        videoUrl={videoModal.videoUrl}
+        title={videoModal.title}
+      />
+
+      {/* Raw Video Player Modal */}
+      <VideoPlayerModal
+        isOpen={videoPlayerModal.isOpen}
+        onClose={() => setVideoPlayerModal({ isOpen: false, videoUrl: '', title: '' })}
+        videoUrl={videoPlayerModal.videoUrl}
+        title={videoPlayerModal.title}
+      />
     </div>
   );
 };

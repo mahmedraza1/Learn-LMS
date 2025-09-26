@@ -1098,6 +1098,150 @@ app.get('/api/dashboard-stats', (req, res) => {
 
 // Start the server
 
+// Recorded Lectures Endpoints
+const recordedLecturesFilePath = path.join(__dirname, 'data', 'recorded-lectures.json');
+
+// Helper function to read recorded lectures data
+const readRecordedLecturesData = () => {
+  try {
+    const data = fs.readFileSync(recordedLecturesFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Error reading recorded lectures data:', err);
+    return {};
+  }
+};
+
+// Helper function to write recorded lectures data
+const writeRecordedLecturesData = (data) => {
+  try {
+    fs.writeFileSync(recordedLecturesFilePath, JSON.stringify(data, null, 2), 'utf8');
+    return true;
+  } catch (err) {
+    console.error('Error writing recorded lectures data:', err);
+    return false;
+  }
+};
+
+// Get recorded lectures for a course
+app.get('/api/recorded-lectures/:courseId', (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const recordedLecturesData = readRecordedLecturesData();
+    const courseLectures = recordedLecturesData[courseId] || [];
+    res.json(courseLectures);
+  } catch (error) {
+    console.error('Error fetching recorded lectures:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Add new recorded lecture
+app.post('/api/recorded-lectures', (req, res) => {
+  try {
+    const lectureData = req.body;
+    const { course_id } = lectureData;
+    
+    if (!course_id) {
+      return res.status(400).json({ error: 'Course ID is required' });
+    }
+    
+    const recordedLecturesData = readRecordedLecturesData();
+    
+    // Initialize course lectures array if it doesn't exist
+    if (!recordedLecturesData[course_id]) {
+      recordedLecturesData[course_id] = [];
+    }
+    
+    // Generate unique ID
+    const newId = Date.now();
+    const newLecture = {
+      ...lectureData,
+      id: newId,
+      uploadDate: new Date().toISOString().split('T')[0],
+      views: 0
+    };
+    
+    recordedLecturesData[course_id].push(newLecture);
+    
+    if (writeRecordedLecturesData(recordedLecturesData)) {
+      res.status(201).json({ id: newId, ...newLecture });
+    } else {
+      res.status(500).json({ error: 'Failed to save recorded lecture' });
+    }
+  } catch (error) {
+    console.error('Error creating recorded lecture:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update recorded lecture
+app.put('/api/recorded-lectures/:lectureId', (req, res) => {
+  try {
+    const { lectureId } = req.params;
+    const lectureData = req.body;
+    const recordedLecturesData = readRecordedLecturesData();
+    
+    let updated = false;
+    
+    // Find and update the lecture in any course
+    for (const courseId in recordedLecturesData) {
+      const lectures = recordedLecturesData[courseId];
+      const lectureIndex = lectures.findIndex(l => l.id === parseInt(lectureId));
+      
+      if (lectureIndex !== -1) {
+        recordedLecturesData[courseId][lectureIndex] = {
+          ...lectures[lectureIndex],
+          ...lectureData,
+          id: parseInt(lectureId)
+        };
+        updated = true;
+        break;
+      }
+    }
+    
+    if (updated && writeRecordedLecturesData(recordedLecturesData)) {
+      res.json({ message: 'Recorded lecture updated successfully' });
+    } else {
+      res.status(404).json({ error: 'Recorded lecture not found' });
+    }
+  } catch (error) {
+    console.error('Error updating recorded lecture:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete recorded lecture
+app.delete('/api/recorded-lectures/:lectureId', (req, res) => {
+  try {
+    const { lectureId } = req.params;
+    const recordedLecturesData = readRecordedLecturesData();
+    
+    let deleted = false;
+    
+    // Find and delete the lecture from any course
+    for (const courseId in recordedLecturesData) {
+      const lectures = recordedLecturesData[courseId];
+      const lectureIndex = lectures.findIndex(l => l.id === parseInt(lectureId));
+      
+      if (lectureIndex !== -1) {
+        recordedLecturesData[courseId].splice(lectureIndex, 1);
+        deleted = true;
+        break;
+      }
+    }
+    
+    if (deleted && writeRecordedLecturesData(recordedLecturesData)) {
+      res.json({ message: 'Recorded lecture deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Recorded lecture not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting recorded lecture:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 

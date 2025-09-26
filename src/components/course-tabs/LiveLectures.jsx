@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, useBatch } from '../../hooks/reduxHooks';
 import LectureCard from '../LectureCard';
+import VideoModal from '../VideoModal';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -10,6 +11,10 @@ const LiveLectures = ({ course }) => {
   const [lectures, setLectures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeBatchTab, setActiveBatchTab] = useState('Batch A');
+  const [videoModal, setVideoModal] = useState({
+    isOpen: false,
+    videoUrl: ""
+  });
 
   // Call hooks with fallback values
   const authData = useAuth() || { user: null, isAdmin: false };
@@ -120,7 +125,10 @@ const LiveLectures = ({ course }) => {
 
   const handleAttendLecture = (lecture) => {
     if (lecture.youtube_url) {
-      window.open(lecture.youtube_url, '_blank');
+      setVideoModal({
+        isOpen: true,
+        videoUrl: lecture.youtube_url
+      });
     }
   };
 
@@ -259,6 +267,13 @@ const LiveLectures = ({ course }) => {
           </div>
         </div>
       )}
+
+      {/* Video Modal */}
+      <VideoModal
+        isOpen={videoModal.isOpen}
+        onClose={() => setVideoModal({ isOpen: false, videoUrl: "" })}
+        videoUrl={videoModal.videoUrl}
+      />
     </div>
   );
 };
