@@ -11,11 +11,13 @@ import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAuth();
-  const { batches, courses, selectedBatch, setSelectedBatch } = useBatch();
-  const { addLecture, updateLecture, deleteLecture, getLecturesForCourse } = useLecture();
   
-  // State for lecture form and video modal
+  // Call hooks individually to ensure stable order
+  const authData = useAuth();
+  const batchData = useBatch();
+  const lectureData = useLecture();
+  
+  // State for lecture form and video modal - MUST be called before any early returns
   const [lectureForm, setLectureForm] = useState({
     isOpen: false,
     courseId: null,
@@ -32,6 +34,23 @@ const AdminDashboard = () => {
     isOpen: false,
     announcement: null
   });
+  
+  // Destructure after hook calls to avoid conditional destructuring
+  const { user } = authData;
+  const { batches, courses, selectedBatch, setSelectedBatch, loading: batchLoading } = batchData;
+  const { addLecture, updateLecture, deleteLecture, getLecturesForCourse } = lectureData;
+  
+  // Early return if still loading - but AFTER all hooks are called
+  if (batchLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
   
   // Handler for editing lecture - now handles both editing and adding lectures
   const handleEditLecture = (lecture, courseId) => {
@@ -168,8 +187,34 @@ const AdminDashboard = () => {
     }
   };
   
-  // Get courses for the selected batch
-  const batchCourses = courses[selectedBatch] || [];
+  // Get courses for the selected batch with safety checks
+  const batchCourses = (courses && selectedBatch && courses[selectedBatch]) ? courses[selectedBatch] : [];
+
+  // Render course cards - ensure stable component structure
+  const renderCourses = () => {
+    if (batchCourses.length === 0) {
+      return (
+        <div className="rounded-lg bg-white p-8 text-center shadow-sm">
+          <p className="text-gray-600">
+            No courses available for this batch.
+          </p>
+        </div>
+      );
+    }
+
+    return batchCourses.map((course) => (
+      <CourseCard
+        key={`${selectedBatch}-${course.id}`}
+        course={course}
+        isAdmin={true}
+        onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
+        onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
+        onVideoPreview={handleVideoPreview}
+        onStartLecture={(lecture) => handleStartLecture(lecture, course.id)}
+        onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
+      />
+    ));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-10">
@@ -180,7 +225,7 @@ const AdminDashboard = () => {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
               <p className="mt-1 text-sm text-gray-600">
-                Welcome, {user.name}
+                Welcome, {user?.name || 'Admin'}
               </p>
             </div>
           </div>
@@ -191,10 +236,10 @@ const AdminDashboard = () => {
       <div className="border-b border-gray-200 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex space-x-8">
-            {batches.map(batch => (
+            {(batches || []).map(batch => (
               <button
                 key={batch}
-                onClick={() => setSelectedBatch(batch)}
+                onClick={() => setSelectedBatch && setSelectedBatch(batch)}
                 className={`border-b-2 px-1 py-4 text-sm font-medium ${
                   selectedBatch === batch
                     ? 'border-[#0d7c66] text-[#0d7c66]'
@@ -220,26 +265,7 @@ const AdminDashboard = () => {
           </h2>
         </div>
 
-        {batchCourses.length === 0 ? (
-          <div className="rounded-lg bg-white p-8 text-center shadow-sm">
-            <p className="text-gray-600">
-              No courses available for this batch.
-            </p>
-          </div>
-        ) : (
-          batchCourses.map((course) => (
-            <CourseCard
-              key={course.id}
-              course={course}
-              isAdmin={true}
-              onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
-              onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
-              onVideoPreview={handleVideoPreview}
-              onStartLecture={(lecture) => handleStartLecture(lecture, course.id)}
-              onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
-            />
-          ))
-        )}
+        {renderCourses()}
       </main>
 
       {/* Lecture Form Modal */}

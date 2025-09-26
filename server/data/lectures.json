@@ -87,7 +87,20 @@
       "6": [],
       "7": [],
       "8": [],
-      "9": [],
+      "9": [
+        {
+          "title": "Whoami",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-09-26",
+          "time": "14:09",
+          "day": "Friday",
+          "course_id": 9,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1758877749194
+        }
+      ],
       "10": [],
       "11": [],
       "12": [],
