@@ -67,25 +67,25 @@ const CourseCatalogCard = ({ course, isAdmin = false, onEdit, onDelete }) => {
       </div>
 
       {/* Course Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         {/* Course Name */}
-        <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
           {course.name}
         </h3>
 
         {/* Instructor */}
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-xs sm:text-sm text-gray-600 mb-2">
           By <span className="font-medium">{course.instructor}</span>
         </p>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+        <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-3">
           {course.description}
         </p>
 
         {/* Course Stats */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-4 text-sm text-gray-500">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm text-gray-500">
             {/* Enrolled Students */}
             <div className="flex items-center space-x-1">
               <MdPeople className="w-4 h-4" />
@@ -112,7 +112,7 @@ const CourseCatalogCard = ({ course, isAdmin = false, onEdit, onDelete }) => {
         {/* Tags */}
         {course.tags && course.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {course.tags.slice(0, 3).map((tag, index) => (
+            {course.tags.slice(0, 2).map((tag, index) => (
               <span
                 key={index}
                 className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full"
@@ -120,9 +120,9 @@ const CourseCatalogCard = ({ course, isAdmin = false, onEdit, onDelete }) => {
                 {tag}
               </span>
             ))}
-            {course.tags.length > 3 && (
+            {course.tags.length > 2 && (
               <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
-                +{course.tags.length - 3} more
+                +{course.tags.length - 2} more
               </span>
             )}
           </div>
@@ -133,14 +133,14 @@ const CourseCatalogCard = ({ course, isAdmin = false, onEdit, onDelete }) => {
           {isAdmin ? (
             <button 
               onClick={handleStartLearning}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors w-full"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors w-full"
             >
               View Course
             </button>
           ) : (
             <button 
               onClick={handleStartLearning}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors w-full"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors w-full"
             >
               Start Learning
             </button>

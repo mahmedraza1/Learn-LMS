@@ -6,6 +6,43 @@
   --color-primary-hover: #0a6a58;
 }
 
+/* Hide scrollbar for horizontal scrolling on mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch scrolling for mobile */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area insets for mobile devices with notches */
+@supports (padding: max(0px)) {
+  .safe-area-inset {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  /* Ensure proper spacing for mobile bottom navigation */
+  .mobile-content-spacing {
+    padding-bottom: 5rem;
+  }
+  
+  /* Optimize touch targets for mobile */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 /* Button styles using direct classes instead of @apply */
 .btn-primary {
   background-color: #0d7c66;

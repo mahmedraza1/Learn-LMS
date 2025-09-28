@@ -93,31 +93,33 @@ const Courses = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Courses</h1>
-              <p className="mt-1 text-sm text-gray-600">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Courses</h1>
+              <p className="mt-1 text-xs sm:text-sm text-gray-600">
                 {isAdmin ? 'Manage and organize all courses' : 'Explore available courses'}
               </p>
             </div>
             
             {isAdmin && (
-              <button
-                onClick={handleAddCourse}
-                className="mt-4 sm:mt-0 flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-              >
-                <MdAdd className="w-5 h-5" />
-                Add Course
-              </button>
+              <div className="flex-shrink-0">
+                <button
+                  onClick={handleAddCourse}
+                  className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base w-full sm:w-auto"
+                >
+                  <MdAdd className="w-4 h-4 sm:w-5 sm:h-5" />
+                  Add Course
+                </button>
+              </div>
             )}
           </div>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="container mx-auto px-6 py-6">
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
@@ -193,7 +195,7 @@ const Courses = () => {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredCourses.map((course) => (
                   <CourseCatalogCard
                     key={course.id}

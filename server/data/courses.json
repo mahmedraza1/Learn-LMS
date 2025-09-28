@@ -14,37 +14,35 @@
       "tags": [
         "Graphics Design",
         "Adobe Creative Suite",
-        "Visual Design",
-        "Branding"
+        "Visual Design"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:06:54.975Z"
     },
     {
       "id": 9,
       "name": "Artificial Intelligence Prompt",
       "thumbnail": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400",
-      "description": "Learn to craft effective AI prompts and harness the power of artificial intelligence for various applications.",
+      "description": "Learn to craft effective AI prompts and harness the power of artificial intelligence for various applications. AI is power learn to use it",
       "enrolledStudents": 3450,
       "duration": "30 days",
-      "level": "Beginner to Intermediate",
+      "level": "Intermediate",
       "instructor": "Learn PK",
       "rating": 4.9,
       "totalRatings": 324,
       "tags": [
         "AI",
         "Prompt Engineering",
-        "Machine Learning",
-        "ChatGPT"
+        "Machine Learning"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:07:33.563Z"
     },
     {
       "id": 5,
       "name": "Affiliate Marketing",
       "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
-      "description": "Build a profitable affiliate marketing business and learn proven strategies to generate passive income online.",
+      "description": "Build a profitable affiliate marketing business and learn proven strategies to generate passive income online. Explore the marketing explore the opportunities.",
       "enrolledStudents": 3800,
       "duration": "30 days",
       "level": "Beginner",
@@ -54,11 +52,10 @@
       "tags": [
         "Affiliate Marketing",
         "Digital Marketing",
-        "Passive Income",
-        "Online Business"
+        "Passive Income"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:08:13.254Z"
     },
     {
       "id": 8,
@@ -67,7 +64,7 @@
       "description": "Master the art of compelling content creation for websites, blogs, social media, and marketing campaigns.",
       "enrolledStudents": 3150,
       "duration": "30 days",
-      "level": "Beginner to Intermediate",
+      "level": "Advanced",
       "instructor": "Learn PK",
       "rating": 4.8,
       "totalRatings": 298,
@@ -78,7 +75,7 @@
         "Creative Writing"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:12:53.839Z"
     },
     {
       "id": 15,
@@ -87,7 +84,7 @@
       "description": "Improve your English language skills and communication abilities for professional and personal growth.",
       "enrolledStudents": 4200,
       "duration": "30 days",
-      "level": "All Levels",
+      "level": "Advanced",
       "instructor": "Learn PK",
       "rating": 4.9,
       "totalRatings": 567,
@@ -98,7 +95,7 @@
         "Speaking"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:13:00.050Z"
     },
     {
       "id": 12,
@@ -145,7 +142,7 @@
       "id": 4,
       "name": "Search Engine Optimization",
       "thumbnail": "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=400",
-      "description": "Master SEO techniques to improve website rankings and drive organic traffic from search engines.",
+      "description": "Master SEO techniques to improve website rankings and drive organic traffic from search engines. Learn SEO learn boosting your site and products.",
       "enrolledStudents": 3300,
       "duration": "30 days",
       "level": "Intermediate",
@@ -159,7 +156,7 @@
         "Keyword Research"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:11:59.842Z"
     },
     {
       "id": 14,
@@ -186,10 +183,10 @@
       "id": 6,
       "name": "Amazon Virtual Assistant",
       "thumbnail": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400",
-      "description": "Learn to become a skilled Amazon Virtual Assistant and help sellers optimize their Amazon business operations.",
+      "description": "Learn to become a skilled Amazon Virtual Assistant and help sellers optimize their Amazon business operations. Opportunity is vaiting grab that",
       "enrolledStudents": 3100,
       "duration": "30 days",
-      "level": "Beginner to Intermediate",
+      "level": "Intermediate",
       "instructor": "Learn PK",
       "rating": 4.6,
       "totalRatings": 287,
@@ -200,13 +197,13 @@
         "Amazon FBA"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:12:43.699Z"
     },
     {
       "id": 13,
       "name": "YouTube Creator",
       "thumbnail": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400",
-      "description": "Master YouTube content creation, optimization, and monetization strategies to build a successful channel.",
+      "description": "Master YouTube content creation, optimization, and monetization strategies to build a successful channel. Raise you voice now.",
       "enrolledStudents": 4100,
       "duration": "30 days",
       "level": "Beginner",
@@ -220,7 +217,7 @@
         "Social Media"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:12:25.382Z"
     },
     {
       "id": 11,
@@ -249,7 +246,7 @@
       "description": "Create professional websites using WordPress with themes, plugins, customization, and content management.",
       "enrolledStudents": 3700,
       "duration": "30 days",
-      "level": "Beginner to Intermediate",
+      "level": "Intermediate",
       "instructor": "Learn PK",
       "rating": 4.8,
       "totalRatings": 423,
@@ -260,7 +257,7 @@
         "Web Design"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:13:15.825Z"
     },
     {
       "id": 2,
@@ -289,7 +286,7 @@
       "description": "Learn professional video editing techniques using industry-standard software to create engaging video content.",
       "enrolledStudents": 3600,
       "duration": "30 days",
-      "level": "Beginner to Intermediate",
+      "level": "Beginner to Advanced",
       "instructor": "Learn PK",
       "rating": 4.8,
       "totalRatings": 398,
@@ -300,7 +297,7 @@
         "Content Creation"
       ],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-28T03:13:22.585Z"
     }
   ]
 }

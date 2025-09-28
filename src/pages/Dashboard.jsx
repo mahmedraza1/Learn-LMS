@@ -14,19 +14,19 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 truncate">
                 {isAdmin ? 'Admin Dashboard' : 'Student Dashboard'}
               </h1>
-              <p className="mt-1 text-lg text-gray-600">
+              <p className="mt-1 text-sm sm:text-base lg:text-lg text-gray-600 truncate">
                 Welcome back, {user?.name || 'User'}
               </p>
             </div>
             {!isAdmin && user?.batch && (
-              <div className="mt-3 sm:mt-0">
-                <span className="inline-flex items-center rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-800">
+              <div className="flex-shrink-0">
+                <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium text-emerald-800">
                   {user.batch}
                 </span>
               </div>
@@ -36,7 +36,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Dashboard Statistics */}
         <DashboardStats user={user} isAdmin={isAdmin} />
         
@@ -44,31 +44,31 @@ const Dashboard = () => {
         <DashboardVideoSection isAdmin={isAdmin} />
         
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-            <div className="space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Quick Actions</h3>
+            <div className="space-y-2 sm:space-y-3">
               {isAdmin ? (
                 <>
-                  <a href="/courses" className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg text-center transition-colors">
+                  <a href="/courses" className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base">
                     Manage Courses
                   </a>
-                  <a href="/live-lecture" className="block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center transition-colors">
+                  <a href="/live-lecture" className="block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base">
                     Live Lectures
                   </a>
                   <button 
                     onClick={() => setVideoManagementOpen(true)}
-                    className="block w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg text-center transition-colors"
+                    className="block w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base"
                   >
                     Manage Videos
                   </button>
                 </>
               ) : (
                 <>
-                  <a href="/courses" className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg text-center transition-colors">
+                  <a href="/courses" className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base">
                     Browse Courses
                   </a>
-                  <a href="/live-lecture" className="block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-center transition-colors">
+                  <a href="/live-lecture" className="block w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base">
                     My Classes
                   </a>
                 </>
@@ -76,15 +76,15 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Recent Activity</h3>
             <div className="text-sm text-gray-600">
               <p>No recent activity to display.</p>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Notifications</h3>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Notifications</h3>
             <div className="text-sm text-gray-600">
               <p>No new notifications.</p>
             </div>

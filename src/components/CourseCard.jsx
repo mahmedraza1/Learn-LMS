@@ -147,49 +147,51 @@ const CourseCard = ({
   // Don't auto-expand any courses as per the requirement
 
   return (
-    <div className={`mb-6 overflow-hidden rounded-lg ${shouldHaveLectureToday ? 'border-2 border-[#0d7c66]' : 'border border-gray-200'} bg-white shadow-sm`}>
+    <div className={`mb-4 sm:mb-6 overflow-hidden rounded-lg ${shouldHaveLectureToday ? 'border-2 border-[#0d7c66]' : 'border border-gray-200'} bg-white shadow-sm`}>
       {/* Course header */}
       <div 
-        className={`flex cursor-pointer items-center justify-between px-6 py-4 ${shouldHaveLectureToday ? 'bg-green-50' : 'bg-gray-50'}`}
+        className={`flex cursor-pointer items-center justify-between px-3 sm:px-6 py-3 sm:py-4 ${shouldHaveLectureToday ? 'bg-green-50' : 'bg-gray-50'}`}
         onClick={toggleExpand}
       >
-        <h2 className="text-xl font-bold text-gray-800">
-          {course.title} <span className="text-xs font-normal text-gray-500">({course.batch})</span>
-          {shouldHaveLectureToday && (
-            <span className="ml-3 text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
-              Today's Lecture
-            </span>
-          )}
-        </h2>
-        <div className="flex items-center">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800 truncate">
+            {course.title}
+          </h2>
+          <div className="flex flex-wrap items-center gap-2 mt-1">
+            <span className="text-xs font-normal text-gray-500">({course.batch})</span>
+            {shouldHaveLectureToday && (
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                Today's Lecture
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center flex-shrink-0 ml-2">
           {isExpanded ? (
-            <FaAngleUp className="text-gray-500" />
+            <FaAngleUp className="text-gray-500 w-4 h-4 sm:w-5 sm:h-5" />
           ) : (
-            <FaAngleDown className="text-gray-500" />
+            <FaAngleDown className="text-gray-500 w-4 h-4 sm:w-5 sm:h-5" />
           )}
         </div>
       </div>
       
       {/* Lectures grid - shown when expanded */}
       {isExpanded && (
-        <div className="p-6">
+        <div className="p-3 sm:p-6">
           {/* Announcement section */}
           <div className="mb-6">
             {/* Add Announcement button - visible only to admins */}
             {isAdmin && (
               <button 
-                className="mb-4 flex items-center rounded-md bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100"
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowAnnouncementForm(true);
-                  setEditingAnnouncement(null);
                 }}
+                className="mb-3 sm:mb-4 flex items-center rounded-md bg-green-50 px-3 sm:px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-100"
               >
-                <FaPlus className="mr-2" /> Add Announcement
+                <FaPlus className="mr-1 sm:mr-2 w-3 h-3 sm:w-4 sm:h-4" /> Add Announcement
               </button>
-            )}
-            
-            {/* Display announcements */}
+            )}            {/* Display announcements */}
             {announcements.length > 0 ? (
               <div className="space-y-4">
                 {announcements.map(announcement => (
@@ -233,9 +235,9 @@ const CourseCard = ({
           
           {/* Add Lecture button - visible only to admins/instructors */}
           {isAdmin && (
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <button 
-                className="mb-4 flex items-center rounded-md bg-green-50 px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-100"
+                className="mb-3 sm:mb-4 flex items-center rounded-md bg-green-50 px-3 sm:px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-100"
                 onClick={(e) => {
                   e.stopPropagation();
                   // Create an empty lecture object to be edited
@@ -247,13 +249,13 @@ const CourseCard = ({
                   handleEditLecture(emptyLecture);
                 }}
               >
-                <FaPlus className="mr-2" /> Add Lecture
+                <FaPlus className="mr-1 sm:mr-2 w-3 h-3 sm:w-4 sm:h-4" /> Add Lecture
               </button>
             </div>
           )}
           
           {/* Lecture grid */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {displayedLectures.length > 0 ? (
               displayedLectures.map((lecture, index) => {
                 // Find the original index in the full lectures array to get correct lecture number

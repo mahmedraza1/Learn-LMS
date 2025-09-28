@@ -126,7 +126,7 @@ const LectureCard = ({
   return (
     <div className={cardClassName}>
       {/* Thumbnail or placeholder */}
-      <div className="relative h-40 bg-gray-100">
+      <div className="relative h-32 sm:h-40 bg-gray-100">
         {getThumbnailUrl() ? (
           <img 
             src={getThumbnailUrl()} 
@@ -140,21 +140,21 @@ const LectureCard = ({
         )}
         
         {/* Date badge */}
-        <div className="absolute bottom-2 left-2 rounded-full bg-white/90 px-3 py-1 text-xs font-medium shadow-sm">
+        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full bg-white/90 px-2 sm:px-3 py-1 text-xs font-medium shadow-sm">
           <div className="flex flex-col">
             <div className="flex items-center space-x-1">
-              <FaClock className="text-gray-500" />
-              <span>{formatDate(scheduleDate)}</span>
+              <FaClock className="text-gray-500 w-2 h-2 sm:w-3 sm:h-3" />
+              <span className="text-xs sm:text-sm">{formatDate(scheduleDate)}</span>
             </div>
             <div className="flex items-center justify-center text-xs text-gray-600 font-medium mt-0.5">
-              <FaCalendarAlt className="mr-1 text-gray-500 text-[10px]" />
+              <FaCalendarAlt className="mr-1 text-gray-500 text-[8px] sm:text-[10px]" />
               {getDayOfWeek(scheduleDate)}
             </div>
           </div>
         </div>
         
         {/* Status Badge at top-right corner */}
-        <div className={`absolute top-2 right-2 rounded-full px-3 py-1 text-xs font-medium shadow-sm ${
+        <div className={`absolute top-1 sm:top-2 right-1 sm:right-2 rounded-full px-2 sm:px-3 py-1 text-xs font-medium shadow-sm ${
           lecture?.delivered 
             ? 'bg-green-100 text-green-800' 
             : isTodayLecture 
@@ -163,37 +163,40 @@ const LectureCard = ({
         }`}>
           {lecture?.delivered ? (
             <span className="flex items-center">
-              <FaCheck className="mr-1" />
-              Delivered
+              <FaCheck className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
+              <span className="hidden sm:inline">Delivered</span>
+              <span className="sm:hidden">Done</span>
             </span>
           ) : isTodayLecture ? (
             <span className="flex items-center">
-              <FaClock className="mr-1" />
-              Available
+              <FaClock className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
+              <span className="hidden sm:inline">Available</span>
+              <span className="sm:hidden">Now</span>
             </span>
           ) : (
             <span className="flex items-center">
-              <FaCalendarAlt className="mr-1" />
-              Upcoming Soon
+              <FaCalendarAlt className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
+              <span className="hidden sm:inline">Upcoming Soon</span>
+              <span className="sm:hidden">Soon</span>
             </span>
           )}
         </div>
       </div>
       
       {/* Card content */}
-      <div className="p-4">
-        <h3 className="mb-2 text-lg font-semibold flex items-center">
-          {lecture?.title || `Lecture ${lectureNumber}`}
+      <div className="p-3 sm:p-4">
+        <h3 className="mb-2 text-base sm:text-lg font-semibold flex items-center">
+          <span className="truncate">{lecture?.title || `Lecture ${lectureNumber}`}</span>
           {lecture?.delivered && (
-            <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded flex items-center">
-              <FaCheck className="mr-1" />
-              Delivered
+            <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded flex items-center flex-shrink-0">
+              <FaCheck className="mr-1 w-2 h-2" />
+              <span className="hidden sm:inline">Delivered</span>
             </span>
           )}
         </h3>
         
         {/* Info section with organized details */}
-        <div className="mb-3 grid grid-cols-2 gap-y-1">
+        <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-y-1">
           {/* Lecture number display */}
           <div className="flex items-center text-xs text-gray-600">
             <FaCalendarAlt className="mr-1 text-gray-500" />
@@ -212,32 +215,36 @@ const LectureCard = ({
         </div>
         
         {/* Actions */}
-        <div className="mt-4 flex justify-between">
+        <div className="mt-3 sm:mt-4 flex justify-between">
           {isEditable ? (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               <button 
                 onClick={() => onEdit(lecture)}
-                className={`flex items-center rounded-md px-3 py-1.5 text-xs font-medium ${
+                className={`flex items-center rounded-md px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium ${
                   !lecture?.youtube_url 
                     ? 'bg-[#0d7c66] text-white hover:bg-[#0a6a58]'
                     : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
                 }`}
               >
-                <FaEdit className="mr-1" /> {!lecture?.youtube_url ? 'Add Lecture' : 'Edit'}
+                <FaEdit className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
+                <span className="hidden sm:inline">{!lecture?.youtube_url ? 'Add Lecture' : 'Edit'}</span>
+                <span className="sm:hidden">{!lecture?.youtube_url ? 'Add' : 'Edit'}</span>
               </button>
               {lecture?.youtube_url && (
                 <>
                   <button 
                     onClick={() => onAttend(lecture)}
-                    className="flex items-center rounded-md bg-purple-50 px-3 py-1.5 text-xs font-medium text-purple-700 hover:bg-purple-100"
+                    className="flex items-center rounded-md bg-purple-50 px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium text-purple-700 hover:bg-purple-100"
                   >
-                    <FaPlay className="mr-1" /> Preview
+                    <FaPlay className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
+                    <span className="hidden sm:inline">Preview</span>
                   </button>
                   <button 
                     onClick={() => onDelete(lecture)}
-                    className="flex items-center rounded-md bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100"
+                    className="flex items-center rounded-md bg-red-50 px-2 sm:px-3 py-1 sm:py-1.5 text-xs font-medium text-red-700 hover:bg-red-100"
                   >
-                    <FaTrash className="mr-1" /> Delete
+                    <FaTrash className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
+                    <span className="hidden sm:inline">Delete</span>
                   </button>
                   {isAdmin && (
                     <>
@@ -286,27 +293,30 @@ const LectureCard = ({
               {isCurrentlyLive ? (
                 <button
                   onClick={() => onAttend(lecture)}
-                  className="flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-all duration-200 bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg cursor-pointer animate-pulse"
+                  className="flex items-center justify-center rounded-md px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg cursor-pointer animate-pulse"
                 >
-                  <FaPlay className="mr-2 text-sm animate-bounce" style={{ verticalAlign: 'middle' }} />
-                  Join Live Lecture
+                  <FaPlay className="mr-1 sm:mr-2 text-xs sm:text-sm animate-bounce" style={{ verticalAlign: 'middle' }} />
+                  <span className="hidden sm:inline">Join Live Lecture</span>
+                  <span className="sm:hidden">Join Live</span>
                 </button>
               ) : (
                 <button
                   onClick={() => onAttend(lecture)}
                   disabled={!lecture?.youtube_url || !lecture?.delivered}
-                  className={`flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center justify-center rounded-md px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 ${
                     lecture?.youtube_url && lecture?.delivered
                       ? 'bg-[#0d7c66] text-white hover:bg-[#0a6a58] shadow-md hover:shadow-lg cursor-pointer'
                       : 'cursor-not-allowed bg-gray-100 text-gray-400'
                   }`}
                 >
-                  <FaPlay className="mr-2 text-sm" style={{ verticalAlign: 'middle' }} />
-                  {lecture?.youtube_url && lecture?.delivered 
-                    ? 'Watch Lecture' 
-                    : isTodayLecture 
-                      ? 'Join Soon' 
-                      : 'Upcoming Lecture'}
+                  <FaPlay className="mr-1 sm:mr-2 text-xs sm:text-sm" style={{ verticalAlign: 'middle' }} />
+                  <span className="truncate">
+                    {lecture?.youtube_url && lecture?.delivered 
+                      ? 'Watch Lecture' 
+                      : isTodayLecture 
+                        ? 'Join Soon' 
+                        : 'Upcoming Lecture'}
+                  </span>
                 </button>
               )}
             </div>

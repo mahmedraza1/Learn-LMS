@@ -134,37 +134,23 @@ const Header = () => {
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm">
-      <div className="flex items-center justify-between px-6 py-4">
+      <div className="flex items-center justify-between px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
         {/* Left side - Page info */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
           <button
             onClick={() => navigate(-1)}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-gray-500 hover:text-gray-700 transition-colors flex-shrink-0"
           >
             <MdArrowBack className="w-5 h-5" />
           </button>
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900">{getPageTitle()}</h1>
-            <p className="text-sm text-gray-500">{getPagePath()}</p>
-          </div>
-        </div>
-
-        {/* Center - Search */}
-        <div className="flex-1 max-w-md mx-8">
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <MdSearch className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="text"
-              placeholder="Search lectures, courses..."
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-            />
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">{getPageTitle()}</h1>
+            <p className="text-xs sm:text-sm text-gray-500 truncate hidden sm:block">{getPagePath()}</p>
           </div>
         </div>
 
         {/* Right side - User info */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
           {/* Notifications */}
           <div className="relative">
             <button 
@@ -172,9 +158,9 @@ const Header = () => {
               onClick={() => setShowNotifications(!showNotifications)}
               className="text-gray-500 hover:text-gray-700 transition-colors relative p-2 rounded-lg hover:bg-gray-100"
             >
-              <MdNotifications className="w-6 h-6" />
+              <MdNotifications className="w-5 h-5 sm:w-6 sm:h-6" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
@@ -190,14 +176,9 @@ const Header = () => {
             />
           </div>
 
-          {/* Settings */}
-          <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <MdSettings className="w-6 h-6" />
-          </button>
-
           {/* User profile */}
           <div className="flex items-center space-x-3">
-            <div className="text-left">
+            <div className="text-left hidden lg:block">
               <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
               <p className="text-xs text-gray-500">{getDisplayRole(user?.roles)}</p>
             </div>
