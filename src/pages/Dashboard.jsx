@@ -22,6 +22,9 @@ const Dashboard = () => {
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const [quranVerse, setQuranVerse] = useState(null);
   const [loadingVerse, setLoadingVerse] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const [audioError, setAudioError] = useState(false);
+  const [currentAudio, setCurrentAudio] = useState(null);
 
   // React Hook Form setup for dashboard announcement
   const { control, handleSubmit, reset, register, formState: { errors } } = useForm({
@@ -281,11 +284,61 @@ const Dashboard = () => {
     event.target.value = '';
   };
 
+  // Play audio function
+  const playVerseAudio = () => {
+    if (quranVerse && quranVerse.audio && quranVerse.audio["1"]) {
+      // Stop any currently playing audio
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      
+      setAudioError(false);
+      setAudioPlaying(true);
+      
+      const audioUrl = quranVerse.audio["1"].url;
+      const audio = new Audio(audioUrl);
+      setCurrentAudio(audio);
+      
+      audio.onended = () => {
+        setAudioPlaying(false);
+        setCurrentAudio(null);
+      };
+      
+      audio.onerror = () => {
+        setAudioError(true);
+        setAudioPlaying(false);
+        setCurrentAudio(null);
+        toast.error('Failed to load audio');
+      };
+      
+      audio.play().catch((error) => {
+        setAudioError(true);
+        setAudioPlaying(false);
+        setCurrentAudio(null);
+        toast.error('Failed to play audio');
+        console.error('Audio play error:', error);
+      });
+    }
+  };
+
   // Load dashboard announcement and Quran verse on component mount
   useEffect(() => {
     fetchDashboardAnnouncement();
     fetchRandomQuranVerse();
   }, []);
+
+  // Reset audio state when verse changes
+  useEffect(() => {
+    // Stop any currently playing audio when verse changes
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+    }
+    setAudioPlaying(false);
+    setAudioError(false);
+    setCurrentAudio(null);
+  }, [quranVerse]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -344,19 +397,48 @@ const Dashboard = () => {
               </div>
             </div>
             
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col gap-3 mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-emerald-600 text-lg">📖</span>
                 <h3 className="text-sm font-medium text-gray-800">
                   {quranVerse.surahNameTranslation} ({quranVerse.surahName}) - Verse {quranVerse.ayahNo}
                 </h3>
               </div>
-              <button
-                onClick={fetchRandomQuranVerse}
-                className="text-xs px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors flex-shrink-0"
-              >
-                New Verse
-              </button>
+              
+              {/* Audio and New Verse Controls */}
+              <div className="flex items-center justify-center sm:justify-end gap-2">
+                {/* Audio Player */}
+                {quranVerse.audio && quranVerse.audio["1"] && (
+                  <button
+                    onClick={playVerseAudio}
+                    disabled={audioPlaying}
+                    className={`text-xs px-3 py-1 rounded-full transition-colors flex-shrink-0 flex items-center gap-1 ${
+                      audioPlaying 
+                        ? 'bg-orange-500 text-white cursor-not-allowed' 
+                        : audioError 
+                        ? 'bg-red-500 hover:bg-red-600 text-white'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}
+                  >
+                    {audioPlaying ? (
+                      <>
+                        <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+                        Playing
+                      </>
+                    ) : (
+                      <>
+                        🔊 Play Audio
+                      </>
+                    )}
+                  </button>
+                )}
+                <button
+                  onClick={fetchRandomQuranVerse}
+                  className="text-xs px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors flex-shrink-0"
+                >
+                  New Verse
+                </button>
+              </div>
             </div>
             
             {/* Arabic Text */}
@@ -405,7 +487,7 @@ const Dashboard = () => {
               
               <div className="flex flex-wrap gap-1 justify-center sm:justify-start">
                 <span className="font-medium">Surah {quranVerse.surahNo}:</span>
-                <span>{quranVerse.surahNameArabic}</span>
+                <span style={{ fontFamily: "'Noto Nastaliq Urdu', serif" }} dir="rtl">{quranVerse.surahNameArabic}</span>
                 <span>•</span>
                 <span>Revealed in {quranVerse.revelationPlace}</span>
               </div>
