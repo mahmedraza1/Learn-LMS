@@ -281,7 +281,7 @@ const RecordedLectures = ({ course }) => {
           )}
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {recordedLectures
             .sort((a, b) => (a.lecture_number || 0) - (b.lecture_number || 0))
             .map((lecture) => (

@@ -113,9 +113,9 @@ const Groups = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="min-w-0 flex-1">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Study Groups</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Learning Groups</h1>
               <p className="mt-1 text-sm sm:text-base lg:text-lg text-gray-600">
-                Join learning communities and collaborate with fellow students
+                Connect with mentors and fellow learners, ask questions, and grow within a supportive network.
               </p>
             </div>
             {isAdmin && (

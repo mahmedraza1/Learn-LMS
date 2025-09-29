@@ -1055,6 +1055,60 @@ app.put('/api/dashboard-videos', (req, res) => {
   }
 });
 
+// ===== DASHBOARD ANNOUNCEMENT ENDPOINTS =====
+
+// GET dashboard announcement
+app.get('/api/dashboard-announcement', (req, res) => {
+  try {
+    const miscData = readMiscData();
+    res.json(miscData.dashboardAnnouncement || null);
+  } catch (error) {
+    console.error('Error getting dashboard announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST/UPDATE dashboard announcement (admin only)
+app.post('/api/dashboard-announcement', (req, res) => {
+  try {
+    const announcementData = {
+      ...req.body,
+      id: req.body.id || Date.now(),
+      date: req.body.date || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    const miscData = readMiscData();
+    miscData.dashboardAnnouncement = announcementData;
+    
+    if (writeMiscData(miscData)) {
+      res.json(miscData.dashboardAnnouncement);
+    } else {
+      res.status(500).json({ message: 'Failed to save dashboard announcement' });
+    }
+  } catch (error) {
+    console.error('Error saving dashboard announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// DELETE dashboard announcement (admin only)
+app.delete('/api/dashboard-announcement', (req, res) => {
+  try {
+    const miscData = readMiscData();
+    delete miscData.dashboardAnnouncement;
+    
+    if (writeMiscData(miscData)) {
+      res.json({ message: 'Dashboard announcement deleted successfully' });
+    } else {
+      res.status(500).json({ message: 'Failed to delete dashboard announcement' });
+    }
+  } catch (error) {
+    console.error('Error deleting dashboard announcement:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // GET dashboard statistics
 app.get('/api/dashboard-stats', (req, res) => {
   try {

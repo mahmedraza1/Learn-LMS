@@ -57,8 +57,8 @@ const Sidebar = () => {
       {/* Logo/Brand */}
       <div className="p-6 border-b border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-[#0D7C66] rounded-lg flex items-center justify-center">
-            <MdVideocam className="w-5 h-5 text-white" />
+          <div className="w-10 h-10 bg-[#0D7C66] rounded-lg flex items-center justify-center">
+            <img src="/dash.png" alt="Logo" className="w-9 h-9 bg-cover" />
           </div>
           <div>
             <h1 className="text-lg font-bold text-white">Learn.pk</h1>

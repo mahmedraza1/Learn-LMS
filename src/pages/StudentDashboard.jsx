@@ -56,9 +56,9 @@ const StudentDashboard = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Student Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Today's Live Lectures</h1>
               <p className="mt-1 text-sm text-gray-600">
-                Welcome back, {user.name}
+                Take your learning experience to the next level with live lectures. Learn in real time, interact with instructors, and get your questions answered.
               </p>
             </div>
             <div className="mt-3 sm:mt-0">

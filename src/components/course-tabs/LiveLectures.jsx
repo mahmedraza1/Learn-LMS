@@ -252,8 +252,8 @@ const LiveLectures = ({ course }) => {
               </span>
             </div>
           )}
-          
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {activeLectures.map((lecture, index) => {
               const scheduleDate = new Date(lecture.date);
               return (
