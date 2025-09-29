@@ -3,9 +3,23 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const archiver = require('archiver');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Configure multer for file uploads
+const upload = multer({ 
+  dest: 'uploads/',
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/json' || file.originalname.endsWith('.json')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JSON files are allowed'), false);
+    }
+  }
+});
 
 // Middleware
 app.use(cors());
@@ -1569,6 +1583,113 @@ app.delete('/api/faqs/:faqId', (req, res) => {
     }
   } catch (error) {
     console.error('Error deleting FAQ:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// JSON Data Management Endpoints
+
+// Download all JSON files as ZIP
+app.get('/api/download-all-json', (req, res) => {
+  try {
+    const dataDir = path.join(__dirname, 'data');
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    
+    res.attachment('learn-lms-data.zip');
+    archive.pipe(res);
+    
+    // Read all JSON files in the data directory
+    const files = fs.readdirSync(dataDir).filter(file => file.endsWith('.json'));
+    
+    files.forEach(file => {
+      const filePath = path.join(dataDir, file);
+      if (fs.existsSync(filePath)) {
+        archive.file(filePath, { name: file });
+      }
+    });
+    
+    archive.finalize();
+    
+    archive.on('error', (err) => {
+      console.error('Archive error:', err);
+      res.status(500).json({ error: 'Error creating archive' });
+    });
+    
+  } catch (error) {
+    console.error('Error downloading JSON files:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Upload JSON files
+app.post('/api/upload-json-files', upload.array('jsonFiles'), (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'No files uploaded' });
+    }
+    
+    const dataDir = path.join(__dirname, 'data');
+    const uploadedFiles = [];
+    const replacedFiles = [];
+    const errors = [];
+    
+    req.files.forEach(file => {
+      try {
+        // Validate JSON content
+        const content = fs.readFileSync(file.path, 'utf8');
+        JSON.parse(content); // This will throw if invalid JSON
+        
+        const targetPath = path.join(dataDir, file.originalname);
+        const fileExists = fs.existsSync(targetPath);
+        
+        // Move file to data directory
+        fs.copyFileSync(file.path, targetPath);
+        
+        uploadedFiles.push(file.originalname);
+        if (fileExists) {
+          replacedFiles.push(file.originalname);
+        }
+        
+        // Clean up temporary file
+        fs.unlinkSync(file.path);
+        
+      } catch (parseError) {
+        errors.push(`${file.originalname}: Invalid JSON format`);
+        // Clean up temporary file
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      }
+    });
+    
+    if (errors.length > 0) {
+      return res.status(400).json({ 
+        error: 'Some files failed to upload',
+        errors: errors,
+        uploadedCount: uploadedFiles.length,
+        replacedFiles: replacedFiles
+      });
+    }
+    
+    res.json({
+      message: 'Files uploaded successfully',
+      uploadedCount: uploadedFiles.length,
+      uploadedFiles: uploadedFiles,
+      replacedFiles: replacedFiles
+    });
+    
+  } catch (error) {
+    console.error('Error uploading JSON files:', error);
+    
+    // Clean up any temporary files
+    if (req.files) {
+      req.files.forEach(file => {
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      });
+    }
+    
     res.status(500).json({ error: 'Internal server error' });
   }
 });
