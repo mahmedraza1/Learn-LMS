@@ -145,7 +145,7 @@ const CourseDetail = () => {
         </div>
       </div>
 
-      {/* Desktop Tab Navigation - Hidden on tablet and mobile */}
+      {/* Desktop Tab Navigation - Hidden on mobile */}
       <div className="hidden lg:block bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="container mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex overflow-x-auto scrollbar-hide">
@@ -166,37 +166,52 @@ const CourseDetail = () => {
         </div>
       </div>
 
-      {/* Tab Content */}
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8 pb-20 lg:pb-8">
-        <ActiveTabComponent course={course} />
-      </div>
-
-      {/* Mobile/Tablet Bottom Tab Navigation - Fixed at bottom on mobile and tablet */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg lg:hidden">
-        <div className="flex items-center justify-around py-2 px-2">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center justify-center p-2 min-w-0 flex-1 rounded-lg transition-all duration-200 ${
-                activeTab === tab.id
-                  ? 'text-emerald-600 bg-emerald-50'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              <span className={`text-xs font-medium truncate text-center leading-tight ${
-                activeTab === tab.id ? 'text-emerald-600' : 'text-gray-600'
-              }`}>
+      {/* Mobile Tab Navigation - Two rows on mobile */}
+      <div className="lg:hidden bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="grid grid-cols-3 gap-1 py-2">
+            {tabs.slice(0, 6).map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-2 py-2 text-xs font-medium rounded-md transition-colors text-center ${
+                  activeTab === tab.id
+                    ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-800 border border-gray-200'
+                }`}
+              >
                 {tab.id === 'overview' ? 'Overview' : 
-                 tab.id === 'recorded' ? 'Videos' :
+                 tab.id === 'recorded' ? 'Recorded' :
                  tab.id === 'live' ? 'Live' :
                  tab.id === 'notes' ? 'Notes' :
                  tab.id === 'announcements' ? 'News' :
                  tab.id === 'qna' ? 'Q&A' : tab.label}
-              </span>
-            </button>
-          ))}
+              </button>
+            ))}
+          </div>
+          {tabs.length > 6 && (
+            <div className="grid grid-cols-2 gap-1 pb-2">
+              {tabs.slice(6).map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-2 py-2 text-xs font-medium rounded-md transition-colors text-center ${
+                    activeTab === tab.id
+                      ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-800 border border-gray-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+        <ActiveTabComponent course={course} />
       </div>
     </div>
   );

@@ -218,7 +218,7 @@ const QNA = ({ course }) => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
         </div>
@@ -229,13 +229,13 @@ const QNA = ({ course }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-4 sm:p-6 border-b border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
           <div className="flex items-center space-x-2">
-                        <FaQuestionCircle className="w-6 h-6 text-green-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
+                        <FaQuestionCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Frequently Asked Questions</h2>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap gap-2">
             <button
               onClick={handleRefresh}
               className="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm"
@@ -286,14 +286,14 @@ const QNA = ({ course }) => {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         {filteredFaqs.length === 0 ? (
-          <div className="text-center py-12">
-            <FaQuestionCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <div className="text-center py-8 sm:py-12 px-4">
+            <FaQuestionCircle className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
               {faqs.length === 0 ? 'No FAQs Available' : 'No FAQs Found'}
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-sm sm:text-base text-gray-600 mb-6 max-w-md mx-auto">
               {faqs.length === 0 
                 ? 'There are no frequently asked questions for this course yet.' 
                 : 'Try adjusting your search or filter criteria.'

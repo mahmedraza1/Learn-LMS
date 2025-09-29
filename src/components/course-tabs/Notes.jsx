@@ -218,7 +218,7 @@ const Notes = ({ course }) => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
         </div>
@@ -229,25 +229,25 @@ const Notes = ({ course }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center justify-between mb-4">
+      <div className="p-4 sm:p-6 border-b border-gray-200">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
           <div className="flex items-center space-x-2">
-            <FaBook className="w-6 h-6 text-green-600" />
-            <h2 className="text-2xl font-bold text-gray-900">Course Notes</h2>
+            <FaBook className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Course Notes</h2>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-wrap gap-2">
             <button
               onClick={handleRefresh}
-              className="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm"
+              className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-xs sm:text-sm"
             >
               🔄 Refresh
             </button>
             {isAdmin && (
               <button
                 onClick={handleAddNote}
-                className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm sm:text-base"
               >
-                <FaPlus className="w-4 h-4 mr-2" />
+                <FaPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                 Add Note
               </button>
             )}
@@ -310,7 +310,7 @@ const Notes = ({ course }) => {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {filteredNotes.map((note) => (
               <NotesCard
                 key={note.id}

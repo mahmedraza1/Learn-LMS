@@ -100,14 +100,14 @@ const Overview = ({ course }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Course Overview</h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-3">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Course Overview</h2>
         {isAdmin && !isEditing && (
           <button
             onClick={handleEditClick}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm sm:text-base"
           >
             <MdEdit className="w-4 h-4" />
             {overview ? 'Edit Overview' : 'Add Overview'}
@@ -146,7 +146,7 @@ const Overview = ({ course }) => {
         <div>
           {overview ? (
             <div 
-              className="prose max-w-none tinymce-content"
+              className="prose max-w-none tinymce-content px-2 sm:px-0"
               dangerouslySetInnerHTML={{ __html: overview }}
               style={{
                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -155,12 +155,12 @@ const Overview = ({ course }) => {
               }}
             />
           ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MdEdit className="w-8 h-8 text-gray-400" />
+            <div className="text-center py-8 sm:py-12 px-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MdEdit className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Overview Available</h3>
-              <p className="text-gray-500 mb-4">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No Overview Available</h3>
+              <p className="text-sm sm:text-base text-gray-500 mb-4 max-w-md mx-auto">
                 {isAdmin 
                   ? 'Add a comprehensive overview to help students understand what this course covers.'
                   : 'The course overview will be available soon.'
@@ -169,7 +169,7 @@ const Overview = ({ course }) => {
               {isAdmin && (
                 <button
                   onClick={handleEditClick}
-                  className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors"
+                  className="bg-emerald-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm sm:text-base"
                 >
                   Add Overview
                 </button>

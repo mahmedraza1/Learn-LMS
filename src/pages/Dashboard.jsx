@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaBullhorn, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaBullhorn, FaEdit, FaTrash, FaDownload, FaUpload, FaDatabase } from 'react-icons/fa';
 import { MdClose, MdAdd } from 'react-icons/md';
 import parse from 'html-react-parser';
 import { useAppSelector } from "../store/hooks";
@@ -18,6 +18,8 @@ const Dashboard = () => {
   const [dashboardAnnouncement, setDashboardAnnouncement] = useState(null);
   const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showJsonManager, setShowJsonManager] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   // React Hook Form setup for dashboard announcement
   const { control, handleSubmit, reset, register, formState: { errors } } = useForm({
@@ -131,6 +133,108 @@ const Dashboard = () => {
     }
   };
 
+  // Download all JSON files
+  const downloadAllJsonFiles = async () => {
+    if (!confirm('This will download all JSON data files as a ZIP archive. Continue?')) {
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}/download-all-json`);
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `learn-lms-data-${new Date().toISOString().split('T')[0]}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        toast.success('JSON files downloaded successfully!');
+      } else {
+        toast.error('Failed to download JSON files');
+      }
+    } catch (error) {
+      console.error('Error downloading JSON files:', error);
+      toast.error('Error downloading JSON files');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Upload JSON files
+  const uploadJsonFiles = async (files) => {
+    try {
+      setUploadingFiles(true);
+      const formData = new FormData();
+      
+      for (let file of files) {
+        if (file.type === 'application/json' || file.name.endsWith('.json')) {
+          formData.append('jsonFiles', file);
+        } else {
+          toast.error(`File ${file.name} is not a JSON file`);
+          return;
+        }
+      }
+
+      const response = await fetch(`${API_BASE_URL}/upload-json-files`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        toast.success(`Successfully uploaded ${result.uploadedCount} JSON files`);
+        if (result.replacedFiles.length > 0) {
+          setTimeout(() => {
+            toast(`Replaced existing files: ${result.replacedFiles.join(', ')}`, {
+              icon: '🔄',
+              duration: 4000,
+            });
+          }, 1000);
+        }
+      } else {
+        const error = await response.json();
+        toast.error(error.message || 'Failed to upload JSON files');
+      }
+    } catch (error) {
+      console.error('Error uploading JSON files:', error);
+      toast.error('Error uploading JSON files');
+    } finally {
+      setUploadingFiles(false);
+    }
+  };
+
+  // Handle file input change
+  const handleFileUpload = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
+      // Validate file types before uploading
+      const invalidFiles = files.filter(file => !file.type.includes('json') && !file.name.endsWith('.json'));
+      if (invalidFiles.length > 0) {
+        toast.error(`Please select only JSON files. Invalid files: ${invalidFiles.map(f => f.name).join(', ')}`);
+        event.target.value = '';
+        return;
+      }
+      
+      // Confirm upload if there are multiple files
+      if (files.length > 1) {
+        const confirm = window.confirm(`Are you sure you want to upload ${files.length} JSON files? This will replace any existing files with the same names.`);
+        if (!confirm) {
+          event.target.value = '';
+          return;
+        }
+      }
+      
+      uploadJsonFiles(files);
+    }
+    // Clear the input
+    event.target.value = '';
+  };
+
   // Load dashboard announcement on component mount
   useEffect(() => {
     fetchDashboardAnnouncement();
@@ -241,6 +345,64 @@ const Dashboard = () => {
                   )}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+        
+        {/* JSON Data Management Section - Admin Only */}
+        {isAdmin && (
+          <div className="mb-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
+                <div className="flex items-center gap-3">
+                  <FaDatabase className="h-5 w-5 text-emerald-600" />
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Data Management</h2>
+                    <p className="text-sm text-gray-600">Download or upload JSON data files</p>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <button
+                    onClick={downloadAllJsonFiles}
+                    disabled={loading}
+                    className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 text-sm"
+                  >
+                    <FaDownload className="w-4 h-4" />
+                    {loading ? 'Downloading...' : 'Download All Data'}
+                  </button>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      id="jsonFileUpload"
+                      multiple
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="jsonFileUpload"
+                      className={`flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer text-sm ${uploadingFiles ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <FaUpload className="w-4 h-4" />
+                      {uploadingFiles ? 'Uploading...' : 'Upload JSON Files'}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Info */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="text-sm text-blue-800">
+                  <p className="font-medium mb-2">Data Management Instructions:</p>
+                  <ul className="space-y-1 list-disc list-inside">
+                    <li><strong>Download:</strong> Creates a ZIP file containing all current JSON data files</li>
+                    <li><strong>Upload:</strong> Select one or more JSON files to upload. Existing files with the same name will be replaced</li>
+                    <li><strong>Supported files:</strong> courses.json, lectures.json, notes.json, faqs.json, groups.json, etc.</li>
+                    <li><strong>Backup recommended:</strong> Always download current data before uploading new files</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         )}

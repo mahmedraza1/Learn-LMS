@@ -195,8 +195,8 @@ const LiveLectures = ({ course }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Live Lectures</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Live Lectures</h2>
         <div className="text-sm text-gray-500">
           Course: {course.name}
         </div>
@@ -204,8 +204,8 @@ const LiveLectures = ({ course }) => {
 
       {/* Batch Tabs - Only show if admin or if there are multiple batches */}
       {availableBatches.length > 1 && (
-        <div className="border-b border-gray-200 mb-6">
-          <div className="flex space-x-8">
+        <div className="border-b border-gray-200 mb-4 sm:mb-6">
+          <div className="flex space-x-4 sm:space-x-8 overflow-x-auto scrollbar-hide">
             {availableBatches.map((batch) => (
               <button
                 key={batch}

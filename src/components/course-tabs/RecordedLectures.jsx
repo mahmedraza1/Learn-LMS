@@ -228,8 +228,8 @@ const RecordedLectures = ({ course }) => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Recorded Lectures</h2>
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Recorded Lectures</h2>
         <div className="flex items-center justify-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
           <span className="ml-2 text-gray-600">Loading recorded lectures...</span>
@@ -241,19 +241,19 @@ const RecordedLectures = ({ course }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Recorded Lectures</h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Recorded Lectures</h2>
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
             Course: {course.name} • {recordedLectures.length} lecture{recordedLectures.length !== 1 ? 's' : ''}
           </p>
         </div>
         {isAdmin && (
           <button
             onClick={handleAddLecture}
-            className="flex items-center px-4 py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors"
+            className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors text-sm sm:text-base"
           >
-            <FaPlus className="mr-2" />
+            <FaPlus className="mr-2 w-3 h-3 sm:w-4 sm:h-4" />
             Add Lecture
           </button>
         )}
@@ -281,7 +281,7 @@ const RecordedLectures = ({ course }) => {
           )}
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {recordedLectures
             .sort((a, b) => (a.lecture_number || 0) - (b.lecture_number || 0))
             .map((lecture) => (

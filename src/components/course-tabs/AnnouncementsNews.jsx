@@ -178,12 +178,12 @@ const AnnouncementsNews = ({ course }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Announcements and News</h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-3">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Announcements and News</h2>
         {isAdmin && !isEditing && (
           <button
             onClick={handleAddNew}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm sm:text-base"
           >
             <MdAdd className="w-4 h-4" />
             Add Announcement
