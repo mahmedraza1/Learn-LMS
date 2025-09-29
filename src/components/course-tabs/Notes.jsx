@@ -6,7 +6,15 @@ import NotesCard from '../NotesCard';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:3001/api';
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const Notes = ({ course }) => {
   // Call hooks with fallback values (same pattern as RecordedLectures)

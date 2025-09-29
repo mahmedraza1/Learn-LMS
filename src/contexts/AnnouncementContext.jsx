@@ -1,5 +1,15 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 const AnnouncementContext = createContext();
 
 export const useAnnouncement = () => useContext(AnnouncementContext);
@@ -12,7 +22,7 @@ export const AnnouncementProvider = ({ children }) => {
   const fetchGlobalAnnouncements = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/global-announcements');
+      const response = await fetch(`${API_BASE_URL}/global-announcements`);
       if (response.ok) {
         const announcements = await response.json();
         setGlobalAnnouncements(announcements);
@@ -33,7 +43,7 @@ export const AnnouncementProvider = ({ children }) => {
         id: Date.now() // Simple ID generation
       };
 
-      const response = await fetch('http://localhost:3001/api/global-announcements', {
+      const response = await fetch(`${API_BASE_URL}/global-announcements`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +67,7 @@ export const AnnouncementProvider = ({ children }) => {
   // Update global announcement
   const updateGlobalAnnouncement = async (id, updatedData) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/global-announcements/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/global-announcements/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +95,7 @@ export const AnnouncementProvider = ({ children }) => {
   // Delete global announcement
   const deleteGlobalAnnouncement = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/global-announcements/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/global-announcements/${id}`, {
         method: 'DELETE',
       });
 

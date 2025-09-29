@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { MdPlayCircleOutline, MdFullscreen } from "react-icons/md";
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 const DashboardVideoSection = ({ isAdmin = false }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoConfig, setVideoConfig] = useState(null);
@@ -12,7 +22,7 @@ const DashboardVideoSection = ({ isAdmin = false }) => {
   
   const fetchVideoConfig = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/dashboard-videos');
+      const response = await fetch(`${API_BASE_URL}/dashboard-videos`);
       const data = await response.json();
       
       if (data && data.isActive) {

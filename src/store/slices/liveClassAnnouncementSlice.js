@@ -1,7 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3001/api/learnlive";
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api/learnlive';
+  }
+  return 'http://localhost:3001/api/learnlive';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Async thunks
 export const fetchLiveClassAnnouncement = createAsyncThunk(

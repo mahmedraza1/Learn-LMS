@@ -1,11 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 // Async thunks
 export const fetchGlobalAnnouncements = createAsyncThunk(
   'announcement/fetchGlobalAnnouncements',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/api/global-announcements');
+      const response = await fetch(`${API_BASE_URL}/global-announcements`);
       if (response.ok) {
         const announcements = await response.json();
         return announcements;
@@ -29,7 +39,7 @@ export const addGlobalAnnouncement = createAsyncThunk(
         id: Date.now() // Simple ID generation
       };
 
-      const response = await fetch('http://localhost:3001/api/global-announcements', {
+      const response = await fetch(`${API_BASE_URL}/global-announcements`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +64,7 @@ export const updateGlobalAnnouncement = createAsyncThunk(
   'announcement/updateGlobalAnnouncement',
   async ({ id, updatedData }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/global-announcements/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/global-announcements/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +89,7 @@ export const deleteGlobalAnnouncement = createAsyncThunk(
   'announcement/deleteGlobalAnnouncement',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/global-announcements/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/global-announcements/${id}`, {
         method: 'DELETE',
       });
 

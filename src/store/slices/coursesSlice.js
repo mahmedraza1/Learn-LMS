@@ -1,11 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 // Async thunks
 export const fetchCourses = createAsyncThunk(
   'courses/fetchCourses',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3001/api/courses');
+      const response = await fetch(`${API_BASE_URL}/courses`);
       if (response.ok) {
         const courses = await response.json();
         return courses;
@@ -30,7 +40,7 @@ export const addCourse = createAsyncThunk(
         totalRatings: parseInt(courseData.totalRatings) || 0
       };
 
-      const response = await fetch('http://localhost:3001/api/courses', {
+      const response = await fetch(`${API_BASE_URL}/courses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +72,7 @@ export const updateCourse = createAsyncThunk(
         totalRatings: parseInt(courseData.totalRatings) || 0
       };
 
-      const response = await fetch(`http://localhost:3001/api/courses/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/courses/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +97,7 @@ export const deleteCourse = createAsyncThunk(
   'courses/deleteCourse',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/courses/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/courses/${id}`, {
         method: 'DELETE',
       });
 

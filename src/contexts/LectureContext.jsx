@@ -8,9 +8,9 @@ import { getCoursesForDate, shouldCourseHaveLecture } from '../utils/courseSched
 // Using learnlive prefix to match server configuration
 // Determine API URL based on hostname
 const getApiBaseUrl = () => {
-  // Check if we're running on citea.learn.pk
-  if (typeof window !== 'undefined' && window.location.hostname === 'citea.learn.pk') {
-    return 'https://citea.learn.pk/learnlive';
+  // Check if we're running on lms.learn.pk
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/learnlive';
   }
   // Default to localhost
   return 'http://localhost:3001/learnlive';

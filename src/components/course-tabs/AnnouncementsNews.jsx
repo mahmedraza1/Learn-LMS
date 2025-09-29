@@ -5,6 +5,16 @@ import { MdAdd, MdEdit, MdDelete, MdSave, MdCancel, MdAnnouncement } from 'react
 import Editor from '../Editor';
 import toast from 'react-hot-toast';
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 const AnnouncementsNews = ({ course }) => {
   const isAdmin = useAppSelector(selectIsAdmin);
   const [announcements, setAnnouncements] = useState([]);
@@ -19,7 +29,7 @@ const AnnouncementsNews = ({ course }) => {
   const fetchAnnouncements = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3001/api/courses/${course.id}/announcements`);
+      const response = await fetch(`${API_BASE_URL}/courses/${course.id}/announcements`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -66,8 +76,8 @@ const AnnouncementsNews = ({ course }) => {
     try {
       setSaving(true);
       const url = editingId 
-        ? `http://localhost:3001/api/courses/${course.id}/announcements/${editingId}`
-        : `http://localhost:3001/api/courses/${course.id}/announcements`;
+        ? `${API_BASE_URL}/courses/${course.id}/announcements/${editingId}`
+        : `${API_BASE_URL}/courses/${course.id}/announcements`;
       
       const method = editingId ? 'PUT' : 'POST';
       
@@ -120,7 +130,7 @@ const AnnouncementsNews = ({ course }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/api/courses/${course.id}/announcements/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/courses/${course.id}/announcements/${id}`, {
         method: 'DELETE',
       });
 

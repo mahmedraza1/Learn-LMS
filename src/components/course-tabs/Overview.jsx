@@ -5,6 +5,16 @@ import { MdEdit, MdSave, MdCancel } from 'react-icons/md';
 import Editor from '../Editor';
 import toast from 'react-hot-toast';
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 const Overview = ({ course }) => {
   const isAdmin = useAppSelector(selectIsAdmin);
   const [overview, setOverview] = useState('');
@@ -17,7 +27,7 @@ const Overview = ({ course }) => {
   const fetchOverview = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3001/api/courses/${course.id}/overview`);
+      const response = await fetch(`${API_BASE_URL}/courses/${course.id}/overview`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -48,7 +58,7 @@ const Overview = ({ course }) => {
   const handleSave = async () => {
     try {
       setSaving(true);
-      const response = await fetch(`http://localhost:3001/api/courses/${course.id}/overview`, {
+      const response = await fetch(`${API_BASE_URL}/courses/${course.id}/overview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

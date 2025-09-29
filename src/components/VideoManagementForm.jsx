@@ -3,6 +3,16 @@ import { useForm } from "react-hook-form";
 import { MdClose, MdSave, MdVideoLibrary, MdLink } from "react-icons/md";
 import toast from "react-hot-toast";
 
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/api';
+  }
+  return 'http://localhost:3001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 const VideoManagementForm = ({ isOpen, onClose, user }) => {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState(null);
@@ -19,7 +29,7 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
   
   const fetchVideoData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/dashboard-videos');
+      const response = await fetch(`${API_BASE_URL}/dashboard-videos`);
       const data = await response.json();
       setVideoData(data);
       
@@ -68,7 +78,7 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
         updatedBy: user?.name || 'Admin'
       };
       
-      const response = await fetch(`http://localhost:3001/api/dashboard-videos`, {
+      const response = await fetch(`${API_BASE_URL}/dashboard-videos`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

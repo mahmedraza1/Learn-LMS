@@ -5,7 +5,15 @@ import VideoModal from '../VideoModal';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:3001/learnlive';
+// Determine API URL based on hostname
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/learnlive';
+  }
+  return 'http://localhost:3001/learnlive';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const LiveLectures = ({ course }) => {
   const [lectures, setLectures] = useState([]);

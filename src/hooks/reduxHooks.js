@@ -54,8 +54,8 @@ import toast from 'react-hot-toast';
 
 // Determine API URL based on hostname
 const getApiBaseUrl = () => {
-  if (typeof window !== 'undefined' && window.location.hostname === 'citea.learn.pk') {
-    return 'https://citea.learn.pk/learnlive';
+  if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+    return 'https://lms.learn.pk/learnlive';
   }
   return 'http://localhost:3001/learnlive';
 };
