@@ -182,7 +182,7 @@ const Header = () => {
               <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
               <p className="text-xs text-gray-500">{getDisplayRole(user?.roles)}</p>
             </div>
-            <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-[#0D7C66] rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-medium">
                 {user?.name?.charAt(0)?.toUpperCase() || 'U'}
               </span>

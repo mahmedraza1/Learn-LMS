@@ -57,12 +57,12 @@ const Sidebar = () => {
       {/* Logo/Brand */}
       <div className="p-6 border-b border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-[#0D7C66] rounded-lg flex items-center justify-center">
             <MdVideocam className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-white">Learn LMS</h1>
-            <p className="text-xs text-slate-400">Education Platform</p>
+            <h1 className="text-lg font-bold text-white">Learn.pk</h1>
+            <p className="text-xs text-slate-400">Future of Pakistan</p>
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@ const Sidebar = () => {
                 onClick={() => navigate(item.path)}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
                   isActivePath(item.path)
-                    ? 'bg-emerald-500 text-white shadow-lg'
+                    ? 'bg-[#0D7C66] text-white shadow-lg'
                     : 'text-slate-300 hover:bg-slate-700 hover:text-white'
                 }`}
               >
@@ -93,7 +93,7 @@ const Sidebar = () => {
       {/* User info at bottom */}
       <div className="p-4 border-t border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-[#0D7C66] rounded-full flex items-center justify-center">
             <span className="text-white text-sm font-medium">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </span>

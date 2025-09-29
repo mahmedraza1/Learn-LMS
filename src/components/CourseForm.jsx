@@ -18,7 +18,7 @@ const CourseForm = ({ isOpen, onClose, onSubmit, course = null }) => {
       description: course?.description || "",
       enrolledStudents: course?.enrolledStudents || 0,
       duration: course?.duration || "",
-      level: course?.level || "Beginner",
+      level: course?.level || "None",
       instructor: course?.instructor || "",
       rating: course?.rating || 0,
       totalRatings: course?.totalRatings || 0,
@@ -163,6 +163,7 @@ const CourseForm = ({ isOpen, onClose, onSubmit, course = null }) => {
                 {...register("level", { required: "Level is required" })}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               >
+                <option value="None">None</option>
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Advanced">Advanced</option>

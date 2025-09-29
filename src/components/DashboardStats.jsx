@@ -73,7 +73,7 @@ const DashboardStats = ({ user, isAdmin = false }) => {
       title: "My Batch",
       value: user.batch || "Not Assigned",
       icon: MdGroup,
-      color: "bg-emerald-500",
+      color: "bg-[#0D7C66]",
       bgColor: "bg-emerald-50",
       textColor: "text-emerald-700"
     },

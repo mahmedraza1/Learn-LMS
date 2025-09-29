@@ -98,7 +98,7 @@ const Courses = () => {
             <div className="min-w-0 flex-1">
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Courses</h1>
               <p className="mt-1 text-xs sm:text-sm text-gray-600">
-                {isAdmin ? 'Manage and organize all courses' : 'Explore available courses'}
+                {isAdmin ? 'Manage and organize all courses' : 'Start your course by choosing the right skills and the right support. Learn with recorded and live lectures, notes, updates, community and questions and answers.'}
               </p>
             </div>
             
@@ -106,7 +106,7 @@ const Courses = () => {
               <div className="flex-shrink-0">
                 <button
                   onClick={handleAddCourse}
-                  className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base w-full sm:w-auto"
+                  className="flex items-center justify-center gap-2 bg-[#0D7C66] hover:bg-emerald-700 text-white px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base w-full sm:w-auto"
                 >
                   <MdAdd className="w-4 h-4 sm:w-5 sm:h-5" />
                   Add Course
@@ -144,6 +144,7 @@ const Courses = () => {
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
             >
               <option value="All">All Levels</option>
+              <option value="None">None</option>
               <option value="Beginner">Beginner</option>
               <option value="Intermediate">Intermediate</option>
               <option value="Advanced">Advanced</option>
@@ -195,7 +196,7 @@ const Courses = () => {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {filteredCourses.map((course) => (
                   <CourseCatalogCard
                     key={course.id}

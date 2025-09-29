@@ -53,17 +53,19 @@ const CourseCatalogCard = ({ course, isAdmin = false, onEdit, onDelete }) => {
           </div>
         )}
         
-        {/* Level Badge */}
-        <div className="absolute top-2 left-2">
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-            course.level === 'Beginner' ? 'bg-green-100 text-green-800' :
-            course.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-            course.level === 'Advanced' ? 'bg-red-100 text-red-800' :
-            'bg-blue-100 text-blue-800'
-          }`}>
-            {course.level}
-          </span>
-        </div>
+        {/* Level Badge - only show if level is not 'None' */}
+        {course.level && course.level !== 'None' && (
+          <div className="absolute top-2 left-2">
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+              course.level === 'Beginner' ? 'bg-green-100 text-green-800' :
+              course.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
+              course.level === 'Advanced' ? 'bg-red-100 text-red-800' :
+              'bg-blue-100 text-blue-800'
+            }`}>
+              {course.level}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Course Content */}
@@ -133,14 +135,14 @@ const CourseCatalogCard = ({ course, isAdmin = false, onEdit, onDelete }) => {
           {isAdmin ? (
             <button 
               onClick={handleStartLearning}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors w-full"
+              className="bg-[#0D7C66] hover:bg-emerald-700 text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors w-full"
             >
               View Course
             </button>
           ) : (
             <button 
               onClick={handleStartLearning}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors w-full"
+              className="bg-[#0D7C66] hover:bg-emerald-700 text-white px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors w-full"
             >
               Start Learning
             </button>
