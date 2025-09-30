@@ -2,19 +2,10 @@
   "dashboardVideo": {
     "title": "Welcome to Learn-Live Platform",
     "description": "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
-    "videoUrl": "https://youtu.be/jfKfPfyJRdk",
-    "videoType": "youtube",
-    "customThumbnail": "https://images.unsplash.com/photo-1575936123452-b67c3203c357?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
+    "videoUrl": "https://learn.pk/wp-content/uploads/2025/06/Learn-The-Future-of-Pakistan.mp4",
+    "videoType": "direct",
     "isActive": true,
-    "updatedAt": "2025-09-30T15:16:26.825Z",
-    "updatedBy": "Mark"
-  },
-  "dashboardAnnouncement": {
-    "title": "Test",
-    "content": "<h1>Mark&nbsp;</h1>\n<p>This is test</p>",
-    "author": "Mark",
-    "id": 1759148184104,
-    "date": "2025-09-29T12:16:24.104Z",
-    "updatedAt": "2025-09-29T12:16:24.123Z"
+    "updatedAt": "2025-09-30T11:53:02.722Z",
+    "updatedBy": "learnpk"
   }
 }

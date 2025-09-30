@@ -146,7 +146,7 @@ const CourseDetail = () => {
       </div>
 
       {/* Desktop Tab Navigation - Hidden on mobile */}
-      <div className="hidden lg:block bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div className="hidden lg:block bg-white border-b border-gray-200 top-0 z-40">
         <div className="container mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => (
@@ -167,7 +167,7 @@ const CourseDetail = () => {
       </div>
 
       {/* Mobile Tab Navigation - Two rows on mobile */}
-      <div className="lg:hidden bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div className="lg:hidden bg-white border-b border-gray-200 top-0 z-40">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="grid grid-cols-3 gap-1 py-2">
             {tabs.slice(0, 6).map((tab) => (

@@ -49,6 +49,10 @@ const Sidebar = () => {
   ];
 
   const isActivePath = (path) => {
+    // Special case for courses - highlight if on any course-related route
+    if (path === '/courses') {
+      return location.pathname === '/courses' || location.pathname.startsWith('/course');
+    }
     return location.pathname === path;
   };
 

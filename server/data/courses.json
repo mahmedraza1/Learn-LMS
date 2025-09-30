@@ -3,301 +3,227 @@
     {
       "id": 7,
       "name": "Graphics Designing",
-      "thumbnail": "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400",
-      "description": "Master the art of visual communication through comprehensive graphics designing techniques and industry-standard tools.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Graphics-Designing.webp",
+      "description": "Express ideas creatively through visuals, colors, and layouts that capture attention.",
       "enrolledStudents": 3200,
       "duration": "30 days",
-      "level": "Beginner to Advanced",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.8,
       "totalRatings": 256,
-      "tags": [
-        "Graphics Design",
-        "Adobe Creative Suite",
-        "Visual Design"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:06:54.975Z"
+      "updatedAt": "2025-09-30T11:24:08.500Z"
     },
     {
       "id": 9,
       "name": "Artificial Intelligence Prompt",
-      "thumbnail": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400",
-      "description": "Learn to craft effective AI prompts and harness the power of artificial intelligence for various applications. AI is power learn to use it",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Artificial-Intelligence-Prompt.webp",
+      "description": "Write smart prompts that help AI give accurate and creative results.",
       "enrolledStudents": 3450,
       "duration": "30 days",
-      "level": "Intermediate",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.9,
       "totalRatings": 324,
-      "tags": [
-        "AI",
-        "Prompt Engineering",
-        "Machine Learning"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:07:33.563Z"
+      "updatedAt": "2025-09-30T11:24:02.363Z"
     },
     {
       "id": 5,
       "name": "Affiliate Marketing",
-      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
-      "description": "Build a profitable affiliate marketing business and learn proven strategies to generate passive income online. Explore the marketing explore the opportunities.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Affliate-Marketing.webp",
+      "description": "Earn online by promoting products and driving sales with effective strategies.",
       "enrolledStudents": 3800,
       "duration": "30 days",
-      "level": "Beginner",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.7,
       "totalRatings": 412,
-      "tags": [
-        "Affiliate Marketing",
-        "Digital Marketing",
-        "Passive Income"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:08:13.254Z"
+      "updatedAt": "2025-09-30T11:23:49.250Z"
     },
     {
       "id": 8,
       "name": "Content Writing",
-      "thumbnail": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400",
-      "description": "Master the art of compelling content creation for websites, blogs, social media, and marketing campaigns.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Content-Writing.webp",
+      "description": "Write clear, engaging, and impactful content that captures readers’ attention.",
       "enrolledStudents": 3150,
       "duration": "30 days",
-      "level": "Advanced",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.8,
       "totalRatings": 298,
-      "tags": [
-        "Content Writing",
-        "Copywriting",
-        "SEO Writing",
-        "Creative Writing"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:12:53.839Z"
+      "updatedAt": "2025-09-30T11:23:56.999Z"
     },
     {
       "id": 15,
-      "name": "English Language and Communication",
-      "thumbnail": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400",
-      "description": "Improve your English language skills and communication abilities for professional and personal growth.",
+      "name": "English Language & Communication",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/English-Language-and-Communication.webp",
+      "description": "Improve your speaking, writing, communication skills to express yourself confidently.",
       "enrolledStudents": 4200,
       "duration": "30 days",
-      "level": "Advanced",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.9,
       "totalRatings": 567,
-      "tags": [
-        "English Language",
-        "Communication Skills",
-        "Grammar",
-        "Speaking"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:13:00.050Z"
+      "updatedAt": "2025-09-30T11:19:32.574Z"
     },
     {
       "id": 12,
       "name": "Shopify Dropshipping",
-      "thumbnail": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400",
-      "description": "Build and scale a successful Shopify dropshipping business from product research to customer acquisition.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Shopify-Dropshipping.webp",
+      "description": "Set up and manage an online store that sells products without holding inventory.",
       "enrolledStudents": 3650,
       "duration": "30 days",
-      "level": "Beginner",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.6,
       "totalRatings": 389,
-      "tags": [
-        "Shopify",
-        "Dropshipping",
-        "E-commerce",
-        "Online Store"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-30T11:23:27.560Z"
     },
     {
       "id": 10,
       "name": "Full Stack Web Development",
-      "thumbnail": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400",
-      "description": "Complete full-stack web development course covering frontend, backend, databases, and modern frameworks.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Full-Stack-Web-Development.webp",
+      "description": "Build complete websites and applications from front-end to back-end.",
       "enrolledStudents": 4500,
       "duration": "30 days",
-      "level": "Beginner to Advanced",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.9,
       "totalRatings": 623,
-      "tags": [
-        "Web Development",
-        "JavaScript",
-        "React",
-        "Node.js",
-        "Full Stack"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-30T11:23:32.476Z"
     },
     {
       "id": 4,
       "name": "Search Engine Optimization",
-      "thumbnail": "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=400",
-      "description": "Master SEO techniques to improve website rankings and drive organic traffic from search engines. Learn SEO learn boosting your site and products.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Search-Engine-Optimization.webp",
+      "description": "Improve website visibility and rank higher on search engines to drive more traffic.",
       "enrolledStudents": 3300,
       "duration": "30 days",
-      "level": "Intermediate",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.7,
       "totalRatings": 445,
-      "tags": [
-        "SEO",
-        "Digital Marketing",
-        "Google Analytics",
-        "Keyword Research"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:11:59.842Z"
+      "updatedAt": "2025-09-30T11:23:39.519Z"
     },
     {
       "id": 14,
       "name": "MS Office and Digital Literacy",
-      "thumbnail": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400",
-      "description": "Comprehensive training in Microsoft Office suite and essential digital literacy skills for the modern workplace.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Microsoft-Office-and-Digital-Literacy.webp",
+      "description": "Essential computer skills and MS Office tools to work smartly in the digital world.",
       "enrolledStudents": 5200,
       "duration": "30 days",
-      "level": "Beginner",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.8,
       "totalRatings": 734,
-      "tags": [
-        "MS Office",
-        "Excel",
-        "Word",
-        "PowerPoint",
-        "Digital Literacy"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-30T11:21:42.280Z"
     },
     {
       "id": 6,
       "name": "Amazon Virtual Assistant",
-      "thumbnail": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400",
-      "description": "Learn to become a skilled Amazon Virtual Assistant and help sellers optimize their Amazon business operations. Opportunity is vaiting grab that",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Amazone-Virtual-Assistant.webp",
+      "description": "Manage Amazon stores by handling products, orders, and customer support efficiently.",
       "enrolledStudents": 3100,
       "duration": "30 days",
-      "level": "Intermediate",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.6,
       "totalRatings": 287,
-      "tags": [
-        "Amazon VA",
-        "E-commerce",
-        "Product Research",
-        "Amazon FBA"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:12:43.699Z"
+      "updatedAt": "2025-09-30T11:21:32.243Z"
     },
     {
       "id": 13,
       "name": "YouTube Creator",
-      "thumbnail": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400",
-      "description": "Master YouTube content creation, optimization, and monetization strategies to build a successful channel. Raise you voice now.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/YouTube-Creator.webp",
+      "description": "Create, grow, and manage a successful YouTube channel with engaging content.",
       "enrolledStudents": 4100,
       "duration": "30 days",
-      "level": "Beginner",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.8,
       "totalRatings": 512,
-      "tags": [
-        "YouTube",
-        "Content Creation",
-        "Video Marketing",
-        "Social Media"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:12:25.382Z"
+      "updatedAt": "2025-09-30T11:21:58.428Z"
     },
     {
       "id": 11,
       "name": "Freelancing",
-      "thumbnail": "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=400",
-      "description": "Build a successful freelancing career with proven strategies for finding clients and delivering quality work.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Freelancing.webp",
+      "description": "Work independently online, offer your skills, and earn from global clients.",
       "enrolledStudents": 3900,
       "duration": "30 days",
-      "level": "Beginner",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.7,
       "totalRatings": 456,
-      "tags": [
-        "Freelancing",
-        "Remote Work",
-        "Client Management",
-        "Online Business"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-30T11:22:14.994Z"
     },
     {
       "id": 3,
       "name": "WordPress",
-      "thumbnail": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400",
-      "description": "Create professional websites using WordPress with themes, plugins, customization, and content management.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Wordpress.webp",
+      "description": "Build and manage professional websites easily without advanced coding skills.",
       "enrolledStudents": 3700,
       "duration": "30 days",
-      "level": "Intermediate",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.8,
       "totalRatings": 423,
-      "tags": [
-        "WordPress",
-        "Website Development",
-        "CMS",
-        "Web Design"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:13:15.825Z"
+      "updatedAt": "2025-09-30T11:22:35.978Z"
     },
     {
       "id": 2,
       "name": "Digital Marketing",
-      "thumbnail": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400",
-      "description": "Comprehensive digital marketing course covering all channels including social media, PPC, email, and content marketing.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Digital-Marketing.webp",
+      "description": "Promote brands online using strategies that attract, engage, and convert customers.",
       "enrolledStudents": 4300,
       "duration": "30 days",
-      "level": "Beginner to Advanced",
-      "instructor": "Learn PK",
+      "level": "None",
+      "instructor": "Learn.pk",
       "rating": 4.9,
       "totalRatings": 589,
-      "tags": [
-        "Digital Marketing",
-        "Social Media Marketing",
-        "PPC",
-        "Email Marketing"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-26T10:00:00.000Z"
+      "updatedAt": "2025-09-30T11:22:57.394Z"
     },
     {
       "id": 1,
       "name": "Video Editing",
-      "thumbnail": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400",
-      "description": "Learn professional video editing techniques using industry-standard software to create engaging video content.",
+      "thumbnail": "https://learn.pk/wp-content/uploads/2025/06/Video-Editing.webp",
+      "description": "Edit and enhance videos with creative techniques for professional-quality content.",
       "enrolledStudents": 3600,
       "duration": "30 days",
-      "level": "Beginner to Advanced",
+      "level": "None",
       "instructor": "Learn PK",
       "rating": 4.8,
       "totalRatings": 398,
-      "tags": [
-        "Video Editing",
-        "Adobe Premiere",
-        "After Effects",
-        "Content Creation"
-      ],
+      "tags": [],
       "createdAt": "2025-09-26T10:00:00.000Z",
-      "updatedAt": "2025-09-28T03:13:22.585Z"
+      "updatedAt": "2025-09-30T11:23:18.833Z"
     }
   ]
 }

@@ -30,20 +30,6 @@
       ]
     },
     {
-      "id": 3,
-      "fileName": "JavaScript Fundamentals - Notes",
-      "description": "Complete guide to JavaScript fundamentals",
-      "fileUrl": "https://example.com/notes/js-fundamentals.pdf",
-      "fileType": "pdf",
-      "fileSize": "3.2 MB",
-      "uploadDate": "2024-01-20",
-      "uploadedBy": "Learn PK",
-      "tags": [
-        "javascript",
-        "fundamentals"
-      ]
-    },
-    {
       "id": 1758880989223,
       "fileName": "CS301 Handouts",
       "description": "Handouts of CS301",
@@ -69,35 +55,19 @@
       "uploadDate": "2025-09-26",
       "uploadedBy": "Learn PK",
       "id": 1758882183355
-    },
-    {
-      "fileName": "hi",
-      "description": "sdjfhlasdhf",
-      "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
-      "fileType": "pdf",
-      "fileSize": "3.25",
-      "tags": [
-        "data structure"
-      ],
-      "uploadDate": "2025-09-30",
-      "uploadedBy": "Learn PK",
-      "id": 1759248817180
     }
   ],
   "2": [
     {
-      "id": 3,
-      "fileName": "React Components Guide",
-      "description": "Comprehensive guide to React components",
-      "fileUrl": "https://example.com/notes/react-components.png",
-      "fileType": "image",
-      "fileSize": "1.8 MB",
-      "uploadDate": "2024-01-25",
+      "fileName": "ABC",
+      "description": "aa",
+      "fileUrl": "https://lms.learn.pk/courses/2",
+      "fileType": "pdf",
+      "fileSize": "",
+      "tags": [],
+      "uploadDate": "2025-09-30",
       "uploadedBy": "Learn PK",
-      "tags": [
-        "react",
-        "components"
-      ]
+      "id": 1759233362045
     }
   ],
   "101": [
