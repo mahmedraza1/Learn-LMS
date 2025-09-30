@@ -64,39 +64,26 @@ const RecordedLectures = ({ course }) => {
     try {
       setLoading(true);
       
-      // First, try to load from localStorage
-      const stored = localStorage.getItem(`recorded-lectures-${course.id}`);
-      if (stored) {
-        try {
-          const parsedData = JSON.parse(stored);
-          setRecordedLectures(parsedData);
-          return;
-        } catch (parseError) {
-          console.warn('Error parsing stored recorded lectures:', parseError);
-        }
-      }
-
-      // If no localStorage data, try to load from server data file
+      // Try to load from server data file first
       try {
         const response = await fetch('/server/data/recorded-lectures.json');
         if (response.ok) {
           const data = await response.json();
           const courseLectures = data[course.id.toString()] || [];
           setRecordedLectures(courseLectures);
-          // Store in localStorage for future use
-          localStorage.setItem(`recorded-lectures-${course.id}`, JSON.stringify(courseLectures));
           return;
         }
       } catch (fetchError) {
         console.warn('Error loading recorded lectures from data file:', fetchError);
       }
 
-      // Fallback: try API endpoint (when available)
+      // If server data failed, try API endpoint
       try {
         const response = await axios.get(`${API_BASE_URL}/recorded-lectures/${course.id}`);
-        setRecordedLectures(response.data || []);
+        const courseLectures = response.data || [];
+        setRecordedLectures(courseLectures);
       } catch (apiError) {
-        console.warn('API endpoint not available, using empty array');
+        console.warn('API endpoint not available:', apiError);
         setRecordedLectures([]);
       }
     } catch (error) {
@@ -143,10 +130,7 @@ const RecordedLectures = ({ course }) => {
       console.warn('API delete failed, using local storage');
     }
     
-    // Update local state and localStorage
-    const updatedLectures = recordedLectures.filter(l => l.id !== lecture.id);
-    setRecordedLectures(updatedLectures);
-    localStorage.setItem(`recorded-lectures-${course.id}`, JSON.stringify(updatedLectures));
+        // Update local state\n    const updatedLectures = recordedLectures.filter(l => l.id !== lecture.id);\n    setRecordedLectures(updatedLectures);
     
     if (!error) {
       toast.success('Lecture deleted successfully');
@@ -217,7 +201,6 @@ const RecordedLectures = ({ course }) => {
       }
       
       setRecordedLectures(updatedLectures);
-      localStorage.setItem(`recorded-lectures-${course.id}`, JSON.stringify(updatedLectures));
       
     } catch (error) {
       console.error('Error saving lecture:', error);
@@ -248,15 +231,17 @@ const RecordedLectures = ({ course }) => {
             Course: {course.name} • {recordedLectures.length} lecture{recordedLectures.length !== 1 ? 's' : ''}
           </p>
         </div>
-        {isAdmin && (
-          <button
-            onClick={handleAddLecture}
-            className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors text-sm sm:text-base"
-          >
-            <FaPlus className="mr-2 w-3 h-3 sm:w-4 sm:h-4" />
-            Add Lecture
-          </button>
-        )}
+        <div className="flex gap-2">
+          {isAdmin && (
+            <button
+              onClick={handleAddLecture}
+              className="flex items-center px-3 py-2 sm:px-4 sm:py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition-colors text-sm sm:text-base"
+            >
+              <FaPlus className="mr-2 w-3 h-3 sm:w-4 sm:h-4" />
+              Add Lecture
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Content */}

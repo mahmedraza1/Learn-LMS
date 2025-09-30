@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdAdd, MdSearch, MdFilterList } from "react-icons/md";
+import { MdAdd, MdSearch } from "react-icons/md";
 import toast from "react-hot-toast";
 import GroupCard from '../components/GroupCard';
 import GroupForm from '../components/GroupForm';
@@ -9,13 +9,11 @@ import {
   addGroup, 
   updateGroup, 
   deleteGroup, 
-  setSearchTerm, 
-  setFilterPlatform,
+  setSearchTerm,
   selectFilteredGroups,
   selectGroupsLoading,
   selectGroupsError,
-  selectSearchTerm,
-  selectFilterPlatform
+  selectSearchTerm
 } from '../store/slices/groupsSlice';
 import { selectIsAdmin, selectUser } from '../store/slices/authSlice';
 
@@ -27,7 +25,6 @@ const Groups = () => {
   const loading = useSelector(selectGroupsLoading);
   const error = useSelector(selectGroupsError);
   const searchTerm = useSelector(selectSearchTerm);
-  const filterPlatform = useSelector(selectFilterPlatform);
 
   const [groupForm, setGroupForm] = useState({
     isOpen: false,
@@ -104,7 +101,7 @@ const Groups = () => {
     toast.success(`Joining ${group.name}...`);
   };
 
-  const platforms = ['all', 'Discord', 'Telegram', 'Slack', 'WhatsApp', 'Facebook', 'LinkedIn', 'Other'];
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -150,24 +147,6 @@ const Groups = () => {
                 />
               </div>
             </div>
-            
-            {/* Platform Filter */}
-            <div className="sm:w-48">
-              <div className="relative">
-                <MdFilterList className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                <select
-                  value={filterPlatform}
-                  onChange={(e) => dispatch(setFilterPlatform(e.target.value))}
-                  className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none text-sm sm:text-base"
-                >
-                  {platforms.map(platform => (
-                    <option key={platform} value={platform}>
-                      {platform === 'all' ? 'All Platforms' : platform}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -196,12 +175,12 @@ const Groups = () => {
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">No groups found</h3>
             <p className="text-gray-600 mb-4">
-              {searchTerm || filterPlatform !== 'all' 
-                ? 'Try adjusting your search or filter criteria'
+              {searchTerm
+                ? 'Try adjusting your search criteria'
                 : 'No study groups have been created yet'
               }
             </p>
-            {isAdmin && !searchTerm && filterPlatform === 'all' && (
+            {isAdmin && !searchTerm && (
               <button
                 onClick={handleAddGroup}
                 className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"

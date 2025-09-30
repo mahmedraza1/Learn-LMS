@@ -25,7 +25,6 @@ const Courses = () => {
   const [showCourseForm, setShowCourseForm] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [levelFilter, setLevelFilter] = useState('All');
 
   // Fetch courses on component mount
   useEffect(() => {
@@ -80,13 +79,12 @@ const Courses = () => {
     setEditingCourse(null);
   };
 
-  // Filter courses based on search and level
+  // Filter courses based on search
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          course.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = levelFilter === 'All' || course.level === levelFilter;
-    return matchesSearch && matchesLevel;
+    return matchesSearch;
   });
 
   return (
@@ -135,22 +133,6 @@ const Courses = () => {
               />
             </div>
           </div>
-
-          {/* Level Filter */}
-          <div>
-            <select
-              value={levelFilter}
-              onChange={(e) => setLevelFilter(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-            >
-              <option value="All">All Levels</option>
-              <option value="None">None</option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-              <option value="Beginner to Advanced">Beginner to Advanced</option>
-            </select>
-          </div>
         </div>
 
         {/* Loading State */}
@@ -176,17 +158,17 @@ const Courses = () => {
                   <MdSearch className="w-8 h-8 text-gray-400" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  {searchTerm || levelFilter !== 'All' ? 'No courses found' : 'No courses available'}
+                  {searchTerm ? 'No courses found' : 'No courses available'}
                 </h3>
                 <p className="text-gray-500">
-                  {searchTerm || levelFilter !== 'All' 
-                    ? 'Try adjusting your search or filters.'
+                  {searchTerm
+                    ? 'Try adjusting your search.'
                     : isAdmin 
                       ? 'Get started by adding your first course.'
                       : 'New courses will appear here soon.'
                   }
                 </p>
-                {isAdmin && !searchTerm && levelFilter === 'All' && (
+                {isAdmin && !searchTerm && (
                   <button
                     onClick={handleAddCourse}
                     className="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"

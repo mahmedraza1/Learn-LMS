@@ -140,15 +140,15 @@ const LectureCard = ({
         )}
         
         {/* Date badge */}
-        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full bg-white/90 px-2 sm:px-3 py-1 text-xs font-medium shadow-sm">
-          <div className="flex flex-col">
+        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full backdrop-blur-2xl backdrop-brightness-200 px-2 sm:px-3 py-1 text-xs font-medium shadow-sm">
+          <div className="flex items-center justify-around gap-2">
             <div className="flex items-center space-x-1">
-              <FaClock className="text-gray-500 w-2 h-2 sm:w-3 sm:h-3" />
+              <FaClock className="w-2 h-2 sm:w-3 sm:h-3" />
               <span className="text-xs sm:text-sm">{formatDate(scheduleDate)}</span>
             </div>
-            <div className="flex items-center justify-center text-xs text-gray-600 font-medium mt-0.5">
-              <FaCalendarAlt className="mr-1 text-gray-500 text-[8px] sm:text-[10px]" />
-              {getDayOfWeek(scheduleDate)}
+            <div className="flex items-center justify-center text-xs font-medium mt-0.5">
+              <FaCalendarAlt className="mr-1 text-[8px] sm:text-[10px]" />
+              <span className="text-xs sm:text-sm">{getDayOfWeek(scheduleDate)}</span>
             </div>
           </div>
         </div>
@@ -185,10 +185,12 @@ const LectureCard = ({
       
       {/* Card content */}
       <div className="p-3 sm:p-4">
-        <h3 className="mb-2 text-base sm:text-lg font-semibold flex items-center">
-          <span className="truncate">{lecture?.title || `Lecture ${lectureNumber}`}</span>
+        <h3 className="mb-2 text-base sm:text-lg font-semibold">
+          <div className="break-words leading-tight">
+            {lecture?.title || `Lecture ${lectureNumber}`}
+          </div>
           {lecture?.delivered && (
-            <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded flex items-center flex-shrink-0">
+            <span className="mt-1 inline-flex text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded items-center">
               <FaCheck className="mr-1 w-2 h-2" />
               <span className="hidden sm:inline">Delivered</span>
             </span>

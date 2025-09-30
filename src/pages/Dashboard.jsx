@@ -20,11 +20,11 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [showJsonManager, setShowJsonManager] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState(false);
-  const [quranVerse, setQuranVerse] = useState(null);
-  const [loadingVerse, setLoadingVerse] = useState(false);
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const [audioError, setAudioError] = useState(false);
-  const [currentAudio, setCurrentAudio] = useState(null);
+  // const [quranVerse, setQuranVerse] = useState(null);
+  // const [loadingVerse, setLoadingVerse] = useState(false);
+  // const [audioPlaying, setAudioPlaying] = useState(false);
+  // const [audioError, setAudioError] = useState(false);
+  // const [currentAudio, setCurrentAudio] = useState(null);
 
   // React Hook Form setup for dashboard announcement
   const { control, handleSubmit, reset, register, formState: { errors } } = useForm({
@@ -53,48 +53,48 @@ const Dashboard = () => {
   const { greeting, emoji } = getTimeBasedGreeting();
 
   // Surah ayah count data
-  const surahAyahCount = {
-    1: 7, 2: 286, 3: 200, 4: 176, 5: 120, 6: 165, 7: 206, 8: 75, 9: 129, 10: 109,
-    11: 123, 12: 111, 13: 43, 14: 52, 15: 99, 16: 128, 17: 111, 18: 110, 19: 98, 20: 135,
-    21: 112, 22: 78, 23: 118, 24: 64, 25: 77, 26: 227, 27: 93, 28: 88, 29: 69, 30: 60,
-    31: 34, 32: 30, 33: 73, 34: 54, 35: 45, 36: 83, 37: 182, 38: 88, 39: 75, 40: 85,
-    41: 54, 42: 53, 43: 89, 44: 59, 45: 37, 46: 35, 47: 38, 48: 29, 49: 18, 50: 45,
-    51: 60, 52: 49, 53: 62, 54: 55, 55: 78, 56: 96, 57: 29, 58: 22, 59: 24, 60: 13,
-    61: 14, 62: 11, 63: 11, 64: 18, 65: 12, 66: 12, 67: 30, 68: 52, 69: 52, 70: 44,
-    71: 28, 72: 28, 73: 20, 74: 56, 75: 40, 76: 31, 77: 50, 78: 40, 79: 46, 80: 42,
-    81: 29, 82: 19, 83: 36, 84: 25, 85: 22, 86: 17, 87: 19, 88: 26, 89: 30, 90: 20,
-    91: 15, 92: 21, 93: 11, 94: 8, 95: 8, 96: 19, 97: 5, 98: 8, 99: 8, 100: 11,
-    101: 11, 102: 8, 103: 3, 104: 9, 105: 5, 106: 4, 107: 7, 108: 3, 109: 6, 110: 3,
-    111: 5, 112: 4, 113: 5, 114: 6
-  };
+  // const surahAyahCount = {
+  //   1: 7, 2: 286, 3: 200, 4: 176, 5: 120, 6: 165, 7: 206, 8: 75, 9: 129, 10: 109,
+  //   11: 123, 12: 111, 13: 43, 14: 52, 15: 99, 16: 128, 17: 111, 18: 110, 19: 98, 20: 135,
+  //   21: 112, 22: 78, 23: 118, 24: 64, 25: 77, 26: 227, 27: 93, 28: 88, 29: 69, 30: 60,
+  //   31: 34, 32: 30, 33: 73, 34: 54, 35: 45, 36: 83, 37: 182, 38: 88, 39: 75, 40: 85,
+  //   41: 54, 42: 53, 43: 89, 44: 59, 45: 37, 46: 35, 47: 38, 48: 29, 49: 18, 50: 45,
+  //   51: 60, 52: 49, 53: 62, 54: 55, 55: 78, 56: 96, 57: 29, 58: 22, 59: 24, 60: 13,
+  //   61: 14, 62: 11, 63: 11, 64: 18, 65: 12, 66: 12, 67: 30, 68: 52, 69: 52, 70: 44,
+  //   71: 28, 72: 28, 73: 20, 74: 56, 75: 40, 76: 31, 77: 50, 78: 40, 79: 46, 80: 42,
+  //   81: 29, 82: 19, 83: 36, 84: 25, 85: 22, 86: 17, 87: 19, 88: 26, 89: 30, 90: 20,
+  //   91: 15, 92: 21, 93: 11, 94: 8, 95: 8, 96: 19, 97: 5, 98: 8, 99: 8, 100: 11,
+  //   101: 11, 102: 8, 103: 3, 104: 9, 105: 5, 106: 4, 107: 7, 108: 3, 109: 6, 110: 3,
+  //   111: 5, 112: 4, 113: 5, 114: 6
+  // };
 
   // Fetch random Quran verse
-  const fetchRandomQuranVerse = async () => {
-    try {
-      setLoadingVerse(true);
-      
-      // Generate random surah number (1-114)
-      const randomSurah = Math.floor(Math.random() * 114) + 1;
-      
-      // Generate random ayah number based on surah
-      const maxAyah = surahAyahCount[randomSurah];
-      const randomAyah = Math.floor(Math.random() * maxAyah) + 1;
-      
-      const url = `https://quranapi.pages.dev/api/${randomSurah}/${randomAyah}.json`;
-      const response = await fetch(url);
-      
-      if (response.ok) {
-        const verseData = await response.json();
-        setQuranVerse(verseData);
-      } else {
-        console.error('Failed to fetch Quran verse');
-      }
-    } catch (error) {
-      console.error('Error fetching Quran verse:', error);
-    } finally {
-      setLoadingVerse(false);
-    }
-  };
+  // const fetchRandomQuranVerse = async () => {
+  //   try {
+  //     setLoadingVerse(true);
+  //     
+  //     // Generate random surah number (1-114)
+  //     const randomSurah = Math.floor(Math.random() * 114) + 1;
+  //     
+  //     // Generate random ayah number based on surah
+  //     const maxAyah = surahAyahCount[randomSurah];
+  //     const randomAyah = Math.floor(Math.random() * maxAyah) + 1;
+  //     
+  //     const url = `https://quranapi.pages.dev/api/${randomSurah}/${randomAyah}.json`;
+  //     const response = await fetch(url);
+  //     
+  //     if (response.ok) {
+  //       const verseData = await response.json();
+  //       setQuranVerse(verseData);
+  //     } else {
+  //       console.error('Failed to fetch Quran verse');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching Quran verse:', error);
+  //   } finally {
+  //     setLoadingVerse(false);
+  //   }
+  // };
 
   // Determine API URL based on hostname
   const getApiBaseUrl = () => {
@@ -285,60 +285,60 @@ const Dashboard = () => {
   };
 
   // Play audio function
-  const playVerseAudio = () => {
-    if (quranVerse && quranVerse.audio && quranVerse.audio["1"]) {
-      // Stop any currently playing audio
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
-      
-      setAudioError(false);
-      setAudioPlaying(true);
-      
-      const audioUrl = quranVerse.audio["1"].url;
-      const audio = new Audio(audioUrl);
-      setCurrentAudio(audio);
-      
-      audio.onended = () => {
-        setAudioPlaying(false);
-        setCurrentAudio(null);
-      };
-      
-      audio.onerror = () => {
-        setAudioError(true);
-        setAudioPlaying(false);
-        setCurrentAudio(null);
-        toast.error('Failed to load audio');
-      };
-      
-      audio.play().catch((error) => {
-        setAudioError(true);
-        setAudioPlaying(false);
-        setCurrentAudio(null);
-        toast.error('Failed to play audio');
-        console.error('Audio play error:', error);
-      });
-    }
-  };
+  // const playVerseAudio = () => {
+  //   if (quranVerse && quranVerse.audio && quranVerse.audio["1"]) {
+  //     // Stop any currently playing audio
+  //     if (currentAudio) {
+  //       currentAudio.pause();
+  //       currentAudio.currentTime = 0;
+  //     }
+  //     
+  //     setAudioError(false);
+  //     setAudioPlaying(true);
+  //     
+  //     const audioUrl = quranVerse.audio["1"].url;
+  //     const audio = new Audio(audioUrl);
+  //     setCurrentAudio(audio);
+  //     
+  //     audio.onended = () => {
+  //       setAudioPlaying(false);
+  //       setCurrentAudio(null);
+  //     };
+  //     
+  //     audio.onerror = () => {
+  //       setAudioError(true);
+  //       setAudioPlaying(false);
+  //       setCurrentAudio(null);
+  //       toast.error('Failed to load audio');
+  //     };
+  //     
+  //     audio.play().catch((error) => {
+  //       setAudioError(true);
+  //       setAudioPlaying(false);
+  //       setCurrentAudio(null);
+  //       toast.error('Failed to play audio');
+  //       console.error('Audio play error:', error);
+  //     });
+  //   }
+  // };
 
   // Load dashboard announcement and Quran verse on component mount
   useEffect(() => {
     fetchDashboardAnnouncement();
-    fetchRandomQuranVerse();
+    // fetchRandomQuranVerse();
   }, []);
 
   // Reset audio state when verse changes
-  useEffect(() => {
-    // Stop any currently playing audio when verse changes
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
-    setAudioPlaying(false);
-    setAudioError(false);
-    setCurrentAudio(null);
-  }, [quranVerse]);
+  // useEffect(() => {
+  //   // Stop any currently playing audio when verse changes
+  //   if (currentAudio) {
+  //     currentAudio.pause();
+  //     currentAudio.currentTime = 0;
+  //   }
+  //   setAudioPlaying(false);
+  //   setAudioError(false);
+  //   setCurrentAudio(null);
+  // }, [quranVerse]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -365,11 +365,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Quran Verse Section */}
+      {/* Quran Verse Section - Commented Out */}
+      {/*
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-2 sm:py-3">
         {loadingVerse ? (
           <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg border border-emerald-200 p-4 sm:p-6">
-            {/* Bismillah */}
             <div className="text-center mb-4">
               <div 
                 className="text-xl sm:text-2xl text-emerald-700 mb-3"
@@ -386,7 +386,6 @@ const Dashboard = () => {
           </div>
         ) : quranVerse ? (
           <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg border border-emerald-200 p-4 sm:p-6">
-            {/* Bismillah */}
             <div className="text-center mb-6">
               <div 
                 className="text-xl sm:text-2xl text-emerald-700 mb-4"
@@ -405,9 +404,7 @@ const Dashboard = () => {
                 </h3>
               </div>
               
-              {/* Audio and New Verse Controls */}
               <div className="flex items-center justify-center sm:justify-end gap-2">
-                {/* Audio Player */}
                 {quranVerse.audio && quranVerse.audio["1"] && (
                   <button
                     onClick={playVerseAudio}
@@ -441,7 +438,6 @@ const Dashboard = () => {
               </div>
             </div>
             
-            {/* Arabic Text */}
             <div 
               className="text-right mb-4 text-lg sm:text-xl leading-relaxed text-gray-800"
               style={{ fontFamily: "'Noto Naskh Arabic', serif" }}
@@ -450,7 +446,6 @@ const Dashboard = () => {
               {quranVerse.arabic1}
             </div>
             
-            {/* English Translation */}
             <div 
               className="mb-3 text-sm sm:text-base leading-relaxed text-gray-700"
               style={{ fontFamily: "'Noto Serif', serif" }}
@@ -458,7 +453,6 @@ const Dashboard = () => {
               <span className="font-medium text-gray-800">English:</span> {quranVerse.english}
             </div>
             
-            {/* Urdu Translation */}
             <div 
               className="text-sm sm:text-base leading-relaxed text-gray-700"
               style={{ fontFamily: "'Noto Nastaliq Urdu', serif" }}
@@ -467,11 +461,9 @@ const Dashboard = () => {
               <span className="font-medium text-gray-800" style={{ fontFamily: "'Noto Nastaliq Urdu', serif" }} dir="rtl">اردو:</span> {quranVerse.urdu}
             </div>
             
-            {/* Surah Info */}
             <div className="mt-4 pt-3 border-t border-emerald-200 text-xs text-gray-600 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
               <span className="font-medium text-center sm:text-left">Let your path of learning open with words from the Al-Quran</span>
               
-              {/* Source Attribution */}
               <div className="flex justify-center">
                 <a 
                   href={`https://quranapi.pages.dev/api/${quranVerse.surahNo}/${quranVerse.ayahNo}.json`}
@@ -495,6 +487,7 @@ const Dashboard = () => {
           </div>
         ) : null}
       </div>
+      */}
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">

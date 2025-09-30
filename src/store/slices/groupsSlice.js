@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
 
 // Determine API URL based on hostname
 const getApiBaseUrl = () => {
@@ -198,17 +198,17 @@ export const selectGroupsError = (state) => state.groups.error;
 export const selectSearchTerm = (state) => state.groups.searchTerm;
 export const selectFilterPlatform = (state) => state.groups.filterPlatform;
 
-export const selectFilteredGroups = (state) => {
-  const { groups, searchTerm, filterPlatform } = state.groups;
-  
-  return groups.filter(group => {
-    const matchesSearch = group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         group.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPlatform = filterPlatform === 'all' || group.platform === filterPlatform;
-    const isActive = group.isActive;
-    
-    return matchesSearch && matchesPlatform && isActive;
-  });
-};
+export const selectFilteredGroups = createSelector(
+  [selectGroups, selectSearchTerm],
+  (groups, searchTerm) => {
+    return groups.filter(group => {
+      const matchesSearch = group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           group.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const isActive = group.isActive;
+      
+      return matchesSearch && isActive;
+    });
+  }
+);
 
 export default groupsSlice.reducer;

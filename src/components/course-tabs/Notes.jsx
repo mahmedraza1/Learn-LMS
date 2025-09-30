@@ -27,7 +27,6 @@ const Notes = ({ course }) => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('all');
   const [notesForm, setNotesForm] = useState({
     isOpen: false,
     note: null
@@ -200,21 +199,13 @@ const Notes = ({ course }) => {
     }
   };
 
-  // Filter notes based on search term and selected filter
+  // Filter notes based on search term
   const filteredNotes = notes.filter(note => {
     const matchesSearch = note.fileName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (note.description && note.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
                          (note.tags && note.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())));
-    
-    if (selectedFilter === 'all') {
-      return matchesSearch;
-    }
-    
-    return matchesSearch && note.fileType === selectedFilter;
+    return matchesSearch;
   });
-
-  // Get available file types for filter
-  const availableFileTypes = [...new Set(notes.map(note => note.fileType))];
 
   if (loading) {
     return (
@@ -265,22 +256,6 @@ const Notes = ({ course }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <FaFilter className="w-4 h-4 text-gray-400" />
-            <select
-              value={selectedFilter}
-              onChange={(e) => setSelectedFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            >
-              <option value="all">All Types</option>
-              {availableFileTypes.map(type => (
-                <option key={type} value={type}>
-                  {type.toUpperCase()}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
       </div>

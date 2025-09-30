@@ -27,7 +27,6 @@ const QNA = ({ course }) => {
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [faqForm, setFaqForm] = useState({
     isOpen: false,
     faq: null
@@ -200,21 +199,13 @@ const QNA = ({ course }) => {
     }
   };
 
-  // Filter FAQs based on search term and selected category
+  // Filter FAQs based on search term
   const filteredFaqs = faqs.filter(faq => {
     const matchesSearch = faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (faq.answer && faq.answer.toLowerCase().includes(searchTerm.toLowerCase())) ||
                          (faq.category && faq.category.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    if (selectedCategory === 'all') {
-      return matchesSearch;
-    }
-    
-    return matchesSearch && faq.category === selectedCategory;
+    return matchesSearch;
   });
-
-  // Get available categories for filter
-  const availableCategories = [...new Set(faqs.map(faq => faq.category))];
 
   if (loading) {
     return (
@@ -265,22 +256,6 @@ const QNA = ({ course }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <FaFilter className="w-4 h-4 text-gray-400" />
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-            >
-              <option value="all">All Categories</option>
-              {availableCategories.map(category => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
       </div>

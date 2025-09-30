@@ -43,12 +43,12 @@
         {
           "course_id": 1,
           "course_name": "Video Editing",
-          "title": "Mark Maverick",
+          "title": "Mark Maverick is a good boy he loves to play online games",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
           "youtube_id": "jfKfPfyJRdk",
           "lecture_number": 1,
-          "date": "2025-09-15T05:15:00.000Z",
-          "time": "10:15 AM",
+          "date": "2025-09-30",
+          "time": "16:03",
           "day": "Monday",
           "delivered": false,
           "id": 1757913091631
@@ -180,6 +180,18 @@
           "delivered": true,
           "id": 1758370143589,
           "currentlyLive": false
+        },
+        {
+          "title": "Mark Maverick is a good boy he loves to play online games",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-09-30",
+          "time": "16:07",
+          "day": "Tuesday",
+          "course_id": 101,
+          "batch": "Batch B",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759230442772
         }
       ],
       "109": [

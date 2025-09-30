@@ -65,12 +65,64 @@ const RecordedLectureForm = ({
     return 'unknown';
   };
 
+  // Extract YouTube video ID
+  const getYouTubeVideoId = (url) => {
+    if (!url || !url.includes('youtube.com') && !url.includes('youtu.be')) {
+      return null;
+    }
+    
+    try {
+      let videoId = null;
+      
+      if (url.includes('youtu.be/')) {
+        const parts = url.split('youtu.be/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      } else if (url.includes('youtube.com/watch')) {
+        const urlObj = new URL(url);
+        videoId = urlObj.searchParams.get('v');
+      } else if (url.includes('youtube.com/embed/')) {
+        const parts = url.split('embed/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      }
+      
+      return videoId;
+    } catch (error) {
+      console.error('Error extracting YouTube video ID:', error);
+      return null;
+    }
+  };
+
+    // Auto-generate YouTube thumbnail\n  const generateYouTubeThumbnail = (url) => {\n    const videoId = getYouTubeVideoId(url);\n    if (videoId) {\n      return `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;\n    }\n    return '';\n  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    if (name === 'videoUrl') {
+      const newFormData = {
+        ...formData,
+        [name]: value
+      };
+      
+      // Auto-generate thumbnail for YouTube videos if no custom thumbnail is set
+      if (detectVideoType(value) === 'youtube' && !formData.thumbnailUrl.trim()) {
+        const autoThumbnail = generateYouTubeThumbnail(value);
+        if (autoThumbnail) {
+          newFormData.thumbnailUrl = autoThumbnail;
+        }
+      }
+      
+      setFormData(newFormData);
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+    
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -120,10 +172,12 @@ const RecordedLectureForm = ({
     setIsSubmitting(true);
 
     try {
+      const videoType = detectVideoType(formData.videoUrl);
       const lectureData = {
         ...formData,
         lecture_number: lecture ? lecture.lecture_number : getNextLectureNumber(),
-        video_type: detectVideoType(formData.videoUrl),
+        video_type: videoType,
+        youtube_id: videoType === 'youtube' ? getYouTubeVideoId(formData.videoUrl) : null,
         course_id: course?.id,
         created_at: lecture ? lecture.created_at : new Date().toISOString(),
         updated_at: new Date().toISOString()
@@ -253,7 +307,7 @@ const RecordedLectureForm = ({
               <p className="mt-1 text-sm text-red-600">{errors.thumbnailUrl}</p>
             )}
             <p className="mt-1 text-xs text-gray-500">
-              Leave empty to auto-generate from video (YouTube videos only)
+              For YouTube videos, thumbnail will be auto-generated. You can override with a custom URL.
             </p>
           </div>
 

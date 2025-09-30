@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { MdClose, MdSave, MdVideoLibrary, MdLink } from "react-icons/md";
+import { MdClose, MdSave, MdVideoLibrary, MdLink, MdImage } from "react-icons/md";
 import toast from "react-hot-toast";
 
 // Determine API URL based on hostname
@@ -40,6 +40,7 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
           description: data.description,
           videoUrl: data.videoUrl,
           videoType: data.videoType,
+          customThumbnail: data.customThumbnail || '',
           isActive: data.isActive
         });
       }
@@ -195,6 +196,54 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
               )}
               {errors.videoUrl && (
                 <p className="mt-1 text-sm text-red-600">{errors.videoUrl.message}</p>
+              )}
+            </div>
+            
+            {/* Custom Thumbnail */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Custom Thumbnail URL (Optional)
+              </label>
+              <input
+                type="url"
+                {...register('customThumbnail')}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="https://example.com/thumbnail.jpg (Leave empty to use auto-generated thumbnail)"
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                If provided, this will override the auto-generated thumbnail. For YouTube videos, leave empty to use YouTube's thumbnail.
+              </p>
+              
+              {/* Thumbnail Preview */}
+              {watch('customThumbnail') && (
+                <div className="mt-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Thumbnail Preview
+                  </label>
+                  <div className="relative w-full max-w-xs">
+                    <img
+                      src={watch('customThumbnail')}
+                      alt="Thumbnail preview"
+                      className="w-full h-20 object-cover rounded-lg border border-gray-200"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        const errorMsg = e.target.nextElementSibling;
+                        if (errorMsg) errorMsg.style.display = 'block';
+                      }}
+                      onLoad={(e) => {
+                        e.target.style.display = 'block';
+                        const errorMsg = e.target.nextElementSibling;
+                        if (errorMsg) errorMsg.style.display = 'none';
+                      }}
+                    />
+                    <div 
+                      className="text-xs text-red-600 mt-1" 
+                      style={{ display: 'none' }}
+                    >
+                      Invalid thumbnail URL or failed to load image
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
             

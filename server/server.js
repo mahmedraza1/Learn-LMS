@@ -1043,7 +1043,7 @@ app.get('/api/dashboard-videos', (req, res) => {
 // UPDATE dashboard video (admin only)
 app.put('/api/dashboard-videos', (req, res) => {
   try {
-    const { title, description, videoUrl, videoType, isActive, updatedBy } = req.body;
+    const { title, description, videoUrl, videoType, customThumbnail, isActive, updatedBy } = req.body;
     
     const miscData = readMiscData();
     
@@ -1053,6 +1053,7 @@ app.put('/api/dashboard-videos', (req, res) => {
       description,
       videoUrl,
       videoType, // 'youtube', 'embed', or 'direct'
+      customThumbnail: customThumbnail || null, // Add custom thumbnail support
       isActive,
       updatedAt: new Date().toISOString(),
       updatedBy

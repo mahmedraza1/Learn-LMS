@@ -69,6 +69,19 @@
       "uploadDate": "2025-09-26",
       "uploadedBy": "Learn PK",
       "id": 1758882183355
+    },
+    {
+      "fileName": "hi",
+      "description": "sdjfhlasdhf",
+      "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
+      "fileType": "pdf",
+      "fileSize": "3.25",
+      "tags": [
+        "data structure"
+      ],
+      "uploadDate": "2025-09-30",
+      "uploadedBy": "Learn PK",
+      "id": 1759248817180
     }
   ],
   "2": [
