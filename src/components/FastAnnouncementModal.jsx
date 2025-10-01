@@ -26,7 +26,7 @@ const FastAnnouncementModal = ({ isOpen, onClose, announcement }) => {
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">Global Announcement</h2>
                 <p className="text-sm text-gray-500">
-                  By {announcement.author || 'Admin'} • {new Date(announcement.date).toLocaleDateString('en-US', {
+                  By Learn pk • {new Date(announcement.date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',

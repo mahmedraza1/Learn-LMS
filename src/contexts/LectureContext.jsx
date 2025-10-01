@@ -615,7 +615,7 @@ export const LectureProvider = ({ children }) => {
         title: announcementData.title,
         content: announcementData.content,
         date: new Date().toISOString(),
-        author: user.name || user.email
+        author: "Learn pk"
       };
       
       // Send to API

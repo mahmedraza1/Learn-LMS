@@ -225,7 +225,7 @@ const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef, o
                     </div>
                     {announcement.author && (
                       <div className="text-xs text-gray-500 mt-1">
-                        By: {announcement.author}
+                        By: Learn pk
                       </div>
                     )}
                     {announcement.priority && (

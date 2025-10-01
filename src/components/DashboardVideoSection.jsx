@@ -134,7 +134,7 @@ const DashboardVideoSection = ({ isAdmin = false }) => {
           videoType: videoConfig.videoType,
           customThumbnail: customThumbnail,
           isActive: videoConfig.isActive,
-          updatedBy: 'Admin'
+          updatedBy: 'Learn pk'
         }),
       });
       

@@ -74,8 +74,8 @@ const Groups = () => {
     try {
       const groupData = {
         ...formData,
-        createdBy: user?.name || 'Admin',
-        updatedBy: user?.name || 'Admin'
+        createdBy: 'Learn pk',
+        updatedBy: 'Learn pk'
       };
 
       if (groupForm.group) {

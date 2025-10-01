@@ -140,7 +140,7 @@ const LectureCard = ({
         )}
         
         {/* Date badge */}
-        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full backdrop-blur-2xl backdrop-brightness-200 px-2 sm:px-3 py-1 text-xs font-medium shadow-sm">
+        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full backdrop-blur-2xl backdrop-brightness-500 px-2 sm:px-3 py-1 text-xs font-medium shadow-sm">
           <div className="flex items-center justify-around gap-2">
             <div className="flex items-center space-x-1">
               <FaClock className="w-2 h-2 sm:w-3 sm:h-3" />
@@ -176,8 +176,8 @@ const LectureCard = ({
           ) : (
             <span className="flex items-center">
               <FaCalendarAlt className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
-              <span className="hidden sm:inline">Upcoming Soon</span>
-              <span className="sm:hidden">Soon</span>
+              <span className="hidden sm:inline">Upcoming</span>
+              <span className="sm:hidden">Upcoming</span>
             </span>
           )}
         </div>
@@ -316,7 +316,7 @@ const LectureCard = ({
                     {lecture?.youtube_url && lecture?.delivered 
                       ? 'Watch Lecture' 
                       : isTodayLecture 
-                        ? 'Join Soon' 
+                        ? 'Join' 
                         : 'Upcoming Lecture'}
                   </span>
                 </button>

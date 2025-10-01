@@ -95,10 +95,11 @@ const NotesForm = ({ isOpen, onClose, onSubmit, note, courseId }) => {
 
     setLoading(true);
     try {
-      const noteData = {
+            const noteData = {
         ...formData,
+        id: note?.id || Date.now(),
         uploadDate: new Date().toISOString().split('T')[0],
-        uploadedBy: 'Learn PK' // This would come from user context in real app
+        uploadedBy: 'Learn pk' // This would come from user context in real app
       };
 
       await onSubmit(noteData);

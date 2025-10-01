@@ -100,11 +100,11 @@ const LiveLectures = ({ course }) => {
         }
       }
 
-      // Sort lectures by date (newest first)
+      // Sort lectures by date (oldest first - chronological order)
       allLectures.sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
-        return dateB - dateA;
+        return dateA - dateB;
       });
 
       setLectures(allLectures);

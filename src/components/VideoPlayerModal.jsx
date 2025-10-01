@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 
 const VideoPlayerModal = ({ isOpen, onClose, videoUrl, title = "Video Player" }) => {
-  const modalRef = useRef(null);
   const videoRef = useRef(null);
 
   // Handle escape key press
@@ -20,16 +19,9 @@ const VideoPlayerModal = ({ isOpen, onClose, videoUrl, title = "Video Player" })
 
     return () => {
       document.removeEventListener("keydown", handleEscKey);
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "auto";
     };
   }, [isOpen, onClose]);
-
-  // Handle outside click
-  const handleBackdropClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
-    }
-  };
 
   // Pause video when modal closes
   useEffect(() => {
@@ -38,65 +30,58 @@ const VideoPlayerModal = ({ isOpen, onClose, videoUrl, title = "Video Player" })
     }
   }, [isOpen]);
 
+  // Handle right-click disable
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    return false;
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-      onClick={handleBackdropClick}
-    >
+    <div className="fixed inset-0 z-50 bg-black">
       <div 
-        ref={modalRef}
-        className="relative w-full max-w-5xl mx-4 bg-white rounded-lg shadow-xl"
+        className="relative h-screen w-screen overflow-hidden bg-black"
+        onContextMenu={handleContextMenu}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 truncate">
-            {title}
-          </h2>
-          <button
-            onClick={onClose}
-            className="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <FaTimes className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Close button */}
+        <button
+          className="absolute right-6 top-6 z-20 rounded-full bg-black/60 p-3 text-white backdrop-blur-sm hover:bg-black/80 transition-all duration-200 border-2 border-white/20"
+          onClick={onClose}
+          onContextMenu={handleContextMenu}
+        >
+          <FaTimes size={28} />
+        </button>
 
         {/* Video Content */}
-        <div className="p-4">
-          {videoUrl ? (
-            <div className="aspect-video w-full">
-              <video
-                ref={videoRef}
-                className="w-full h-full rounded-lg"
-                controls
-                controlsList="nodownload"
-                onError={(e) => {
-                  console.error("Video loading error:", e);
-                }}
-              >
-                <source src={videoUrl} type="video/mp4" />
-                <source src={videoUrl} type="video/webm" />
-                <source src={videoUrl} type="video/ogg" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          ) : (
-            <div className="aspect-video w-full flex items-center justify-center bg-gray-100 rounded-lg">
-              <div className="text-center">
-                <div className="text-gray-400 text-4xl mb-2">🎥</div>
-                <p className="text-gray-600">No video URL provided</p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Footer with video info */}
-        <div className="px-4 pb-4">
-          <div className="text-xs text-gray-500">
-            Video URL: {videoUrl || 'Not provided'}
+        {videoUrl ? (
+          <video
+            ref={videoRef}
+            className="h-full w-full object-contain"
+            controls
+            controlsList="nodownload"
+            onContextMenu={handleContextMenu}
+            onError={(e) => {
+              console.error("Video loading error:", e);
+            }}
+          >
+            <source src={videoUrl} type="video/mp4" />
+            <source src={videoUrl} type="video/webm" />
+            <source src={videoUrl} type="video/ogg" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <div 
+            className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-900 p-8 text-white"
+            onContextMenu={handleContextMenu}
+          >
+            <div className="text-white text-6xl mb-4">🎥</div>
+            <p className="text-xl">No video available</p>
+            <p className="text-center text-sm text-gray-300">
+              The video might not be uploaded yet. Please check back later or contact your instructor.
+            </p>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
