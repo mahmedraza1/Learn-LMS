@@ -59,7 +59,7 @@ const FAQForm = ({ isOpen, onClose, onSubmit, faq, courseId }) => {
         ...formData,
         createdDate: new Date().toISOString().split('T')[0],
         updatedDate: new Date().toISOString().split('T')[0],
-        createdBy: 'Learn pk', // This would come from user context in real app
+        createdBy: 'Learn.pk', // This would come from user context in real app
         isActive: true
       };
 

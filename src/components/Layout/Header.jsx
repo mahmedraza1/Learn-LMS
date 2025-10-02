@@ -81,7 +81,7 @@ const Header = () => {
           id: editingAnnouncement.id,
           updatedData: {
             ...data,
-            author: 'Learn pk',
+            author: 'Learn.pk',
             updated_at: new Date().toISOString()
           }
         })).unwrap();
@@ -90,7 +90,7 @@ const Header = () => {
         // Add new announcement
         await dispatch(addGlobalAnnouncement({
           ...data,
-          author: 'Learn pk'
+          author: 'Learn.pk'
         })).unwrap();
         toast.success('Announcement added successfully');
       }

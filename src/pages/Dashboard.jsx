@@ -31,7 +31,7 @@ const Dashboard = () => {
     defaultValues: {
       title: '',
       content: '',
-      author: 'Learn pk'
+      author: 'Learn.pk'
     }
   });
 
@@ -512,7 +512,7 @@ const Dashboard = () => {
                           reset({
                             title: dashboardAnnouncement.title || '',
                             content: dashboardAnnouncement.content || '',
-                            author: 'Learn pk'
+                            author: 'Learn.pk'
                           });
                           setShowAnnouncementForm(true);
                         }}
@@ -557,7 +557,7 @@ const Dashboard = () => {
                     dangerouslySetInnerHTML={{ __html: dashboardAnnouncement.content }}
                   />
                   <div className="mt-4 text-xs text-gray-500">
-                    By Learn pk • {new Date(dashboardAnnouncement.updatedAt || dashboardAnnouncement.date).toLocaleDateString()}
+                    By Learn.pk • {new Date(dashboardAnnouncement.updatedAt || dashboardAnnouncement.date).toLocaleDateString()}
                   </div>
                 </div>
               ) : (

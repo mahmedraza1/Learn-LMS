@@ -22,7 +22,7 @@ const LiveClassAnnouncement = ({ isAdmin }) => {
     defaultValues: {
       title: '',
       content: '',
-      author: 'Learn pk'
+      author: 'Learn.pk'
     }
   });
 
@@ -105,7 +105,7 @@ const LiveClassAnnouncement = ({ isAdmin }) => {
       await dispatch(setLiveClassAnnouncement({
         title: data.title,
         content: data.content,
-        author: 'Learn pk'
+        author: 'Learn.pk'
       })).unwrap();
       
       toast.success("Live class announcement added successfully");
@@ -222,7 +222,7 @@ const LiveClassAnnouncement = ({ isAdmin }) => {
             {/* Footer */}
             <div className="mt-4 flex items-center justify-between border-t border-orange-200 pt-3 text-xs text-gray-600">
               <span>
-                By: <span className="font-medium">Learn pk</span>
+                By: <span className="font-medium">Learn.pk</span>
               </span>
               <span>
                 {new Date(announcement.date).toLocaleDateString('en-US', {

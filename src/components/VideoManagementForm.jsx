@@ -76,7 +76,7 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
       const payload = {
         ...data,
         videoUrl: processedVideoUrl,
-        updatedBy: 'Learn pk'
+        updatedBy: 'Learn.pk'
       };
       
       const response = await fetch(`${API_BASE_URL}/dashboard-videos`, {
