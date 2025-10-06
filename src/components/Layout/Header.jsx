@@ -1,3 +1,10 @@
+/*
+ * Learn LMS - Header Component
+ * Developed by Mark for Learn.pk
+ * Copyright (c) 2025 Mark. All rights reserved.
+ * Proprietary software - Unauthorized use prohibited
+ */
+
 import React, { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 

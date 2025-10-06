@@ -1,8 +1,10 @@
 {
   "name": "learn-lms",
   "private": true,
-  "version": "0.0.0",
-  "description": "Learn LMS - A comprehensive learning management system",
+  "version": "2.0.0",
+  "description": "Learn LMS - A comprehensive learning management system developed by Mark for Learn.pk",
+  "author": "Mark",
+  "license": "PROPRIETARY",
   "type": "module",
   "scripts": {
     "dev": "vite",

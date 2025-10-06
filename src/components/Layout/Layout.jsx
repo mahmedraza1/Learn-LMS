@@ -1,3 +1,10 @@
+/*
+ * Learn LMS - Main Layout Component
+ * Developed by Mark for Learn.pk
+ * Copyright (c) 2025 Mark. All rights reserved.
+ * Proprietary software - Unauthorized use prohibited
+ */
+
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';

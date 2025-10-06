@@ -1,3 +1,10 @@
+/*
+ * Learn LMS - Application Entry Point
+ * Developed by Mark for Learn.pk
+ * Copyright (c) 2025 Mark. All rights reserved.
+ * Proprietary software - Unauthorized use prohibited
+ */
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
