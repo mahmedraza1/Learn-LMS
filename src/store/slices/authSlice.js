@@ -78,5 +78,12 @@ export const selectIsGuest = (state) => {
   return !user || user.id === 0;
 };
 
+// New selector for admission status
+export const selectHasGrantedAdmission = (state) => {
+  const user = state.auth.user;
+  // Only return true if user exists AND has specifically granted admission
+  return user && user.admission_status === 'Granted';
+};
+
 export const { clearAuth, clearError, updateUserBatch } = authSlice.actions;
 export default authSlice.reducer;
