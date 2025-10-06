@@ -95,42 +95,9 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
           return;
         }
       } else {
-        // Basic validation if course title or batch is missing
-        // Check batch-specific rules
-        const dayOfMonth = date.getDate();
-        
-        if (activeBatch === "Batch A" && (dayOfMonth > 27)) {
-          setError("lectureDate", {
-            type: "manual",
-            message: "Batch A lectures only run from 1st to 27th of each month"
-          });
-          return;
-        }
-        
-        if (activeBatch === "Batch B") {
-          const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-          
-          // If it's the last day of a month with 31 days, it's a leave day for Batch B
-          if (lastDayOfMonth === 31 && dayOfMonth === 31) {
-            setError("lectureDate", {
-              type: "manual",
-              message: "The 31st is a leave day for Batch B"
-            });
-            return;
-          }
-          
-          // Check if the date is within the Batch B schedule (16th to end of month, or 1st to 12th of next month)
-          const isSecondHalfOfMonth = dayOfMonth >= 16;
-          const isFirstHalfOfNextMonth = dayOfMonth <= 12;
-          
-          if (!isSecondHalfOfMonth && !isFirstHalfOfNextMonth) {
-            setError("lectureDate", {
-              type: "manual",
-              message: "Batch B lectures run from 16th to end of month, and 1st to 12th of next month"
-            });
-            return;
-          }
-        }
+        // Basic validation if course title or batch is missing - batch restrictions disabled
+        // Only check for past dates
+        clearErrors("lectureDate");
       }
       
       clearErrors("lectureDate");

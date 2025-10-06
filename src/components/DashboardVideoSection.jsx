@@ -56,9 +56,9 @@ const DashboardVideoSection = ({ isAdmin = false }) => {
   const extractYouTubeId = (url) => {
     if (!url) return null;
     
-    // Handle different YouTube URL formats
+    // Handle different YouTube URL formats including live streams
     const patterns = [
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/live\/)([^&\n?#]+)/,
       /youtube\.com\/v\/([^&\n?#]+)/,
       /youtube\.com\/user\/[^\/]+#p\/u\/\d+\/([^&\n?#]+)/,
       /youtube\.com\/ytscreeningroom\?v=([^&\n?#]+)/,

@@ -95,11 +95,15 @@ const NotesForm = ({ isOpen, onClose, onSubmit, note, courseId }) => {
 
     setLoading(true);
     try {
-            const noteData = {
-        ...formData,
-        id: note?.id || Date.now(),
-        uploadDate: new Date().toISOString().split('T')[0],
-        uploadedBy: 'Learn.pk' // This would come from user context in real app
+                  const noteData = {
+        fileName: formData.fileName,
+        description: formData.description,
+        fileUrl: formData.fileUrl,
+        fileType: formData.fileType,
+        fileSize: formData.fileSize,
+        uploadedBy: 'Learn.pk',
+        tags: Array.isArray(formData.tags) ? formData.tags : [],
+        id: note?.id || Date.now()
       };
 
       await onSubmit(noteData);

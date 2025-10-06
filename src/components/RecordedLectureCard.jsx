@@ -42,6 +42,12 @@ const RecordedLectureCard = ({
         if (parts.length > 1) {
           videoId = parts[1].split('?')[0].split('&')[0];
         }
+      } else if (url.includes('youtube.com/live/')) {
+        // Live URL format: https://youtube.com/live/VIDEO_ID
+        const parts = url.split('live/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
       }
       
       if (videoId) {
@@ -72,6 +78,12 @@ const RecordedLectureCard = ({
         videoId = urlObj.searchParams.get('v');
       } else if (url.includes('youtube.com/embed/')) {
         const parts = url.split('embed/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      } else if (url.includes('youtube.com/live/')) {
+        // Live URL format: https://youtube.com/live/VIDEO_ID
+        const parts = url.split('live/');
         if (parts.length > 1) {
           videoId = parts[1].split('?')[0].split('&')[0];
         }

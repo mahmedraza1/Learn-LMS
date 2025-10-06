@@ -84,40 +84,7 @@ export const validateDateForCourse = (date, courseTitle, batchName) => {
     };
   }
   
-  // Get the day of month
-  const dayOfMonth = date.getDate();
-  
-  // Check batch-specific date rules
-  if (batchName === "Batch A") {
-    if (dayOfMonth > 27) {
-      return {
-        isValid: false,
-        message: "Batch A lectures only run from 1st to 27th of each month"
-      };
-    }
-  } else if (batchName === "Batch B") {
-    // Check if it's the 31st of the month
-    const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    if (lastDayOfMonth === 31 && dayOfMonth === 31) {
-      return {
-        isValid: false,
-        message: "The 31st is a leave day for Batch B"
-      };
-    }
-    
-    // Check if date is within the allowed range (16th to end of month, or 1st to 12th of next month)
-    const isSecondHalfOfMonth = dayOfMonth >= 16;
-    const isFirstHalfOfNextMonth = dayOfMonth <= 12;
-    
-    if (!isSecondHalfOfMonth && !isFirstHalfOfNextMonth) {
-      return {
-        isValid: false,
-        message: "Batch B lectures run from 16th to end of month, and 1st to 12th of next month"
-      };
-    }
-  }
-  
-  // If we got here, the date is valid
+  // Batch restrictions disabled - all future dates are valid
   return {
     isValid: true,
     message: "Date is valid for this course"

@@ -55,12 +55,13 @@ const FAQForm = ({ isOpen, onClose, onSubmit, faq, courseId }) => {
 
     setLoading(true);
     try {
-      const faqData = {
-        ...formData,
-        createdDate: new Date().toISOString().split('T')[0],
-        updatedDate: new Date().toISOString().split('T')[0],
-        createdBy: 'Learn.pk', // This would come from user context in real app
-        isActive: true
+            const faqData = {
+        question: formData.question,
+        answer: formData.answer,
+        category: formData.category,
+        createdBy: 'Learn.pk',
+        isActive: true,
+        id: faq?.id || Date.now()
       };
 
       await onSubmit(faqData);

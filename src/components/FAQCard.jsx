@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp, FaEdit, FaTrash, FaQuestionCircle, FaCalendar, FaUser, FaTag } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaEdit, FaTrash, FaQuestionCircle, FaUser, FaTag } from 'react-icons/fa';
 
 const FAQCard = ({ faq, onEdit, onDelete, isAdmin }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -44,13 +44,6 @@ const FAQCard = ({ faq, onEdit, onDelete, isAdmin }) => {
                   {faq.category}
                 </span>
               </div>
-              
-              {faq.createdDate && (
-                <div className="flex items-center space-x-1">
-                  <FaCalendar className="w-3 h-3" />
-                  <span>{faq.createdDate}</span>
-                </div>
-              )}
               
               {faq.createdBy && (
                 <div className="flex items-center space-x-1">
@@ -109,11 +102,6 @@ const FAQCard = ({ faq, onEdit, onDelete, isAdmin }) => {
             </div>
             
             {/* Footer Info */}
-            {(faq.updatedDate !== faq.createdDate) && (
-              <div className="mt-3 text-xs text-gray-400 flex items-center space-x-1">
-                <span>Last updated: {faq.updatedDate}</span>
-              </div>
-            )}
           </div>
         </div>
       )}

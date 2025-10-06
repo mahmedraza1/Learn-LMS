@@ -154,17 +154,6 @@ const AnnouncementsNews = ({ course }) => {
     setEditorContent('');
   };
 
-  // Format date
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow-sm p-6">
@@ -286,9 +275,6 @@ const AnnouncementsNews = ({ course }) => {
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-500 mb-3">
-                {formatDate(announcement.updatedAt || announcement.createdAt)}
-              </p>
               <div 
                 className="prose max-w-none tinymce-content"
                 dangerouslySetInnerHTML={{ __html: announcement.content }}

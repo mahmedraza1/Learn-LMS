@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaDownload, FaExternalLinkAlt, FaEdit, FaTrash, FaFileAlt, FaImage, FaFile, FaCalendar, FaUser } from 'react-icons/fa';
+import { FaDownload, FaExternalLinkAlt, FaEdit, FaTrash, FaFileAlt, FaImage, FaFile, FaUser } from 'react-icons/fa';
 
 const NotesCard = ({ note, onEdit, onDelete, onView, onDownload, isAdmin }) => {
   const getFileIcon = (fileType) => {
@@ -62,10 +62,6 @@ const NotesCard = ({ note, onEdit, onDelete, onView, onDownload, isAdmin }) => {
             )}
             
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">
-              <div className="flex items-center space-x-1">
-                <FaCalendar className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span className="truncate">{note.uploadDate}</span>
-              </div>
               {note.uploadedBy && (
                 <div className="flex items-center space-x-1 min-w-0">
                   <FaUser className="w-3 h-3 sm:w-4 sm:h-4" />

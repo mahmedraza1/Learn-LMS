@@ -23,21 +23,21 @@ const CourseCard = ({
   const { calculateLectureDates, addAnnouncement, updateAnnouncement, deleteAnnouncement, hasTodayLecture } = useLecture();
   const { isAdmin: authIsAdmin } = useAuth();
   
-  // Set state variables for pagination
-  const [displayLimit, setDisplayLimit] = useState(10);
-  const [displayedLectures, setDisplayedLectures] = useState([]);
-  
-  // Define initial limit constant
-  const INITIAL_LIMIT = 10;
-  
   // Direct Redux selectors for real-time updates
   const allLectures = useAppSelector(selectLectures);
   const allAnnouncements = useAppSelector(selectAnnouncements);
   
-  // Get lectures for this course (reactive to Redux changes)
+  // Get lectures for this course (reactive to Redux changes) with proper date sorting
   const lectures = useMemo(() => {
     const courseIdString = String(course.id);
-    return allLectures[courseIdString] || [];
+    const courseLectures = allLectures[courseIdString] || [];
+    
+    // Sort lectures by date (chronological order - oldest first)
+    return [...courseLectures].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateA - dateB;
+    });
   }, [allLectures, course.id]);
   
   // Get announcements for this course (reactive to Redux changes)
@@ -66,26 +66,8 @@ const CourseCard = ({
     });
   }, [lectures]);
   
-  // Update displayed lectures based on current filter state
-  useEffect(() => {
-    if (isExpanded) {
-      // If we have lectures for current month, show those first
-      // Otherwise, show the first INITIAL_LIMIT lectures
-      if (currentMonthLectures.length > 0) {
-        setDisplayedLectures(currentMonthLectures);
-      } else {
-        setDisplayedLectures(lectures.slice(0, displayLimit));
-      }
-    }
-  }, [isExpanded, lectures, displayLimit, currentMonthLectures]);
-  
   // Toggle expand/collapse
   const toggleExpand = () => setIsExpanded(!isExpanded);
-  
-  // Load more lectures
-  const handleLoadMore = () => {
-    setDisplayLimit(prev => prev + INITIAL_LIMIT);
-  };
 
   // Handlers for lecture actions
   const handleEditLecture = (lecture) => {
@@ -256,8 +238,8 @@ const CourseCard = ({
           
           {/* Lecture grid */}
           <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {displayedLectures.length > 0 ? (
-              displayedLectures.map((lecture, index) => {
+            {lectures.length > 0 ? (
+              lectures.map((lecture, index) => {
                 // Find the original index in the full lectures array to get correct lecture number
                 const originalIndex = lectures.findIndex(l => l.id === lecture.id);
                 const lectureNumber = lecture.lecture_number || (originalIndex !== -1 ? originalIndex + 1 : index + 1);
@@ -289,18 +271,6 @@ const CourseCard = ({
                 <p className="text-gray-500 italic">
                   {isAdmin ? "No lectures yet. Click 'Add Lecture' to create one." : "No lectures available yet."}
                 </p>
-              </div>
-            )}
-            
-            {/* Load More button - only shown if there are more lectures to load */}
-            {displayedLectures.length > 0 && lectures.length > displayedLectures.length && (
-              <div className="col-span-full mt-6 flex justify-center">
-                <button 
-                  onClick={handleLoadMore}
-                  className="rounded-md bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100 transition-colors"
-                >
-                  Load More Lectures ({lectures.length - displayedLectures.length} more)
-                </button>
               </div>
             )}
           </div>

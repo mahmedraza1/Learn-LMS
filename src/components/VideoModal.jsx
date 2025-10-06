@@ -11,6 +11,7 @@ const VideoModal = ({ isOpen, onClose, videoUrl }) => {
       // Format: https://www.youtube.com/watch?v=VIDEO_ID
       // Format: https://youtu.be/VIDEO_ID
       // Format: https://www.youtube.com/embed/VIDEO_ID
+      // Format: https://youtube.com/live/VIDEO_ID
       
       let videoId = null;
       
@@ -27,6 +28,12 @@ const VideoModal = ({ isOpen, onClose, videoUrl }) => {
       } else if (url.includes('youtube.com/embed/')) {
         // Embed URL: https://www.youtube.com/embed/VIDEO_ID
         const parts = url.split('embed/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      } else if (url.includes('youtube.com/live/')) {
+        // Live URL format: https://youtube.com/live/VIDEO_ID
+        const parts = url.split('live/');
         if (parts.length > 1) {
           videoId = parts[1].split('?')[0].split('&')[0];
         }

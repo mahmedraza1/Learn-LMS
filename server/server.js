@@ -805,9 +805,7 @@ app.get('/api/courses/:courseId/announcements', (req, res) => {
     const announcementsData = readCourseAnnouncementsData();
     const announcements = announcementsData.announcements[courseId] || [];
     
-    // Sort by creation date (newest first)
-    announcements.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    
+    // Return announcements without date-based sorting
     res.json(announcements);
   } catch (error) {
     console.error('Error fetching course announcements:', error);
@@ -830,9 +828,7 @@ app.post('/api/courses/:courseId/announcements', (req, res) => {
     const newAnnouncement = {
       id: Date.now(),
       title,
-      content,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      content
     };
     
     announcementsData.announcements[courseId].push(newAnnouncement);
@@ -871,8 +867,7 @@ app.put('/api/courses/:courseId/announcements/:announcementId', (req, res) => {
     announcementsData.announcements[courseId][announcementIndex] = {
       ...announcementsData.announcements[courseId][announcementIndex],
       title,
-      content,
-      updatedAt: new Date().toISOString()
+      content
     };
     
     if (writeCourseAnnouncementsData(announcementsData)) {

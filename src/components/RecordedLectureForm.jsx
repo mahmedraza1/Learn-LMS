@@ -87,6 +87,12 @@ const RecordedLectureForm = ({
         if (parts.length > 1) {
           videoId = parts[1].split('?')[0].split('&')[0];
         }
+      } else if (url.includes('youtube.com/live/')) {
+        // Live URL format: https://youtube.com/live/VIDEO_ID
+        const parts = url.split('live/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
       }
       
       return videoId;

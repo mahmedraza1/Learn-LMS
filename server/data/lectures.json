@@ -1,34 +1,19 @@
 {
-  "liveClassAnnouncement": null,
+  "liveClassAnnouncement": {
+    "title": "Welcome to learn.pk",
+    "content": "<p>Learn.pk is a online learning platform dedicated to close the gap between students and skill-based education by offering expert-led courses, live classes, and high-quality learning materials.</p>",
+    "author": "Learn.pk",
+    "id": 1759496505815,
+    "date": "2025-10-03T13:01:45.815Z"
+  },
   "globalAnnouncements": [
     {
       "title": "",
-      "content": "<h1 style=\"text-align: center;\">Test Annoucement 20</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+      "content": "<p>Learn.pk&nbsp;is a online learning platform dedicated to close the gap between students and skill-based education by offering expert-led courses, live classes, and high-quality learning materials.</p>",
+      "id": 1759496529511,
       "author": "Learn.pk",
-      "date": "2025-09-20T04:54:06.253Z",
-      "id": 1758344046253,
-      "updated_at": "2025-09-24T04:44:33.815Z"
-    },
-    {
-      "title": "",
-      "content": "<h1 style=\"text-align: center;\">Test Annoucement 02</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-      "author": "Learn.pk",
-      "date": "2025-09-23T03:47:02.908Z",
-      "id": 1758599222908
-    },
-    {
-      "title": "",
-      "content": "<h1>Mark Maverick</h1>\n<p>My name is Mark</p>",
-      "id": 1758688783495,
-      "author": "Learn.pk",
-      "date": "2025-09-24T04:39:43.495Z"
-    },
-    {
-      "title": "",
-      "content": "<h1 style=\"text-align: center;\">Test Annoucement 21</h1>\n<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-      "id": 1758820466058,
-      "author": "Learn.pk",
-      "date": "2025-09-25T17:14:26.058Z"
+      "date": "2025-10-03T13:02:09.511Z",
+      "updated_at": "2025-10-03T13:02:44.826Z"
     }
   ],
   "Batch A": {
@@ -36,8 +21,8 @@
       "1": [
         {
           "title": "Video Editing Information",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-08",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 1,
@@ -48,8 +33,8 @@
         },
         {
           "title": "Understanding the Role and Scope of a Video Editor",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-03",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-10",
           "time": "13:00",
           "day": "Monday",
           "course_id": 1,
@@ -60,8 +45,8 @@
         },
         {
           "title": "Most Popular Video Editing Tools",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-06",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-13",
           "time": "10:00",
           "day": "Monday",
           "course_id": 1,
@@ -72,8 +57,8 @@
         },
         {
           "title": "Key Concepts Every Video Editor Must Know",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-08",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-15",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 1,
@@ -84,8 +69,8 @@
         },
         {
           "title": "Timeline Management and Media Organization Techniques",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-10",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-17",
           "time": "13:00",
           "day": "Friday",
           "course_id": 1,
@@ -96,8 +81,8 @@
         },
         {
           "title": "Efficient Media Handling for Smooth Video Editing",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-13",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-20",
           "time": "10:00",
           "day": "Monday",
           "course_id": 1,
@@ -108,8 +93,8 @@
         },
         {
           "title": "Cutting, Trimming and Placing Clips for Better Storytelling",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-15",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-22",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 1,
@@ -120,8 +105,8 @@
         },
         {
           "title": "Motion Graphics and Special Effects for Stunning Videos",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-17",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-24",
           "time": "13:00",
           "day": "Friday",
           "course_id": 1,
@@ -132,8 +117,8 @@
         },
         {
           "title": "Video Export and Optimization for Maximum Reach",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-20",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-27",
           "time": "10:00",
           "day": "Monday",
           "course_id": 1,
@@ -144,8 +129,8 @@
         },
         {
           "title": "Video Editing Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-22",
+          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "date": "2025-10-27",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 1,
@@ -155,40 +140,16 @@
           "id": 1759230500193
         },
         {
-          "title": "Video Editing Answer & Question Session",
+          "title": "Lofi Girl",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-24",
-          "time": "13:00",
+          "date": "2025-10-31",
+          "time": "21:40",
           "day": "Friday",
           "course_id": 1,
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
-          "id": 1759230594785
-        },
-        {
-          "title": "Video Editing Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-27",
-          "time": "10:00",
-          "day": "Monday",
-          "course_id": 1,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759230671260
-        },
-        {
-          "title": "Video Editing Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-29",
-          "time": "10:00",
-          "day": "Wednesday",
-          "course_id": 1,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759230805344
+          "id": 1759768836769
         }
       ],
       "2": [
@@ -1781,6 +1742,102 @@
           "delivered": false,
           "currentlyLive": false,
           "id": 1759345547813
+        },
+        {
+          "title": "Choosing the Right Freelance Niche for You",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-14",
+          "time": "13:00",
+          "day": "Wednesday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759803355835
+        },
+        {
+          "title": "Building the Right Skills for Freelancing",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-16",
+          "time": "16:00",
+          "day": "Wednesday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804024336
+        },
+        {
+          "title": "Essential Tools & Platforms for Freelancers",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-18",
+          "time": "16:00",
+          "day": "Friday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804154847
+        },
+        {
+          "title": " Building a Strong Profile on Fiverr & Upwork for Success",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-21",
+          "time": "13:00",
+          "day": "Monday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804237855
+        },
+        {
+          "title": " Successful Proposal Writing and Bidding Strategies",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-23",
+          "time": "16:00",
+          "day": "Wednesday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804304990
+        },
+        {
+          "title": " Winning Proposals that Close Deals",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-25",
+          "time": "16:00",
+          "day": "Friday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804442053
+        },
+        {
+          "title": " Creating a Unique Personal Brand as a Freelancer",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-28",
+          "time": "13:00",
+          "day": "Monday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804494806
+        },
+        {
+          "title": " Expanding Your Freelance Business Beyond Fiverr & Upwork",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "date": "2025-10-30",
+          "time": "16:00",
+          "day": "Wednesday",
+          "course_id": 11,
+          "batch": "Batch A",
+          "delivered": false,
+          "currentlyLive": false,
+          "id": 1759804774668
         }
       ],
       "12": [

@@ -90,6 +90,12 @@ const LectureCard = ({
           if (parts.length > 1) {
             videoId = parts[1].split('?')[0].split('&')[0];
           }
+        } else if (lecture.youtube_url.includes('youtube.com/live/')) {
+          // Live URL format: https://youtube.com/live/VIDEO_ID
+          const parts = lecture.youtube_url.split('live/');
+          if (parts.length > 1) {
+            videoId = parts[1].split('?')[0].split('&')[0];
+          }
         }
         
         if (videoId) {
@@ -100,7 +106,7 @@ const LectureCard = ({
       }
     }
     
-    return null;
+    return null;au
   };
 
   // Determine lecture status
@@ -125,8 +131,8 @@ const LectureCard = ({
 
   return (
     <div className={cardClassName}>
-      {/* Thumbnail or placeholder */}
-      <div className="relative h-32 sm:h-40 bg-gray-100">
+      {/* Thumbnail or placeholder - 16:9 aspect ratio */}
+      <div className="relative w-full aspect-video bg-gray-100">
         {getThumbnailUrl() ? (
           <img 
             src={getThumbnailUrl()} 
@@ -140,15 +146,15 @@ const LectureCard = ({
         )}
         
         {/* Date badge */}
-        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full backdrop-blur-2xl backdrop-brightness-500 px-2 sm:px-3 py-1 text-xs font-medium shadow-sm">
-          <div className="flex items-center justify-around gap-2">
+        <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 rounded-full bg-white/80 border border-gray-200 px-2 sm:px-3 py-1 text-xs font-medium shadow-md">
+          <div className="flex items-center gap-2">
             <div className="flex items-center space-x-1">
-              <FaClock className="w-2 h-2 sm:w-3 sm:h-3" />
-              <span className="text-xs sm:text-sm">{formatDate(scheduleDate)}</span>
+              <FaClock className="w-2 h-2 sm:w-3 sm:h-3 text-gray-600" />
+              <span className="text-xs sm:text-sm text-gray-800">{formatDate(scheduleDate)}</span>
             </div>
-            <div className="flex items-center justify-center text-xs font-medium mt-0.5">
-              <FaCalendarAlt className="mr-1 text-[8px] sm:text-[10px]" />
-              <span className="text-xs sm:text-sm">{getDayOfWeek(scheduleDate)}</span>
+            <div className="flex items-center text-xs font-medium">
+              <FaCalendarAlt className="mr-1 text-[8px] sm:text-[10px] text-gray-600" />
+              <span className="text-xs sm:text-sm text-gray-800">{getDayOfWeek(scheduleDate)}</span>
             </div>
           </div>
         </div>

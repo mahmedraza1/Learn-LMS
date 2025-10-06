@@ -7,7 +7,6 @@
       "fileUrl": "https://drive.google.com/file/d/1abcdef123456/view",
       "fileType": "pdf",
       "fileSize": "2.4 MB",
-      "uploadDate": "2024-01-15",
       "uploadedBy": "Learn.pk",
       "tags": [
         "html",
@@ -22,7 +21,6 @@
       "fileUrl": "https://example.com/notes/js-fundamentals.pdf",
       "fileType": "pdf",
       "fileSize": "3.2 MB",
-      "uploadDate": "2024-01-20",
       "uploadedBy": "Learn.pk",
       "tags": [
         "javascript",
@@ -36,7 +34,6 @@
       "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
       "fileType": "pdf",
       "fileSize": "3.25 MB",
-      "uploadDate": "2025-09-26",
       "uploadedBy": "Learn.pk",
       "tags": [
         "CS301",
@@ -52,9 +49,33 @@
       "tags": [
         "data structure"
       ],
-      "uploadDate": "2025-09-26",
       "uploadedBy": "Learn.pk",
       "id": 1758882183355
+    },
+    {
+      "fileName": "CS301 Handouts again ",
+      "description": "CS301 Handouts again ",
+      "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
+      "fileType": "document",
+      "fileSize": "3.25",
+      "uploadedBy": "Learn.pk",
+      "tags": [
+        "data structure",
+        "Basic Algorithms"
+      ],
+      "id": 1759767897398
+    },
+    {
+      "fileName": "CS301 Handouts again and again ",
+      "description": "again and again",
+      "fileUrl": "https://vulms.vu.edu.pk/Courses/CS301/Downloads/CS301_handouts%20(Updated).pdf",
+      "fileType": "pdf",
+      "fileSize": "3.4",
+      "uploadedBy": "Learn.pk",
+      "tags": [
+        "just a test"
+      ],
+      "id": 1759767947841
     }
   ],
   "2": [
@@ -65,7 +86,6 @@
       "fileType": "pdf",
       "fileSize": "",
       "tags": [],
-      "uploadDate": "2025-09-30",
       "uploadedBy": "Learn.pk",
       "id": 1759233362045
     }
@@ -79,7 +99,6 @@
       "fileUrl": "https://example.com/notes/nodejs-backend.pdf",
       "fileType": "pdf",
       "fileSize": "4.1 MB",
-      "uploadDate": "2024-02-01",
       "uploadedBy": "Learn.pk",
       "tags": [
         "nodejs",
@@ -96,7 +115,6 @@
       "fileUrl": "https://example.com/notes/database-design.pdf",
       "fileType": "pdf",
       "fileSize": "2.9 MB",
-      "uploadDate": "2024-02-05",
       "uploadedBy": "Learn.pk",
       "tags": [
         "database",

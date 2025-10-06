@@ -149,7 +149,7 @@ const NotificationPopup = ({ isOpen, onClose, onAnnouncementClick, triggerRef, o
   return (
     <>
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50" ref={popupRef}>
+        <div className="absolute top-full right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-w-[calc(100vw-2rem)] sm:max-w-none" ref={popupRef}>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
