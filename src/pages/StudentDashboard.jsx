@@ -125,10 +125,10 @@ const StudentDashboard = () => {
               </div>
             )}
             
-            {/* Other Courses Section */}
+            {/* Tommorow's Courses Section */}
             {sortedBatchCourses.some(course => !hasTodayLecture(course.id)) && (
               <div>
-                <h3 className="mb-4 text-lg font-semibold text-gray-800">📋 Other Courses</h3>
+                <h3 className="mb-4 text-lg font-semibold text-gray-800">📋 Tommorow's Courses</h3>
                 {sortedBatchCourses
                   .filter(course => !hasTodayLecture(course.id))
                   .map((course) => (

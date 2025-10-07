@@ -65,7 +65,7 @@ This Section explain which lectures would be going to happen on what day.
 - **Visual Sections**: 
   - "📚 Today's Active Lectures" section with green "Live Now" badge for students
   - "🎯 Today's Active Lectures" section with "Manage Live" badge for admins
-  - "📋 Other Courses" section for courses without today's lectures
+  - "📋 Tommorow's Courses" section for courses without today's lectures
 - **Real-time Updates**: Course highlighting and organization update automatically when lectures are added/removed
 
 ### Responsive Design Enhancements

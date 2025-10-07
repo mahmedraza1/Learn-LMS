@@ -13,7 +13,7 @@ const Editor = ({ initialValue = "", value, onChange, onEditorChange, height = 5
   return (
     <div className="editor-wrapper">
       <TinyMCEEditor
-        tinymceScriptSrc="/tinymce/tinymce.min.js"
+        tinymceScriptSrc="https://cdnjs.cloudflare.com/ajax/libs/tinymce/8.1.2/tinymce.min.js"
         licenseKey="gpl"
         {...editorProps}
         init={{

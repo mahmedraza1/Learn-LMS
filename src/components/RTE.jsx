@@ -19,7 +19,7 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
           return (
             <Editor
               key={`editor-${defaultValue?.length || 0}`} // Force re-render on defaultValue change
-              tinymceScriptSrc="/tinymce/tinymce.min.js"
+              tinymceScriptSrc="https://cdnjs.cloudflare.com/ajax/libs/tinymce/8.1.2/tinymce.min.js"
               licenseKey="gpl"
               onInit={(evt, editor) => {
                 setEditorInitialized(true);
