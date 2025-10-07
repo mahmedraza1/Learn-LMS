@@ -45,7 +45,7 @@ export const initializeBatchData = createAsyncThunk(
       }
       
         // Create courses for each batch
-        // Both batches will have all 15 courses, but different ones will be highlighted based on date
+        // Both batches will have all 15 courses, and those with scheduled lectures for today will be highlighted
         
         // All available courses in order
         const allCourses = [

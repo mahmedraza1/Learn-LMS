@@ -141,22 +141,18 @@ const LiveLectures = ({ course }) => {
   };
 
   const handleEditLecture = (lecture) => {
-    console.log('Edit lecture:', lecture);
     // Implement edit functionality
   };
 
   const handleDeleteLecture = (lecture) => {
-    console.log('Delete lecture:', lecture);
     // Implement delete functionality
   };
 
   const handleStartLecture = (lecture) => {
-    console.log('Start lecture:', lecture);
     // Implement start lecture functionality
   };
 
   const handleMarkDelivered = (lecture) => {
-    console.log('Mark delivered:', lecture);
     // Implement mark delivered functionality
   };
 
@@ -253,7 +249,7 @@ const LiveLectures = ({ course }) => {
             </div>
           )}
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {activeLectures.map((lecture, index) => {
               const scheduleDate = new Date(lecture.date);
               return (

@@ -48,7 +48,6 @@ import {
   selectAnnouncementError,
   clearError as clearAnnouncementError
 } from '../store/slices/announcementSlice';
-import { getCoursesForDate, shouldCourseHaveLecture } from '../utils/courseScheduleRules';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -247,12 +246,27 @@ export const useLecture = () => {
     }
     
     try {
-      const activeCoursesForDate = getCoursesForDate(new Date());
-      const batchCourses = activeCoursesForDate[courseBatch] || [];
-      const isActiveToday = batchCourses.includes(courseTitle);
+      // Get today's date in YYYY-MM-DD format
+      const today = new Date();
+      const todayDateString = today.toISOString().split('T')[0];
       
-      return isActiveToday;
+      // Get lectures for this course from Redux state
+      const courseIdString = String(courseId);
+      const courseLectures = lectures[courseIdString] || [];
+      
+      // Check if any lecture is scheduled for today
+      const hasLectureToday = courseLectures.some(lecture => {
+        if (!lecture.date) return false;
+        
+        const lectureDate = new Date(lecture.date);
+        const lectureDateString = lectureDate.toISOString().split('T')[0];
+        
+        return lectureDateString === todayDateString;
+      });
+      
+      return hasLectureToday;
     } catch (error) {
+      console.error('Error checking today lecture:', error);
       return false;
     }
   };

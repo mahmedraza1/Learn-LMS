@@ -268,7 +268,6 @@ const LectureCard = ({
                       {!isDelivered && !isCurrentlyLive && (
                         <button 
                           onClick={() => {
-                            console.log("Start Lecture clicked for:", lecture);
                             onStartLecture && onStartLecture(lecture);
                           }}
                           className="flex items-center rounded-md px-3 py-1.5 text-xs font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"

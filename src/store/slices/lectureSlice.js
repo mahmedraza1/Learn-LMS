@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { getCoursesForDate, shouldCourseHaveLecture } from '../../utils/courseScheduleRules';
 
 // Determine API URL based on hostname
 const getApiBaseUrl = () => {
@@ -117,9 +116,7 @@ export const updateLecture = createAsyncThunk(
   'lecture/updateLecture',
   async ({ lectureId, lectureData, courseId }, { rejectWithValue }) => {
     try {
-      console.log('Updating lecture:', lectureId, 'with data:', lectureData);
       const response = await axios.put(`${API_BASE_URL}/lectures/${lectureId}`, lectureData);
-      console.log('Update response:', response.data);
       return { courseId, lecture: response.data };
     } catch (error) {
       console.error('Update lecture error:', error);

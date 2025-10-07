@@ -3,7 +3,6 @@ import { useAuth } from './AuthContext';
 import { useBatch } from './BatchContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { getCoursesForDate, shouldCourseHaveLecture } from '../utils/courseScheduleRules';
 
 // Using learnlive prefix to match server configuration
 // Determine API URL based on hostname
@@ -65,13 +64,11 @@ export const LectureProvider = ({ children }) => {
     
     // If any lectures were updated, update the state and server
     if (lecturesNeedingUpdate.length > 0) {
-      console.log(`Found ${lecturesNeedingUpdate.length} lectures that need day field updates`);
       setLectures(updatedLectures);
       
       // Update each lecture on the server
       try {
         for (const lecture of lecturesNeedingUpdate) {
-          console.log(`Updating lecture ${lecture.id} with day: ${lecture.day}`);
           await axios.put(`${API_BASE_URL}/lectures/${lecture.id}`, lecture);
         }
         toast.success(`Updated ${lecturesNeedingUpdate.length} lectures with day information`);
@@ -89,7 +86,6 @@ export const LectureProvider = ({ children }) => {
       // Ensure the batch name is in the correct format (Batch A or Batch B)
       // The API expects "Batch A" or "Batch B", not just "A" or "B"
       const formattedBatchName = batchName.includes("Batch") ? batchName : `Batch ${batchName}`;
-      console.log(`Fetching lectures for batch: ${formattedBatchName}`);
       const response = await axios.get(`${API_BASE_URL}/lectures/${formattedBatchName}`);
       
       let lecturesData = {};
@@ -573,7 +569,6 @@ export const LectureProvider = ({ children }) => {
       setLoading(true);
       // Ensure the batch name is in the correct format (Batch A or Batch B)
       const formattedBatchName = batchName.includes("Batch") ? batchName : `Batch ${batchName}`;
-      console.log(`Fetching announcements for batch: ${formattedBatchName}`);
       const response = await axios.get(`${API_BASE_URL}/announcements/${formattedBatchName}`);
       // Handle the data structure where announcements are nested under 'announcements'
       if (response.data && response.data.announcements) {
@@ -809,14 +804,39 @@ export const LectureProvider = ({ children }) => {
     }
   };
 
-  // Determine which courses should have active lectures today based on the rules from "Lecture Delivering System Upgraded.md"
+  // Get courses that have actual lectures scheduled for today
   const getActiveCoursesForToday = () => {
-    // Use the current date
     const today = new Date();
+    const todayDateString = today.toISOString().split('T')[0];
     
-    // Use the helper function from courseScheduleRules.js
-    // This ensures consistent application of rules across the app
-    return getCoursesForDate(today);
+    const activeCoursesMap = {
+      "Batch A": [],
+      "Batch B": []
+    };
+    
+    // Check each batch's courses for scheduled lectures today
+    Object.keys(courses).forEach(batchName => {
+      const coursesInBatch = courses[batchName] || [];
+      
+      coursesInBatch.forEach(course => {
+        const courseIdString = String(course.id);
+        const courseLectures = lectures[courseIdString] || [];
+        
+        // Check if this course has any lecture scheduled for today
+        const hasLectureToday = courseLectures.some(lecture => {
+          if (!lecture.date) return false;
+          const lectureDate = new Date(lecture.date);
+          const lectureDateString = lectureDate.toISOString().split('T')[0];
+          return lectureDateString === todayDateString;
+        });
+        
+        if (hasLectureToday) {
+          activeCoursesMap[batchName].push(course.title);
+        }
+      });
+    });
+    
+    return activeCoursesMap;
   };
   
   // Helper function to find a course by ID
@@ -824,7 +844,6 @@ export const LectureProvider = ({ children }) => {
     let foundCourse = null;
     const parsedId = parseInt(courseId, 10);
     
-    console.log(`Searching for course with ID: ${courseId} (${parsedId})`);
     
     // Search in all batches
     Object.keys(courses).forEach(batchName => {
@@ -832,7 +851,6 @@ export const LectureProvider = ({ children }) => {
       
       const course = coursesInBatch.find(c => c.id === parsedId);
       if (course) {
-        console.log(`Found course:`, course);
         // Ensure the batch information is included
         foundCourse = { ...course, batch: batchName };
       }
@@ -846,7 +864,6 @@ export const LectureProvider = ({ children }) => {
     // Find the course to get its title and batch
     const course = findCourseById(courseId);
     if (!course) {
-      console.log(`Course with ID ${courseId} not found`);
       return false;
     }
     
@@ -854,44 +871,36 @@ export const LectureProvider = ({ children }) => {
     const courseBatch = course.batch;
     
     if (!courseTitle || !courseBatch) {
-      console.log(`Course ${courseId} missing title or batch`, course);
       return false;
     }
     
-    // Use current date for determining today's lectures
+    // Get today's date in YYYY-MM-DD format for comparison
     const today = new Date();
-    const isOddDate = today.getDate() % 2 === 1;
+    const todayDateString = today.toISOString().split('T')[0];
     
-    // Following your trick: For even dates, invert the logic
-    // This means: on even dates, show lectures that would be closed on odd dates
-    // and vice versa
+    // Get lectures for this specific course
+    const courseIdString = String(courseId);
+    const courseLectures = lectures[courseIdString] || [];
     
-    // Get the list of courses that should have lectures today by batch
-    const activeCoursesMap = getCoursesForDate(today);
-    
-    console.log(`ACTIVE COURSE CHECK - Date: ${today.toDateString()} (${isOddDate ? 'ODD' : 'EVEN'})`);
-    console.log(`Batch A active courses:`, activeCoursesMap["Batch A"]);
-    console.log(`Batch B active courses:`, activeCoursesMap["Batch B"]);
-    console.log(`Checking course "${courseTitle}" in "${courseBatch}"`);
-    
-    // Only check the active courses for THIS course's batch
-    const activeCoursesList = activeCoursesMap[courseBatch] || [];
-    
-    // Check if this specific course should be active today in THIS batch
-    const isActive = activeCoursesList.some(title => {
-      const matches = title.toLowerCase().trim() === courseTitle.toLowerCase().trim();
-      if (matches) {
-        console.log(`MATCH FOUND: "${title}" === "${courseTitle}"`);
+    // Check if any lecture is scheduled for today
+    const hasLectureToday = courseLectures.some(lecture => {
+      if (!lecture.date) return false;
+      
+      // Convert lecture date to YYYY-MM-DD format for comparison
+      const lectureDate = new Date(lecture.date);
+      const lectureDateString = lectureDate.toISOString().split('T')[0];
+      
+      const isToday = lectureDateString === todayDateString;
+      
+      if (isToday) {
       }
-      return matches;
+      
+      return isToday;
     });
     
-    // Detailed debugging info
-    console.log(`LECTURE CHECK (${today.toDateString()}, ${isOddDate ? 'ODD' : 'EVEN'} date):`);
-    console.log(`Course "${courseTitle}" in ${courseBatch}, ID: ${courseId}`);
-    console.log(`Should have lecture today: ${isActive ? 'YES' : 'NO'}`);
+   
     
-    return isActive;
+    return hasLectureToday;
   };
 
   const value = {

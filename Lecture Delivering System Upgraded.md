@@ -48,3 +48,36 @@ This Section explain which lectures would be going to happen on what day.
 
 ### Time Setting
 - We don't need to be worried about time it would be set manually as we gave the option in form of edit and add a lecture.
+
+## Updated Implementation (October 2025)
+
+### Course Highlighting Logic Changes
+- **Previous Logic**: Courses were highlighted based on odd/even date rules regardless of actual scheduled lectures
+- **New Logic**: Only courses with actual scheduled lectures for today are highlighted
+- **Benefits**: 
+  - More accurate user experience
+  - Students see exactly what's available today
+  - Instructors have full control over course visibility
+  - No false positives for highlighted courses without lectures
+
+### Course Organization Improvements
+- **Priority Display**: Courses with today's lectures automatically appear at the top of dashboards
+- **Visual Sections**: 
+  - "📚 Today's Active Lectures" section with green "Live Now" badge for students
+  - "🎯 Today's Active Lectures" section with "Manage Live" badge for admins
+  - "📋 Other Courses" section for courses without today's lectures
+- **Real-time Updates**: Course highlighting and organization update automatically when lectures are added/removed
+
+### Responsive Design Enhancements
+- **Improved Grid Layouts**: All card-based components now use optimized responsive breakpoints
+- **Smart Breakpoint Progression**:
+  - Mobile (0-640px): 1 card per row
+  - Small screens (640-1280px): 2 cards per row
+  - Large screens (1280-1536px): 3 cards per row
+  - Extra large screens (1536px+): 4 cards per row
+- **Better User Experience**: Smooth transitions prevent awkward spacing in mid-range screen sizes
+
+### Technical Implementation
+- **Data-driven Highlighting**: Uses actual lecture data from Redux state instead of date-based rules
+- **Performance Optimized**: useMemo hooks prevent unnecessary re-calculations
+- **Consistent Architecture**: All components follow the same responsive and highlighting patterns

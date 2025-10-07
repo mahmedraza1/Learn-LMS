@@ -1,11 +1,5 @@
 {
-  "liveClassAnnouncement": {
-    "title": "Welcome to learn.pk",
-    "content": "<p>Learn.pk is a online learning platform dedicated to close the gap between students and skill-based education by offering expert-led courses, live classes, and high-quality learning materials.</p>",
-    "author": "Learn.pk",
-    "id": 1759496505815,
-    "date": "2025-10-03T13:01:45.815Z"
-  },
+  "liveClassAnnouncement": null,
   "globalAnnouncements": [
     {
       "title": "",
@@ -21,7 +15,7 @@
       "1": [
         {
           "title": "Video Editing Information",
-          "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
+          "youtube_url": "https://youtube.com/live/gvJ7OCpy_sA",
           "date": "2025-10-08",
           "time": "10:00",
           "day": "Wednesday",
@@ -130,7 +124,7 @@
         {
           "title": "Video Editing Answer & Question Session",
           "youtube_url": "https://youtube.com/live/kIc-kLBGb1E",
-          "date": "2025-10-27",
+          "date": "2025-10-29",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 1,
@@ -138,25 +132,13 @@
           "delivered": false,
           "currentlyLive": false,
           "id": 1759230500193
-        },
-        {
-          "title": "Lofi Girl",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-31",
-          "time": "21:40",
-          "day": "Friday",
-          "course_id": 1,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759768836769
         }
       ],
       "2": [
         {
           "title": "Digital Marketing Information",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "youtube_url": "https://youtube.com/live/pROZS6WaiFU",
+          "date": "2025-10-09",
           "time": "16:00",
           "day": "Thursday",
           "course_id": 2,
@@ -167,8 +149,8 @@
         },
         {
           "title": "What is Digital Marketing and Why It Matters",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "youtube_url": "https://youtube.com/live/yy4pbbK5C2g",
+          "date": "2025-10-11",
           "time": "16:00",
           "day": "Saturday",
           "course_id": 2,
@@ -179,8 +161,8 @@
         },
         {
           "title": "Overview of the Different Digital Marketing Channels",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-07",
+          "youtube_url": "https://youtube.com/live/wnPjDOAPF78",
+          "date": "2025-10-14",
           "time": "13:00",
           "day": "Tuesday",
           "course_id": 2,
@@ -191,8 +173,8 @@
         },
         {
           "title": " The Core Elements of SEO, Social Media, Email Marketing, PPC, and Content Marketing",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
+          "youtube_url": "https://youtube.com/live/GzaepshTo4A",
+          "date": "2025-10-16",
           "time": "16:00",
           "day": "Thursday",
           "course_id": 2,
@@ -203,8 +185,8 @@
         },
         {
           "title": "How Consumer Behavior Impacts Digital Marketing",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-11",
+          "youtube_url": "https://youtube.com/live/IAj7Dc2eemU",
+          "date": "2025-10-18",
           "time": "16:00",
           "day": "Saturday",
           "course_id": 2,
@@ -215,8 +197,8 @@
         },
         {
           "title": "The Fundamentals of Search Engine Optimization (SEO)",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-14",
+          "youtube_url": "https://youtube.com/live/D60QKoN4p0o",
+          "date": "2025-10-21",
           "time": "13:00",
           "day": "Tuesday",
           "course_id": 2,
@@ -227,8 +209,8 @@
         },
         {
           "title": "Social Media and Content Marketing for Business Growth",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
+          "youtube_url": "https://youtube.com/live/fQDVsYyil6E",
+          "date": "2025-10-23",
           "time": "16:00",
           "day": "Thursday",
           "course_id": 2,
@@ -239,8 +221,8 @@
         },
         {
           "title": "A Step-by-Step Guide to Running Successful Campaigns",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-18",
+          "youtube_url": "https://youtube.com/live/oYsvWQooZT0",
+          "date": "2025-10-25",
           "time": "16:00",
           "day": "Saturday",
           "course_id": 2,
@@ -251,8 +233,8 @@
         },
         {
           "title": "Strategies for Advanced Digital Advertising and Growth Hacking",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-21",
+          "youtube_url": "https://youtube.com/live/GSXHcnb6a8s",
+          "date": "2025-10-28",
           "time": "13:00",
           "day": "Tuesday",
           "course_id": 2,
@@ -263,43 +245,7 @@
         },
         {
           "title": "Advanced Techniques for Automating and Scaling Digital Marketing Campaigns",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-23",
-          "time": "16:00",
-          "day": "Thursday",
-          "course_id": 2,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759299555349
-        },
-        {
-          "title": "Developing a Full-Fledged Digital Marketing Strategy for Your Business",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-25",
-          "time": "16:00",
-          "day": "Saturday",
-          "course_id": 2,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759299594765
-        },
-        {
-          "title": " Digital Marketing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-28",
-          "time": "13:00",
-          "day": "Tuesday",
-          "course_id": 2,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759299632924
-        },
-        {
-          "title": "Digital Marketing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "youtube_url": "https://youtube.com/live/TdMDv3M_TjI",
           "date": "2025-10-30",
           "time": "16:00",
           "day": "Thursday",
@@ -307,14 +253,14 @@
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
-          "id": 1759299679493
+          "id": 1759299555349
         }
       ],
       "3": [
         {
           "title": "Word press Information",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "date": "2025-10-08",
           "time": "10:00",
           "day": "Tuesday",
           "course_id": 3,
@@ -326,8 +272,8 @@
         {
           "title": " What is WordPress and Why It’s Popular for Websites",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "11:00",
+          "date": "2025-10-10",
+          "time": "13:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -336,46 +282,10 @@
           "id": 1759272756268
         },
         {
-          "title": "Installing WordPress Locally and On a Live Server",
+          "title": "WordPress Security, Updates, and Monetization Tips",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "12:00",
-          "day": "Tuesday",
-          "course_id": 3,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759272832849
-        },
-        {
-          "title": "WordPress Dashboard & Settings",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "13:00",
-          "day": "Tuesday",
-          "course_id": 3,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759272877124
-        },
-        {
-          "title": " Installing and Using Plugins, Themes, and Widgets Effectively",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "14:00",
-          "day": "Tuesday",
-          "course_id": 3,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759272971068
-        },
-        {
-          "title": "Adding and Editing Content in WordPress Pages & Posts",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "15:00",
+          "date": "2025-10-29",
+          "time": "10:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -384,10 +294,10 @@
           "id": 1759273022615
         },
         {
-          "title": " Customizing WordPress with Themes and Page Builders",
+          "title": " Installing WordPress Locally and On a Live Server",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "15:00",
+          "date": "2025-10-13",
+          "time": "10:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -396,10 +306,10 @@
           "id": 1759273122601
         },
         {
-          "title": "Building a Blog Website in WordPress from Scratch",
+          "title": "WordPress Dashboard & Settings",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "15:00",
+          "date": "2025-10-15",
+          "time": "10:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -408,10 +318,10 @@
           "id": 1759273191543
         },
         {
-          "title": " Building Business and E-commerce Websites on WordPress",
+          "title": "Installing and Using Plugins, Themes, and Widgets Effectively",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-17",
+          "time": "13:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -420,10 +330,10 @@
           "id": 1759273259925
         },
         {
-          "title": "WordPress Security, Updates, and Monetization Tips",
+          "title": "Adding and Editing Content in WordPress Pages & Posts",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-20",
+          "time": "10:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -432,10 +342,10 @@
           "id": 1759273335598
         },
         {
-          "title": "Fully Functional E-commerce Website using WordPress",
+          "title": " Customizing WordPress with Themes and Page Builders",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-22",
+          "time": "10:00",
           "day": "Tuesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -444,9 +354,9 @@
           "id": 1759273390094
         },
         {
-          "title": "WordPress Answer & Question Session",
+          "title": " Building a Blog Website in WordPress from Scratch",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "date": "2025-10-24",
           "time": "13:00",
           "day": "Tuesday",
           "course_id": 3,
@@ -456,10 +366,10 @@
           "id": 1759273498109
         },
         {
-          "title": " Fully Functional E-commerce Website using WordPress",
+          "title": " Building Business and E-commerce Websites on WordPress",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
-          "time": "14:00",
+          "date": "2025-10-27",
+          "time": "10:00",
           "day": "Wednesday",
           "course_id": 3,
           "batch": "Batch A",
@@ -472,7 +382,7 @@
         {
           "title": "SEO Course Information",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "date": "2025-10-09",
           "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
@@ -484,8 +394,8 @@
         {
           "title": " What is SEO and Why It’s Crucial for Online Success",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-10",
+          "time": "14:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -496,8 +406,8 @@
         {
           "title": "Types of SEO and How They Work Together",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-13",
+          "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -508,8 +418,8 @@
         {
           "title": "Google Algorithms and SEO Ranking Factors",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-15",
+          "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -520,8 +430,8 @@
         {
           "title": "Keyword Research Strategies for SEO Success",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-17",
+          "time": "14:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -532,8 +442,8 @@
         {
           "title": "On-Page SEO & Content Optimization",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-20",
+          "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -544,8 +454,8 @@
         {
           "title": "Building Authority with Off-Page SEO and Backlinks",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "12:00",
+          "date": "2025-10-22",
+          "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -556,8 +466,8 @@
         {
           "title": "Ranking Blog Posts Higher with SEO Techniques",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-24",
+          "time": "14:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -568,8 +478,8 @@
         {
           "title": "Technical SEO & Site Performance Optimization",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "16:00",
+          "date": "2025-10-27",
+          "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
@@ -580,69 +490,21 @@
         {
           "title": "Advanced SEO & Future Trends",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "15:00",
+          "date": "2025-10-29",
+          "time": "11:00",
           "day": "Tuesday",
           "course_id": 4,
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
           "id": 1759274584123
-        },
-        {
-          "title": "Conduct a Full SEO Audit for Your Website",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "23:00",
-          "day": "Tuesday",
-          "course_id": 4,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759274626855
-        },
-        {
-          "title": "SEO Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "23:00",
-          "day": "Tuesday",
-          "course_id": 4,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759274671354
-        },
-        {
-          "title": "SEO Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
-          "time": "04:00",
-          "day": "Tuesday",
-          "course_id": 4,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759274711956
-        },
-        {
-          "title": "Conduct a Full SEO Audit for Your Website",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
-          "time": "14:00",
-          "day": "Wednesday",
-          "course_id": 4,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759342383476
         }
       ],
       "5": [
         {
           "title": "Affiliate Marketing Information",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "youtube_url": "https://youtube.com/live/olFfbsGOzOo",
+          "date": "2025-10-08",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 5,
@@ -653,8 +515,8 @@
         },
         {
           "title": " Affiliate Marketing and How to Make It Work",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-03",
+          "youtube_url": "https://youtube.com/live/TdMDv3M_TjI",
+          "date": "2025-10-10",
           "time": "13:00",
           "day": "Friday",
           "course_id": 5,
@@ -665,8 +527,8 @@
         },
         {
           "title": "Affiliate Marketing Categories and How They Work",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-06",
+          "youtube_url": "https://youtube.com/live/drTuJSZMJRU",
+          "date": "2025-10-13",
           "time": "10:00",
           "day": "Monday",
           "course_id": 5,
@@ -677,8 +539,8 @@
         },
         {
           "title": " Trusted and Most Popular Affiliate Platforms",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-08",
+          "youtube_url": "https://youtube.com/live/M-nVlOnsc9Y",
+          "date": "2025-10-15",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 5,
@@ -689,8 +551,8 @@
         },
         {
           "title": " Do’s and Don’ts of Affiliate Marketing",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-10",
+          "youtube_url": "https://youtube.com/live/gLqS8DDpwpQ",
+          "date": "2025-10-17",
           "time": "13:00",
           "day": "Friday",
           "course_id": 5,
@@ -701,8 +563,8 @@
         },
         {
           "title": "Smart Ways to Pick a Profitable Affiliate Program",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-13",
+          "youtube_url": "https://youtube.com/live/X2d-JU6UQIw",
+          "date": "2025-10-20",
           "time": "10:00",
           "day": "Monday",
           "course_id": 5,
@@ -713,8 +575,8 @@
         },
         {
           "title": "Maximizing Affiliate Sales Through Proven Strategies",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-15",
+          "youtube_url": "https://youtube.com/live/sLLs5YyduwI",
+          "date": "2025-10-22",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 5,
@@ -725,8 +587,8 @@
         },
         {
           "title": " Long-Term Growth Strategies for Business Scaling",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-17",
+          "youtube_url": "https://youtube.com/live/bfw-hQq9AJo",
+          "date": "2025-10-24",
           "time": "13:00",
           "day": "Friday",
           "course_id": 5,
@@ -737,8 +599,8 @@
         },
         {
           "title": " Tools and Automation Strategies for Earning Passive Income",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-20",
+          "youtube_url": "https://youtube.com/live/Bu-PaF1zkkQ",
+          "date": "2025-10-27",
           "time": "10:00",
           "day": "Monday",
           "course_id": 5,
@@ -749,43 +611,7 @@
         },
         {
           "title": "Affiliate Marketing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-22",
-          "time": "10:00",
-          "day": "Wednesday",
-          "course_id": 5,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759231425518
-        },
-        {
-          "title": "Affiliate Marketing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-24",
-          "time": "13:00",
-          "day": "Friday",
-          "course_id": 5,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759231483510
-        },
-        {
-          "title": "Affiliate Marketing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-27",
-          "time": "10:00",
-          "day": "Monday",
-          "course_id": 5,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759299831701
-        },
-        {
-          "title": "Affiliate Marketing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "youtube_url": "https://youtube.com/live/1ecX7Jno8nU",
           "date": "2025-10-29",
           "time": "10:00",
           "day": "Wednesday",
@@ -793,14 +619,14 @@
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
-          "id": 1759299870269
+          "id": 1759231425518
         }
       ],
       "6": [
         {
           "title": "Amazon Virtual Assistant Information",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "youtube_url": "https://youtube.com/live/YcPuy2aKsEk",
+          "date": "2025-10-08",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 6,
@@ -812,7 +638,7 @@
         {
           "title": "The Complete Guide to Amazon Virtual Assistant Responsibilities",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-03",
+          "date": "2025-10-10",
           "time": "14:00",
           "day": "Friday",
           "course_id": 6,
@@ -824,7 +650,7 @@
         {
           "title": "Amazon Seller Central Essentials for Virtual Assistants",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-06",
+          "date": "2025-10-13",
           "time": "11:00",
           "day": "Monday",
           "course_id": 6,
@@ -836,7 +662,7 @@
         {
           "title": "Amazon Business Models - FBA, FBM, and More",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-08",
+          "date": "2025-10-15",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 6,
@@ -848,7 +674,7 @@
         {
           "title": "Amazon Policies and Guidelines for Virtual Assistants",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-10",
+          "date": "2025-10-17",
           "time": "14:00",
           "day": "Friday",
           "course_id": 6,
@@ -860,7 +686,7 @@
         {
           "title": "Setting Up and Managing an Amazon Store for VAs",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-13",
+          "date": "2025-10-20",
           "time": "11:00",
           "day": "Monday",
           "course_id": 6,
@@ -872,7 +698,7 @@
         {
           "title": "Product Hunting and Sourcing for Amazon",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-15",
+          "date": "2025-10-22",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 6,
@@ -884,7 +710,7 @@
         {
           "title": "Amazon Product Listings for Top Rankings",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-17",
+          "date": "2025-10-24",
           "time": "14:00",
           "day": "Friday",
           "course_id": 6,
@@ -896,7 +722,7 @@
         {
           "title": "Amazon PPC Advertising and Marketing Strategies for VAs",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-20",
+          "date": "2025-10-27",
           "time": "11:00",
           "day": "Monday",
           "course_id": 6,
@@ -908,42 +734,6 @@
         {
           "title": " Freelancing and Automation Strategies for Amazon Virtual Assistants",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-22",
-          "time": "11:00",
-          "day": "Wednesday",
-          "course_id": 6,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759300317351
-        },
-        {
-          "title": "Setting Up High-Performing Amazon PPC Campaigns",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-24",
-          "time": "14:00",
-          "day": "Friday",
-          "course_id": 6,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759300354000
-        },
-        {
-          "title": "Amazon Virtual Assistant Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-27",
-          "time": "11:00",
-          "day": "Monday",
-          "course_id": 6,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759300390952
-        },
-        {
-          "title": "Amazon Virtual Assistant Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
           "date": "2025-10-29",
           "time": "11:00",
           "day": "Wednesday",
@@ -951,7 +741,7 @@
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
-          "id": 1759300422705
+          "id": 1759300317351
         }
       ],
       "7": [
@@ -1041,8 +831,8 @@
         },
         {
           "title": "Creation of Design In Adobe Illustrator",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-17",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/qe6OgpYBHRg",
+          "date": "2025-10-24",
           "time": "13:00",
           "day": "Friday",
           "course_id": 7,
@@ -1053,8 +843,8 @@
         },
         {
           "title": "Graphic Designing Questions and Answers Session ",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-20",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/EL8ogGmh5wI",
+          "date": "2025-10-27",
           "time": "10:00",
           "day": "Monday",
           "course_id": 7,
@@ -1065,8 +855,8 @@
         },
         {
           "title": "Graphic Designing Questions and Answers Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-22",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/I20ZoZmbDkE",
+          "date": "2025-10-29",
           "time": "10:00",
           "day": "Wednesday",
           "course_id": 7,
@@ -1273,8 +1063,8 @@
       "9": [
         {
           "title": "AI Prompt Engineering Information",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "youtube_url": "https://youtube.com/live/5GS80i7JLLQ",
+          "date": "2025-10-09",
           "time": "15:00",
           "day": "Wednesday",
           "course_id": 9,
@@ -1285,8 +1075,8 @@
         },
         {
           "title": "What is AI Prompt Engineering & How It Works",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "youtube_url": "https://youtube.com/live/ZuoQAYvUZXU",
+          "date": "2025-10-11",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 9,
@@ -1297,8 +1087,8 @@
         },
         {
           "title": "Understanding GPT, Claude, Gemini & Other AIs",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-07",
+          "youtube_url": "https://youtube.com/live/fheIyxsKHLI",
+          "date": "2025-10-14",
           "time": "12:00",
           "day": "Tuesday",
           "course_id": 9,
@@ -1309,8 +1099,8 @@
         },
         {
           "title": "Classification of Prompts - From Simple to Complex",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
+          "youtube_url": "https://youtube.com/live/JUsXGFkm99U",
+          "date": "2025-10-16",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 9,
@@ -1321,8 +1111,8 @@
         },
         {
           "title": "Ethics of AI Content – What You Need to Know",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-11",
+          "youtube_url": "https://youtube.com/live/Kuo7Y8dIBmM",
+          "date": "2025-10-18",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 9,
@@ -1333,8 +1123,8 @@
         },
         {
           "title": "Structure a Perfect AI Prompt",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-14",
+          "youtube_url": "https://youtube.com/live/fmmnCP4qvPI",
+          "date": "2025-10-21",
           "time": "12:00",
           "day": "Tuesday",
           "course_id": 9,
@@ -1345,8 +1135,8 @@
         },
         {
           "title": "Components for Effective Prompting",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
+          "youtube_url": "https://youtube.com/live/caa6F19hq3",
+          "date": "2025-10-23",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 9,
@@ -1357,8 +1147,8 @@
         },
         {
           "title": "Prompting for Long-Form Blog Content",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-18",
+          "youtube_url": "https://youtube.com/live/a0fjgMqfLN4",
+          "date": "2025-10-25",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 9,
@@ -1369,8 +1159,8 @@
         },
         {
           "title": "Advanced Prompting Techniques for Better Control",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-21",
+          "youtube_url": "https://youtube.com/live/T_UK7CodepQ",
+          "date": "2025-10-28",
           "time": "12:00",
           "day": "Tuesday",
           "course_id": 9,
@@ -1381,8 +1171,8 @@
         },
         {
           "title": "Prompt Tweaks for Better Output Quality",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-23",
+          "youtube_url": "https://youtube.com/live/fCVyqiLDiFM",
+          "date": "2025-10-30",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 9,
@@ -1432,7 +1222,7 @@
         {
           "title": " Full Stack Web Development Information",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "date": "2025-10-09",
           "time": "15:00",
           "day": "Tuesday",
           "course_id": 10,
@@ -1444,7 +1234,7 @@
         {
           "title": "Full Stack Development - Frontend, Backend, and Databases",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "date": "2025-10-11",
           "time": "15:00",
           "day": "Wednesday",
           "course_id": 10,
@@ -1456,8 +1246,8 @@
         {
           "title": " Master HTML, CSS, and JavaScript for Web Development",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-03",
-          "time": "15:00",
+          "date": "2025-10-14",
+          "time": "12:00",
           "day": "Thursday",
           "course_id": 10,
           "batch": "Batch A",
@@ -1468,7 +1258,7 @@
         {
           "title": "React, Node.js, and Full Stack Frameworks",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "date": "2025-10-16",
           "time": "15:00",
           "day": "Friday",
           "course_id": 10,
@@ -1480,7 +1270,7 @@
         {
           "title": "SQL, NoSQL, and Git for Developers",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-05",
+          "date": "2025-10-18",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 10,
@@ -1492,8 +1282,8 @@
         {
           "title": " Building Websites with HTML, CSS, and JavaScript",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-06",
-          "time": "15:00",
+          "date": "2025-10-21",
+          "time": "12:00",
           "day": "Sunday",
           "course_id": 10,
           "batch": "Batch A",
@@ -1504,7 +1294,7 @@
         {
           "title": "Responsive Web Designs with Modern Frameworks",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-06",
+          "date": "2025-10-23",
           "time": "15:00",
           "day": "Sunday",
           "course_id": 10,
@@ -1516,7 +1306,7 @@
         {
           "title": "Server-Side Development and APIs in Web Development",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-08",
+          "date": "2025-10-25",
           "time": "15:00",
           "day": "Tuesday",
           "course_id": 10,
@@ -1528,8 +1318,8 @@
         {
           "title": "Database Design and Building Backend Applications",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
-          "time": "15:00",
+          "date": "2025-10-28",
+          "time": "12:00",
           "day": "Wednesday",
           "course_id": 10,
           "batch": "Batch A",
@@ -1540,7 +1330,7 @@
         {
           "title": " Web Development Question & Answer Session",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
+          "date": "2025-10-30",
           "time": "15:00",
           "day": "Wednesday",
           "course_id": 10,
@@ -1548,49 +1338,13 @@
           "delivered": false,
           "currentlyLive": false,
           "id": 1759344320915
-        },
-        {
-          "title": " Web Development Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-10",
-          "time": "15:00",
-          "day": "Thursday",
-          "course_id": 10,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759344377843
-        },
-        {
-          "title": " Web Development Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
-          "time": "15:00",
-          "day": "Wednesday",
-          "course_id": 10,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759344419746
-        },
-        {
-          "title": " Web Development Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
-          "time": "15:00",
-          "day": "Wednesday",
-          "course_id": 10,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759344475426
         }
       ],
       "11": [
         {
           "title": "Freelancing Information",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "date": "2025-10-09",
           "time": "16:00",
           "day": "Tuesday",
           "course_id": 11,
@@ -1602,7 +1356,7 @@
         {
           "title": "Understanding Freelancing and How It Works",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "date": "2025-10-11",
           "time": "16:00",
           "day": "Wednesday",
           "course_id": 11,
@@ -1614,8 +1368,8 @@
         {
           "title": " Choosing the Right Freelance Niche for You",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
-          "time": "16:00",
+          "date": "2025-10-14",
+          "time": "13:00",
           "day": "Friday",
           "course_id": 11,
           "batch": "Batch A",
@@ -1626,7 +1380,7 @@
         {
           "title": "Building the Right Skills for Freelancing",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "date": "2025-10-16",
           "time": "16:00",
           "day": "Friday",
           "course_id": 11,
@@ -1638,7 +1392,7 @@
         {
           "title": " Essential Tools & Platforms for Freelancers",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-08",
+          "date": "2025-10-18",
           "time": "16:00",
           "day": "Tuesday",
           "course_id": 11,
@@ -1650,8 +1404,8 @@
         {
           "title": "Building a Strong Profile on Fiverr & Upwork for Success",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
-          "time": "16:00",
+          "date": "2025-10-21",
+          "time": "13:00",
           "day": "Wednesday",
           "course_id": 11,
           "batch": "Batch A",
@@ -1662,7 +1416,7 @@
         {
           "title": "Successful Proposal Writing and Bidding Strategies",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-13",
+          "date": "2025-10-23",
           "time": "16:00",
           "day": "Sunday",
           "course_id": 11,
@@ -1674,7 +1428,7 @@
         {
           "title": "Winning Proposals that Close Deals",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-18",
+          "date": "2025-10-25",
           "time": "16:00",
           "day": "Friday",
           "course_id": 11,
@@ -1686,8 +1440,8 @@
         {
           "title": "Creating a Unique Personal Brand as a Freelancer",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-17",
-          "time": "16:00",
+          "date": "2025-10-28",
+          "time": "13:00",
           "day": "Thursday",
           "course_id": 11,
           "batch": "Batch A",
@@ -1698,7 +1452,7 @@
         {
           "title": "Expanding Your Freelance Business Beyond Fiverr & Upwork",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-20",
+          "date": "2025-10-30",
           "time": "16:00",
           "day": "Sunday",
           "course_id": 11,
@@ -1708,43 +1462,7 @@
           "id": 1759345383451
         },
         {
-          "title": "Building a Portfolio Website for Strong Personal Branding",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-21",
-          "time": "16:00",
-          "day": "Monday",
-          "course_id": 11,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759345458381
-        },
-        {
-          "title": "Freelancing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-22",
-          "time": "16:00",
-          "day": "Tuesday",
-          "course_id": 11,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759345511094
-        },
-        {
-          "title": "Freelancing Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-15",
-          "time": "16:00",
-          "day": "Tuesday",
-          "course_id": 11,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759345547813
-        },
-        {
-          "title": "Choosing the Right Freelance Niche for You",
+          "title": "Building the Right Skills for Freelancing",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
           "date": "2025-10-14",
           "time": "13:00",
@@ -1844,7 +1562,7 @@
         {
           "title": " Shopify Dropshipping Information",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "date": "2025-10-09",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 12,
@@ -1856,7 +1574,7 @@
         {
           "title": "Comprehensive Guide to the Dropshipping Model",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "date": "2025-10-11",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 12,
@@ -1868,7 +1586,7 @@
         {
           "title": "Navigating the Shopify Platform for Beginners",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-07",
+          "date": "2025-10-14",
           "time": "12:00",
           "day": "Tuesday",
           "course_id": 12,
@@ -1880,7 +1598,7 @@
         {
           "title": "The Right Niche and Products for Your Shopify Store",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
+          "date": "2025-10-16",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 12,
@@ -1892,7 +1610,7 @@
         {
           "title": "Shopify Store Setup - Key Settings You Need to Know",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-11",
+          "date": "2025-10-18",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 12,
@@ -1904,7 +1622,7 @@
         {
           "title": "Shopify Store Setup and Personalization",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-14",
+          "date": "2025-10-21",
           "time": "12:00",
           "day": "Tuesday",
           "course_id": 12,
@@ -1916,7 +1634,7 @@
         {
           "title": "Maximizing Conversion with High-Quality Product Listings on Shopify",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
+          "date": "2025-10-23",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 12,
@@ -1928,7 +1646,7 @@
         {
           "title": " Generating More Traffic and Conversions for Your Shopify Store",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-18",
+          "date": "2025-10-25",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 12,
@@ -1940,7 +1658,7 @@
         {
           "title": " Proven Strategies for Growing Your Shopify Dropshipping Business",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-21",
+          "date": "2025-10-28",
           "time": "12:00",
           "day": "Tuesday",
           "course_id": 12,
@@ -1952,42 +1670,6 @@
         {
           "title": "Shopify Dropshipping Question & Answer Session",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-23",
-          "time": "15:00",
-          "day": "Thursday",
-          "course_id": 12,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759301265866
-        },
-        {
-          "title": "Shopify Dropshipping Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-25",
-          "time": "15:00",
-          "day": "Saturday",
-          "course_id": 12,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759301308313
-        },
-        {
-          "title": "Shopify Dropshipping Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-28",
-          "time": "12:00",
-          "day": "Tuesday",
-          "course_id": 12,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759301346368
-        },
-        {
-          "title": "Shopify Dropshipping Question & Answer Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
           "date": "2025-10-30",
           "time": "15:00",
           "day": "Thursday",
@@ -1995,14 +1677,14 @@
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
-          "id": 1759301379856
+          "id": 1759301265866
         }
       ],
       "13": [
         {
           "title": "YouTube Content Creation Information",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-01",
+          "youtube_url": "https://youtube.com/live/CYiIwMruhZM",
+          "date": "2025-10-08",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 13,
@@ -2013,8 +1695,8 @@
         },
         {
           "title": "How YouTube Works & Why It’s Powerful",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-03",
+          "youtube_url": "https://youtube.com/live/juvI-sYN8JQ",
+          "date": "2025-10-10",
           "time": "14:00",
           "day": "Friday",
           "course_id": 13,
@@ -2025,8 +1707,8 @@
         },
         {
           "title": "Creating and Setting Up a Personal or Brand Channel",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-06",
+          "youtube_url": "https://youtube.com/live/dhwbi_cCdc0",
+          "date": "2025-10-13",
           "time": "11:00",
           "day": "Monday",
           "course_id": 13,
@@ -2037,8 +1719,8 @@
         },
         {
           "title": "YouTube Studio & Key Channel Settings",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-08",
+          "youtube_url": "https://youtube.com/live/O_yDmaHproQ",
+          "date": "2025-10-15",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 13,
@@ -2049,8 +1731,8 @@
         },
         {
           "title": " Channel Logo, Art & Thumbnails that Attract Viewers",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-10",
+          "youtube_url": "https://youtube.com/live/GqGOcB1zGFo",
+          "date": "2025-10-17",
           "time": "14:00",
           "day": "Friday",
           "course_id": 13,
@@ -2061,8 +1743,8 @@
         },
         {
           "title": "Scripting and Structuring YouTube Videos Properly",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-13",
+          "youtube_url": "https://youtube.com/live/XtawvBrR4yI",
+          "date": "2025-10-20",
           "time": "11:00",
           "day": "Monday",
           "course_id": 13,
@@ -2073,8 +1755,8 @@
         },
         {
           "title": "From Recording to Editing – Full Video Process",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-15",
+          "youtube_url": "https://youtube.com/live/ysllhXIFdnQ",
+          "date": "2025-10-22",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 13,
@@ -2085,8 +1767,8 @@
         },
         {
           "title": "Shoot and Edit a Quality YouTube Video",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-17",
+          "youtube_url": "https://youtube.com/live/QsLP-rxso3s",
+          "date": "2025-10-24",
           "time": "14:00",
           "day": "Friday",
           "course_id": 13,
@@ -2096,9 +1778,9 @@
           "id": 1759234033231
         },
         {
-          "title": "Optimize Videos for YouTube’s Algorithm & Search",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-20",
+          "title": "Hobby to Business - Earning on YouTube",
+          "youtube_url": "https://youtube.com/live/8OuSSTJgsW4",
+          "date": "2025-10-27",
           "time": "11:00",
           "day": "Monday",
           "course_id": 13,
@@ -2108,9 +1790,9 @@
           "id": 1759234096590
         },
         {
-          "title": "Hobby to Business - Earning on YouTube",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-22",
+          "title": "Optimizing & Publishing a Video for Maximum Reach",
+          "youtube_url": "https://youtube.com/live/l2GF6oFzQjQ",
+          "date": "2025-10-29",
           "time": "11:00",
           "day": "Wednesday",
           "course_id": 13,
@@ -2120,9 +1802,9 @@
           "id": 1759234160086
         },
         {
-          "title": "Optimizing & Publishing a Video for Maximum Reach",
+          "title": "Optimize Videos for YouTube’s Algorithm & Search",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-24",
+          "date": "2025-10-29",
           "time": "14:00",
           "day": "Friday",
           "course_id": 13,
@@ -2130,37 +1812,13 @@
           "delivered": false,
           "currentlyLive": false,
           "id": 1759234221471
-        },
-        {
-          "title": "Youtube Creator Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-27",
-          "time": "11:00",
-          "day": "Monday",
-          "course_id": 13,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759234283590
-        },
-        {
-          "title": "Youtube Creator Answer & Question Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-29",
-          "time": "11:00",
-          "day": "Wednesday",
-          "course_id": 13,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759234337206
         }
       ],
       "14": [
         {
           "title": "MS Office and Digital Literacy Information",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "date": "2025-10-09",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 14,
@@ -2172,7 +1830,7 @@
         {
           "title": "The Importance of MS Office and Digital Literacy in Daily Life",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "date": "2025-10-11",
           "time": "15:00",
           "day": "Saturday",
           "course_id": 14,
@@ -2184,8 +1842,8 @@
         {
           "title": "MS Word, Excel, PowerPoint, and Outlook - Essential Tools for Professionals",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-07",
-          "time": "12:00",
+          "date": "2025-10-14",
+          "time": "13:00",
           "day": "Tuesday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2195,8 +1853,8 @@
         },
         {
           "title": "Cloud Storage and File Management for Productivity",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/Dn_2FZZBoAE",
+          "date": "2025-10-16",
           "time": "15:00",
           "day": "Thursday",
           "course_id": 14,
@@ -2208,8 +1866,8 @@
         {
           "title": "Boosting Productivity with MS Office Keyboard Shortcuts",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-11",
-          "time": "15:00",
+          "date": "2025-10-18",
+          "time": "16:00",
           "day": "Saturday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2220,8 +1878,8 @@
         {
           "title": " Document Creation and Formatting in MS Word",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-14",
-          "time": "12:00",
+          "date": "2025-10-21",
+          "time": "13:00",
           "day": "Tuesday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2232,8 +1890,8 @@
         {
           "title": "Presentation Designing in MS PowerPoint",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
-          "time": "15:00",
+          "date": "2025-10-23",
+          "time": "16:00",
           "day": "Thursday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2244,8 +1902,8 @@
         {
           "title": "Business Proposals with MS Word and PowerPoint",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-18",
-          "time": "15:00",
+          "date": "2025-10-25",
+          "time": "16:00",
           "day": "Saturday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2256,8 +1914,8 @@
         {
           "title": " Excel for Data Entry and Basic Analysis",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-21",
-          "time": "12:25",
+          "date": "2025-10-28",
+          "time": "13:00",
           "day": "Tuesday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2268,8 +1926,8 @@
         {
           "title": "Advanced Excel Features for Enhanced Productivity",
           "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-23",
-          "time": "15:00",
+          "date": "2025-10-30",
+          "time": "16:00",
           "day": "Thursday",
           "course_id": 14,
           "batch": "Batch A",
@@ -2317,8 +1975,8 @@
       "15": [
         {
           "title": " English Language and Communication Information by Learn.pk",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-02",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/JHfYfCeZ79Q",
+          "date": "2025-10-09",
           "time": "16:00",
           "day": "Thursday",
           "course_id": 15,
@@ -2329,8 +1987,8 @@
         },
         {
           "title": "English Language and Its Role in Professional Success",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-04",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/h_sakDXF0mA",
+          "date": "2025-10-11",
           "time": "16:00",
           "day": "Saturday",
           "course_id": 15,
@@ -2341,8 +1999,8 @@
         },
         {
           "title": "Grammar and Sentence Structure for Effective Communication",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-07",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/nVQRDH9ij54",
+          "date": "2025-10-14",
           "time": "13:00",
           "day": "Tuesday",
           "course_id": 15,
@@ -2353,8 +2011,8 @@
         },
         {
           "title": "Parts of Speech and How They Function",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-09",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/g4Nt1DI4O68",
+          "date": "2025-10-16",
           "time": "16:00",
           "day": "Thursday",
           "course_id": 15,
@@ -2365,8 +2023,8 @@
         },
         {
           "title": "Common English Mistakes and Tips to Avoid Them",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-11",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/sm8b9kVCx7o",
+          "date": "2025-10-18",
           "time": "16:00",
           "day": "Saturday",
           "course_id": 15,
@@ -2376,21 +2034,9 @@
           "id": 1759306121896
         },
         {
-          "title": "Common English Mistakes and Tips to Avoid Them",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-11",
-          "time": "16:00",
-          "day": "Tuesday",
-          "course_id": 15,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759306172154
-        },
-        {
           "title": " Building Strong Listening and Speaking Skills for Effective Communication",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-14",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/K7nXQu9UaXE?feature=share",
+          "date": "2025-10-21",
           "time": "13:00",
           "day": "Thursday",
           "course_id": 15,
@@ -2401,8 +2047,8 @@
         },
         {
           "title": "Advanced Strategies for Enhancing Reading and Writing Proficiency",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-16",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/mTFIieUhzdY",
+          "date": "2025-10-23",
           "time": "16:00",
           "day": "Saturday",
           "course_id": 15,
@@ -2413,8 +2059,8 @@
         },
         {
           "title": "Advanced Grammar Rules and Techniques for Fluent English",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-18",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/b0dK8hlNzDA?feature=share",
+          "date": "2025-10-25",
           "time": "16:00",
           "day": "Tuesday",
           "course_id": 15,
@@ -2425,43 +2071,7 @@
         },
         {
           "title": "Public Speaking and Presentation Strategies",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-21",
-          "time": "13:00",
-          "day": "Tuesday",
-          "course_id": 15,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759306542322
-        },
-        {
-          "title": "English Language and Communication Questions and Answers Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-23",
-          "time": "16:00",
-          "day": "Thursday",
-          "course_id": 15,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759306588267
-        },
-        {
-          "title": "English Language and Communication Questions and Answers Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
-          "date": "2025-10-25",
-          "time": "16:00",
-          "day": "Saturday",
-          "course_id": 15,
-          "batch": "Batch A",
-          "delivered": false,
-          "currentlyLive": false,
-          "id": 1759306625747
-        },
-        {
-          "title": "English Language and Communication Questions and Answers Session",
-          "youtube_url": "https://youtu.be/jfKfPfyJRdk",
+          "youtube_url": "https://youtu.be/jfKfPfyJRdkhttps://youtube.com/live/cjZOPM9pAD0?feature=share",
           "date": "2025-10-28",
           "time": "13:00",
           "day": "Tuesday",
@@ -2469,7 +2079,7 @@
           "batch": "Batch A",
           "delivered": false,
           "currentlyLive": false,
-          "id": 1759306653740
+          "id": 1759306542322
         },
         {
           "title": "English Language and Communication Questions and Answers Session",

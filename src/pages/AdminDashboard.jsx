@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useAuth, useBatch, useLecture } from "../hooks/reduxHooks";
 import { useAppDispatch } from "../store/hooks";
 import { addGlobalAnnouncement, updateGlobalAnnouncement } from "../store/slices/announcementSlice";
@@ -38,7 +38,26 @@ const AdminDashboard = () => {
   // Destructure after hook calls to avoid conditional destructuring
   const { user } = authData;
   const { batches, courses, selectedBatch, setSelectedBatch, loading: batchLoading } = batchData;
-  const { addLecture, updateLecture, deleteLecture, getLecturesForCourse } = lectureData;
+  const { addLecture, updateLecture, deleteLecture, getLecturesForCourse, hasTodayLecture } = lectureData;
+  
+  // Get courses for the selected batch with safety checks and sort them - MUST be before early returns
+  const sortedBatchCourses = useMemo(() => {
+    const batchCourses = (courses && selectedBatch && courses[selectedBatch]) ? courses[selectedBatch] : [];
+    
+    // Sort courses: courses with today's lectures first, then the rest
+    return [...batchCourses].sort((a, b) => {
+      const aHasLectureToday = hasTodayLecture(a.id);
+      const bHasLectureToday = hasTodayLecture(b.id);
+      
+      // If both have lectures today or both don't, maintain original order
+      if (aHasLectureToday === bHasLectureToday) {
+        return 0;
+      }
+      
+      // Put courses with today's lectures first
+      return aHasLectureToday ? -1 : 1;
+    });
+  }, [courses, selectedBatch, hasTodayLecture]);
   
   // Early return if still loading - but AFTER all hooks are called
   if (batchLoading) {
@@ -187,12 +206,9 @@ const AdminDashboard = () => {
     }
   };
   
-  // Get courses for the selected batch with safety checks
-  const batchCourses = (courses && selectedBatch && courses[selectedBatch]) ? courses[selectedBatch] : [];
-
-  // Render course cards - ensure stable component structure
+  // Render course cards - ensure stable component structure with organized sections
   const renderCourses = () => {
-    if (batchCourses.length === 0) {
+    if (sortedBatchCourses.length === 0) {
       return (
         <div className="rounded-lg bg-white p-8 text-center shadow-sm">
           <p className="text-gray-600">
@@ -202,18 +218,58 @@ const AdminDashboard = () => {
       );
     }
 
-    return batchCourses.map((course) => (
-      <CourseCard
-        key={`${selectedBatch}-${course.id}`}
-        course={course}
-        isAdmin={true}
-        onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
-        onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
-        onVideoPreview={handleVideoPreview}
-        onStartLecture={(lecture) => handleStartLecture(lecture, course.id)}
-        onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
-      />
-    ));
+    return (
+      <>
+        {/* Today's Active Lectures Section */}
+        {sortedBatchCourses.some(course => hasTodayLecture(course.id)) && (
+          <div className="mb-8">
+            <div className="mb-4 flex items-center">
+              <h3 className="text-lg font-semibold text-gray-800">🎯 Today's Active Lectures</h3>
+              <div className="ml-3 inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
+                Manage Live
+              </div>
+            </div>
+            {sortedBatchCourses
+              .filter(course => hasTodayLecture(course.id))
+              .map((course) => (
+                <CourseCard
+                  key={`active-${selectedBatch}-${course.id}`}
+                  course={course}
+                  isAdmin={true}
+                  onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
+                  onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
+                  onVideoPreview={handleVideoPreview}
+                  onStartLecture={(lecture) => handleStartLecture(lecture, course.id)}
+                  onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
+                />
+              ))
+            }
+          </div>
+        )}
+        
+        {/* Other Courses Section */}
+        {sortedBatchCourses.some(course => !hasTodayLecture(course.id)) && (
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-gray-800">📚 Other Courses</h3>
+            {sortedBatchCourses
+              .filter(course => !hasTodayLecture(course.id))
+              .map((course) => (
+                <CourseCard
+                  key={`all-${selectedBatch}-${course.id}`}
+                  course={course}
+                  isAdmin={true}
+                  onEditLecture={(lecture) => handleEditLecture(lecture, course.id)}
+                  onDeleteLecture={(lecture) => handleDeleteLecture(lecture, course.id)}
+                  onVideoPreview={handleVideoPreview}
+                  onStartLecture={(lecture) => handleStartLecture(lecture, course.id)}
+                  onMarkDelivered={(lecture) => handleMarkDelivered(lecture, course.id)}
+                />
+              ))
+            }
+          </div>
+        )}
+      </>
+    );
   };
 
   return (

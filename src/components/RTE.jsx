@@ -6,10 +6,7 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
   // Track when the editor has been initialized
   const [editorInitialized, setEditorInitialized] = React.useState(false);
   
-  // Use effect to log the default value when it changes
-  React.useEffect(() => {
-    console.log('RTE defaultValue changed:', defaultValue);
-  }, [defaultValue]);
+  
 
   return (
     <div className="w-full editor-wrapper">
@@ -19,7 +16,6 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { onChange, value, ref } }) => {
-          console.log('RTE rendering with value:', value, 'defaultValue:', defaultValue);
           return (
             <Editor
               key={`editor-${defaultValue?.length || 0}`} // Force re-render on defaultValue change
@@ -27,7 +23,6 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
               licenseKey="gpl"
               onInit={(evt, editor) => {
                 setEditorInitialized(true);
-                console.log('Editor initialized');
               }}
               initialValue={defaultValue}
               value={value || defaultValue}
@@ -206,7 +201,6 @@ const RTE = ({ name, control, label, defaultValue = "" }) => {
               },
             }}
             onEditorChange={(content) => {
-              console.log('Editor content changed:', content);
               onChange(content);
             }}
           />

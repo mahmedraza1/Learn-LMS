@@ -8,6 +8,18 @@ Learn LMS is a modern, feature-rich learning management system designed to facil
 
 ## Recent Updates (October 2025)
 
+### 🎯 Smart Course Highlighting System
+- **Lecture-based Highlighting**: Courses are now highlighted only when they have actual scheduled lectures for today
+- **Organized Course Display**: Today's active lectures appear at the top of the dashboard for easy access
+- **Real-time Updates**: Course highlighting updates automatically when lectures are added, edited, or deleted
+- **Better User Experience**: Students see exactly which courses have live content today
+
+### 📱 Enhanced Responsive Design
+- **Improved Grid Layouts**: Optimized card layouts for better responsiveness across all screen sizes
+- **Smart Breakpoints**: 3-card layout in 1280-1620px width range prevents awkward spacing
+- **Consistent Experience**: All card-based components follow the same responsive pattern
+- **Mobile-first Approach**: Progressive enhancement from mobile to desktop views
+
 ### 🔐 Enhanced Authentication & Admission Control
 - **Admission Status Verification**: Students must have `admission_status: 'Granted'` to access the LMS
 - **Auto-redirect**: Unauthorized users are automatically redirected to learn.pk after countdown
@@ -23,23 +35,41 @@ Learn LMS is a modern, feature-rich learning management system designed to facil
 - **Mobile-responsive Notifications**: Fixed notification popup positioning on mobile devices
 - **Date Field Removal**: Cleaned up unnecessary date displays across components
 - **Modern Card Designs**: Beautiful gradient backgrounds and professional styling
+- **Section Organization**: Clear visual separation between active and inactive courses
 
-### ⚡ Performance & Restrictions
-- **Removed Date Restrictions**: Disabled batch-specific date limitations for lecture scheduling
+### ⚡ Performance & Architecture
+- **Lecture-based Logic**: Replaced rule-based highlighting with actual lecture data checking
 - **Redux Architecture**: Migrated to Redux Toolkit for better state management
 - **Optimized Loading States**: Improved authentication flow with proper loading indicators
+- **Consistent Hook Usage**: Fixed React hooks order issues for better component stability
 
 ## Features
 
-- **Advanced Role-based Access Control**: Multi-layer authentication with admission status verification
+### 🎯 Smart Course Management
+- **Intelligent Course Highlighting**: Only courses with scheduled lectures for today are highlighted
+- **Priority Organization**: Today's active lectures automatically appear at the top
+- **Real-time Course Status**: Dynamic highlighting based on actual lecture schedules
+
+### 📱 Responsive Design Excellence
+- **Adaptive Grid Layouts**: Optimized card layouts across all device sizes
+- **Smart Breakpoints**: 1-2-3-4 card progression for smooth responsive experience
+- **Mobile-first Architecture**: Progressive enhancement from mobile to desktop
+
+### 🔐 Advanced Access Control
+- **Multi-layer Authentication**: Role-based access with admission status verification
 - **Batch Management**: Courses organized by batches with flexible lecture scheduling
-- **Live Lecture Integration**: Full YouTube live stream support with automatic thumbnail generation
-- **Admission Status Control**: Students require verified admission status to access content
 - **Auto-redirect Security**: Unauthorized users are guided back to the main site
-- **Responsive Design**: Built with Tailwind CSS for modern, mobile-friendly interface
-- **Redux State Management**: Centralized state with Redux Toolkit
-- **Real-time Notifications**: Toast notifications for user feedback
+
+### 🎥 Live Learning Integration
+- **YouTube Live Support**: Full integration with YouTube live streams
+- **Real-time Lecture Status**: Live, delivered, and scheduled lecture indicators
+- **Interactive Learning**: Direct access to live lectures from course dashboards
+
+### 🎨 Modern User Experience
 - **Beautiful Access Cards**: Professional UI for different access states
+- **Toast Notifications**: Real-time feedback for user actions
+- **Consistent Iconography**: React Icons for professional appearance
+- **Visual Course Organization**: Clear separation between active and inactive content
 
 ## Technologies Used
 

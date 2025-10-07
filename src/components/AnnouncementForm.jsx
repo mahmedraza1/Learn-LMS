@@ -29,7 +29,6 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
   // When in edit mode, ensure form is properly initialized with existing content
   React.useEffect(() => {
     if (isEditMode && announcement) {
-      console.log('Setting form values for edit mode:', announcement);
       setValue("title", announcement.title || "");
       setValue("content", announcement.content || "");
     }
@@ -38,7 +37,6 @@ const AnnouncementForm = ({ isOpen, onClose, onSubmit, announcement = null }) =>
   // Handle form submission
   const submitHandler = async (data) => {
     // Log the data being submitted
-    console.log('Submitting announcement data:', data);
     
     // Make sure content is a string
     const formattedData = {

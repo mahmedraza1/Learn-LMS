@@ -40,7 +40,6 @@ const CourseForm = ({ isOpen, onClose, onSubmit, course = null }) => {
   }, [course, setValue]);
 
   const submitHandler = async (data) => {
-    console.log('Submitting course data:', data);
     
     // Process tags from comma-separated string to array
     const processedData = {

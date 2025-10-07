@@ -111,7 +111,7 @@ const CourseCard = ({
     }
   };
 
-  // Check if this course has a lecture scheduled for today
+  // Check if this course has a lecture scheduled for today (legacy local check)
   const hasScheduledLectureToday = lectures.some(lecture => {
     const lectureDate = new Date(lecture.date);
     // Use current date
@@ -123,7 +123,7 @@ const CourseCard = ({
     );
   });
   
-  // Check if this course should have a lecture today according to the rules
+  // Check if this course has a lecture scheduled for today (new logic - checks actual scheduled lectures)
   const shouldHaveLectureToday = hasTodayLecture(course.id);
   
   // Don't auto-expand any courses as per the requirement
@@ -237,7 +237,7 @@ const CourseCard = ({
           )}
           
           {/* Lecture grid */}
-          <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {lectures.length > 0 ? (
               lectures.map((lecture, index) => {
                 // Find the original index in the full lectures array to get correct lecture number

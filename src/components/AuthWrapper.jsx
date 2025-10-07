@@ -17,16 +17,7 @@ const AuthWrapper = ({ children }) => {
   const loading = useAppSelector(selectAuthLoading);
   const selectedBatch = useAppSelector(selectSelectedBatch);
 
-  // Debug logging
-  console.log('AuthWrapper Debug:', {
-    user,
-    isAdmin,
-    isStudent,
-    isGuest,
-    hasGrantedAdmission,
-    loading,
-    admission_status: user?.admission_status
-  });
+  
 
   useEffect(() => {
     // Fetch user data on app initialization
