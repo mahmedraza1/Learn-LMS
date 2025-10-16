@@ -3,194 +3,209 @@
     {
       "id": 1,
       "name": "Full Stack Web Development ",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1320313116215584/",
       "description": "",
       "platform": "Facebook",
       "isActive": true,
       "createdAt": "2025-09-15T10:30:00.000Z",
-      "updatedAt": "2025-09-30T11:46:24.221Z",
+      "updatedAt": "2025-10-09T12:40:35.796Z",
       "createdBy": "Learn.pk",
       "updatedBy": "Learn.pk"
     },
     {
       "id": 2,
       "name": "Graphics Designing",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/788643310704487/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:46:14.885Z",
-      "updatedAt": "2025-09-30T11:46:14.885Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:41:18.169Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 3,
       "name": "Artificial Intelligence Prompt",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1099442935681835/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:47:05.453Z",
-      "updatedAt": "2025-09-30T11:47:05.453Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:42:46.949Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 4,
       "name": "Affiliate Marketing",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/5100124266878515/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:47:19.436Z",
-      "updatedAt": "2025-09-30T11:47:19.436Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:43:08.266Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 5,
       "name": "Content Writing",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1570054364432809/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:47:30.687Z",
-      "updatedAt": "2025-09-30T11:47:30.687Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:43:21.428Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 6,
       "name": "English Language and Communication",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/835736172474549/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:47:44.022Z",
-      "updatedAt": "2025-09-30T11:47:44.022Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:43:37.487Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 7,
       "name": "Shopify Dropshipping",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1521876832295774/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:48:12.655Z",
-      "updatedAt": "2025-09-30T11:48:12.655Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:43:48.820Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 8,
       "name": "Full Stack Web Development",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1320313116215584/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:48:28.414Z",
-      "updatedAt": "2025-09-30T11:48:28.414Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:44:00.002Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 9,
       "name": "Search Engine Optimization",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1360599068814172/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:49:36.435Z",
-      "updatedAt": "2025-09-30T11:49:36.436Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:44:12.506Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 10,
       "name": "MS Office and Digital Literacy",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1148343767252205/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:49:49.369Z",
-      "updatedAt": "2025-09-30T11:49:49.369Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:44:25.907Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 11,
       "name": "Amazon Virtual Assistant",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1128408516145260/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:50:00.029Z",
-      "updatedAt": "2025-09-30T11:50:00.029Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:44:37.635Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 12,
       "name": "YouTube Creator",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1886637085568779/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:50:12.519Z",
-      "updatedAt": "2025-09-30T11:50:12.519Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:44:50.568Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 13,
       "name": "Freelancing",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/733004449757768/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:50:23.804Z",
-      "updatedAt": "2025-09-30T11:50:23.804Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:45:04.290Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 14,
       "name": "WordPress",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1257907206023230/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:50:36.891Z",
-      "updatedAt": "2025-09-30T11:50:36.891Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:45:18.415Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 15,
       "name": "Digital Marketing",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1484557159480491/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:50:48.856Z",
-      "updatedAt": "2025-09-30T11:50:48.856Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:45:30.930Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     },
     {
       "id": 16,
       "name": "Video Editing",
-      "link": "https://facebook.com",
+      "link": "https://www.facebook.com/groups/1191635636344352/",
       "description": "",
       "platform": "Facebook",
       "memberCount": 0,
       "isActive": true,
       "createdAt": "2025-09-30T11:51:00.343Z",
-      "updatedAt": "2025-09-30T11:51:00.343Z",
-      "createdBy": "Learn.pk"
+      "updatedAt": "2025-10-09T12:45:42.912Z",
+      "createdBy": "Learn.pk",
+      "updatedBy": "Learn.pk"
     }
   ]
 }

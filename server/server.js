@@ -21,6 +21,18 @@ const upload = multer({
   }
 });
 
+// Configure multer for CSV uploads
+const csvUpload = multer({ 
+  dest: 'uploads/',
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'text/csv' || file.originalname.endsWith('.csv')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only CSV files are allowed'), false);
+    }
+  }
+});
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -1687,6 +1699,213 @@ app.post('/api/upload-json-files', upload.array('jsonFiles'), (req, res) => {
     }
     
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// CSV upload and parsing endpoint
+app.post('/api/upload-schedule-csv', csvUpload.single('csvFile'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No CSV file uploaded' });
+    }
+
+    const { parse } = require('csv-parse/sync');
+    
+    // Read the uploaded CSV file
+    const csvContent = fs.readFileSync(req.file.path, 'utf-8');
+    const records = parse(csvContent, {
+      skip_empty_lines: false,
+      relax_column_count: true
+    });
+
+    // Read existing lectures.json
+    const lecturesData = readLecturesData();
+
+    // Parse course groups from row 2 (index 1)
+    const courseGroups = records[1].slice(1, 9).map(group => {
+      if (!group) return [];
+      const match = group.match(/\[([^\]]+)\]/);
+      return match ? match[1].split(',').map(id => parseInt(id.trim())) : [];
+    });
+
+    console.log('Course Groups:', courseGroups);
+
+    // Function to convert 12-hour time to 24-hour format
+    function convertTo24Hour(timeStr) {
+      if (!timeStr || timeStr.trim() === '') return null;
+      
+      // Extract just the start time from "01:00PM to 02:00PM" format
+      const match = timeStr.match(/(\d{1,2}):(\d{2})(AM|PM)/i);
+      if (!match) return null;
+      
+      let hours = parseInt(match[1]);
+      const minutes = match[2];
+      const period = match[3].toUpperCase();
+      
+      if (period === 'PM' && hours !== 12) {
+        hours += 12;
+      } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+      }
+      
+      return `${hours.toString().padStart(2, '0')}:${minutes}`;
+    }
+
+    // Function to convert date from MM-DD-YY to YYYY-MM-DD
+    function convertDate(dateStr) {
+      if (!dateStr || dateStr.trim() === '') return null;
+      
+      const [month, day, year] = dateStr.split('-');
+      const fullYear = `20${year}`;
+      return `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+
+    // Create a map to track which course needs which lecture index
+    const courseScheduleMap = {};
+
+    // Initialize course schedule map
+    for (let batchKey of ['Batch A', 'Batch B']) {
+      courseScheduleMap[batchKey] = {};
+      const startId = batchKey === 'Batch A' ? 1 : 101;
+      const endId = batchKey === 'Batch A' ? 15 : 115;
+      
+      for (let courseId = startId; courseId <= endId; courseId++) {
+        courseScheduleMap[batchKey][courseId] = 0;
+      }
+    }
+
+    // Get existing lectures for reference (titles and URLs)
+    const existingLectures = {};
+    for (let batchKey of ['Batch A', 'Batch B']) {
+      existingLectures[batchKey] = {};
+      if (lecturesData[batchKey] && lecturesData[batchKey].lectures) {
+        for (let courseId in lecturesData[batchKey].lectures) {
+          existingLectures[batchKey][courseId] = lecturesData[batchKey].lectures[courseId];
+        }
+      }
+    }
+
+    // Create new lecture structure
+    const newLectures = {
+      'Batch A': { lectures: {} },
+      'Batch B': { lectures: {} }
+    };
+
+    // Initialize empty arrays for all courses
+    for (let batchKey of ['Batch A', 'Batch B']) {
+      const startId = batchKey === 'Batch A' ? 1 : 15;
+      const endId = batchKey === 'Batch A' ? 15 : 115;
+      
+      for (let courseId = startId; courseId <= endId; courseId++) {
+        newLectures[batchKey].lectures[courseId.toString()] = [];
+      }
+    }
+
+    // Process each date row (starting from row 3, index 2)
+    for (let i = 2; i < records.length; i++) {
+      const row = records[i];
+      const dateStr = row[0];
+      const day = row[9];
+      
+      if (!dateStr || dateStr.trim() === '') continue;
+      
+      const date = convertDate(dateStr);
+      if (!date) continue;
+      
+      console.log(`Processing date: ${dateStr} -> ${date} (${day})`);
+      
+      // Check each column for time slots
+      for (let colIndex = 1; colIndex <= 8; colIndex++) {
+        const timeSlot = row[colIndex];
+        
+        if (timeSlot && timeSlot.trim() !== '') {
+          const time = convertTo24Hour(timeSlot);
+          if (!time) continue;
+          
+          const courses = courseGroups[colIndex - 1];
+          const batchKey = colIndex % 2 === 1 ? 'Batch A' : 'Batch B';
+          
+          console.log(`  Column ${colIndex}: ${timeSlot} -> ${time} for courses ${courses.join(',')} (${batchKey})`);
+          
+          // For each course in this group, add/update the lecture
+          for (let courseId of courses) {
+            const lectureIndex = courseScheduleMap[batchKey][courseId];
+            const existingLecturesForCourse = existingLectures[batchKey][courseId.toString()] || [];
+            
+            if (lectureIndex < existingLecturesForCourse.length) {
+              const existingLecture = existingLecturesForCourse[lectureIndex];
+              
+              // Create new lecture entry with updated date/time
+              const newLecture = {
+                title: existingLecture.title,
+                youtube_url: existingLecture.youtube_url,
+                date: date,
+                time: time,
+                day: day,
+                course_id: courseId,
+                batch: batchKey,
+                delivered: false,
+                currentlyLive: false,
+                id: Date.now() + Math.random() * 1000
+              };
+              
+              newLectures[batchKey].lectures[courseId.toString()].push(newLecture);
+              courseScheduleMap[batchKey][courseId]++;
+              
+              console.log(`    Added lecture ${lectureIndex + 1} for course ${courseId}: ${existingLecture.title}`);
+            }
+          }
+        }
+      }
+    }
+
+    // Preserve the global announcements and liveClassAnnouncement
+    const updatedData = {
+      liveClassAnnouncement: lecturesData.liveClassAnnouncement,
+      globalAnnouncements: lecturesData.globalAnnouncements,
+      'Batch A': newLectures['Batch A'],
+      'Batch B': newLectures['Batch B']
+    };
+
+    // Write to file
+    const success = writeLecturesData(updatedData);
+
+    // Clean up uploaded file
+    if (fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
+    if (success) {
+      // Count lectures
+      const summary = {};
+      for (let batchKey of ['Batch A', 'Batch B']) {
+        summary[batchKey] = {};
+        for (let courseId in newLectures[batchKey].lectures) {
+          const count = newLectures[batchKey].lectures[courseId].length;
+          if (count > 0) {
+            summary[batchKey][courseId] = count;
+          }
+        }
+      }
+
+      res.json({ 
+        success: true, 
+        message: 'Schedule updated successfully',
+        summary: summary
+      });
+    } else {
+      res.status(500).json({ error: 'Failed to update lectures.json' });
+    }
+
+  } catch (error) {
+    console.error('Error processing CSV:', error);
+    
+    // Clean up uploaded file
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    
+    res.status(500).json({ error: error.message });
   }
 });
 
