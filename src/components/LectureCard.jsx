@@ -63,6 +63,11 @@ const LectureCard = ({
 
   // Get YouTube thumbnail URL if available
   const getThumbnailUrl = () => {
+    // First, check if there's a custom thumbnail URL
+    if (lecture?.thumbnail_url && lecture.thumbnail_url.trim() !== '') {
+      return lecture.thumbnail_url;
+    }
+    
     // If lecture has a youtube_id property, use it directly
     if (lecture?.youtube_id) {
       return `https://img.youtube.com/vi/${lecture.youtube_id}/sddefault.jpg`;
@@ -106,7 +111,7 @@ const LectureCard = ({
       }
     }
     
-    return null;au
+    return null;
   };
 
   // Determine lecture status

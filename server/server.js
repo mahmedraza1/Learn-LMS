@@ -461,7 +461,9 @@ app.put('/learnlive/announcements/:batch/:courseId/:announcementId', (req, res) 
 app.put('/learnlive/lectures/:lectureId', (req, res) => {
   const { lectureId } = req.params;
   const lectureData = req.body;
-  const lectureIdNum = parseInt(lectureId);
+  // Parse as float first, then convert to int if it's a whole number
+  const lectureIdNum = parseFloat(lectureId);
+  const lectureIdInt = Math.floor(lectureIdNum);
   
   if (!lectureData) {
     return res.status(400).json({ message: 'Lecture data is required' });
@@ -477,15 +479,16 @@ app.put('/learnlive/lectures/:lectureId', (req, res) => {
       Object.keys(lecturesData[batch].lectures).forEach(courseId => {
         if (Array.isArray(lecturesData[batch].lectures[courseId])) {
           const lectureIndex = lecturesData[batch].lectures[courseId].findIndex(
-            lecture => lecture.id === lectureIdNum
+            lecture => lecture.id === lectureIdNum || lecture.id === lectureIdInt
           );
           
           if (lectureIndex >= 0) {
             // Update the lecture with new data while preserving the ID
+            const originalId = lecturesData[batch].lectures[courseId][lectureIndex].id;
             lecturesData[batch].lectures[courseId][lectureIndex] = {
               ...lecturesData[batch].lectures[courseId][lectureIndex],
               ...lectureData,
-              id: lectureIdNum // Ensure ID is preserved
+              id: originalId // Ensure original ID is preserved
             };
             updatedLecture = lecturesData[batch].lectures[courseId][lectureIndex];
             lectureFound = true;
@@ -1702,6 +1705,43 @@ app.post('/api/upload-json-files', upload.array('jsonFiles'), (req, res) => {
   }
 });
 
+// Helper function to extract YouTube video ID and generate thumbnail URL
+function generateYouTubeThumbnailUrl(youtubeUrl) {
+  if (!youtubeUrl) return '';
+  
+  try {
+    let videoId = null;
+    
+    if (youtubeUrl.includes('youtu.be/')) {
+      const parts = youtubeUrl.split('youtu.be/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    } else if (youtubeUrl.includes('youtube.com/watch')) {
+      const url = new URL(youtubeUrl);
+      videoId = url.searchParams.get('v');
+    } else if (youtubeUrl.includes('youtube.com/embed/')) {
+      const parts = youtubeUrl.split('embed/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    } else if (youtubeUrl.includes('youtube.com/live/')) {
+      const parts = youtubeUrl.split('live/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    }
+    
+    if (videoId) {
+      return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    }
+  } catch (err) {
+    console.error("Invalid YouTube URL", err);
+  }
+  
+  return '';
+}
+
 // CSV upload and parsing endpoint
 app.post('/api/upload-schedule-csv', csvUpload.single('csvFile'), (req, res) => {
   try {
@@ -1839,6 +1879,7 @@ app.post('/api/upload-schedule-csv', csvUpload.single('csvFile'), (req, res) => 
               const newLecture = {
                 title: existingLecture.title,
                 youtube_url: existingLecture.youtube_url,
+                thumbnail_url: existingLecture.thumbnail_url || generateYouTubeThumbnailUrl(existingLecture.youtube_url),
                 date: date,
                 time: time,
                 day: day,
@@ -1846,7 +1887,7 @@ app.post('/api/upload-schedule-csv', csvUpload.single('csvFile'), (req, res) => 
                 batch: batchKey,
                 delivered: false,
                 currentlyLive: false,
-                id: Date.now() + Math.random() * 1000
+                id: Date.now() + Math.floor(Math.random() * 1000) // Use integer instead of float
               };
               
               newLectures[batchKey].lectures[courseId.toString()].push(newLecture);

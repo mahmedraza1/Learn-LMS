@@ -14,6 +14,49 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
+// Helper function to extract YouTube video ID from URL
+const extractYouTubeVideoId = (url) => {
+  if (!url) return null;
+  
+  try {
+    let videoId = null;
+    
+    if (url.includes('youtu.be/')) {
+      const parts = url.split('youtu.be/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    } else if (url.includes('youtube.com/watch')) {
+      const urlObj = new URL(url);
+      videoId = urlObj.searchParams.get('v');
+    } else if (url.includes('youtube.com/embed/')) {
+      const parts = url.split('embed/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    } else if (url.includes('youtube.com/live/')) {
+      const parts = url.split('live/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    }
+    
+    return videoId;
+  } catch (err) {
+    console.error("Invalid YouTube URL", err);
+    return null;
+  }
+};
+
+// Helper function to generate YouTube thumbnail URL
+const generateYouTubeThumbnailUrl = (youtubeUrl) => {
+  const videoId = extractYouTubeVideoId(youtubeUrl);
+  if (videoId) {
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  }
+  return '';
+};
+
 // Async thunks
 export const fetchLecturesForBatch = createAsyncThunk(
   'lecture/fetchLecturesForBatch',
@@ -76,6 +119,7 @@ export const addLecture = createAsyncThunk(
       const newLecture = {
         title: lectureData.lectureName,
         youtube_url: lectureData.youtubeUrl,
+        thumbnail_url: lectureData.thumbnailUrl || generateYouTubeThumbnailUrl(lectureData.youtubeUrl),
         date: lectureDate,
         time: lectureData.lectureTime,
         day: dayOfWeek,

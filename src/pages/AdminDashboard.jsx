@@ -34,6 +34,13 @@ const AdminDashboard = () => {
     isOpen: false,
     announcement: null
   });
+
+  // State for CSV upload
+  const [csvUploadStatus, setCsvUploadStatus] = useState({
+    uploading: false,
+    message: null,
+    type: null // 'success' or 'error'
+  });
   
   // Destructure after hook calls to avoid conditional destructuring
   const { user } = authData;
@@ -101,8 +108,107 @@ const AdminDashboard = () => {
       }
     }
   };
+
+  // Handler for CSV upload
+  const handleCsvUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.name.endsWith('.csv')) {
+      toast.error('Please upload a CSV file');
+      event.target.value = null;
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('csvFile', file);
+
+    setCsvUploadStatus({
+      uploading: true,
+      message: 'Uploading and processing CSV...',
+      type: null
+    });
+
+    try {
+      const response = await fetch('http://localhost:3001/api/upload-schedule-csv', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setCsvUploadStatus({
+          uploading: false,
+          message: `Schedule updated successfully! ${JSON.stringify(data.summary)}`,
+          type: 'success'
+        });
+        toast.success('Schedule updated successfully! Page will reload in 2 seconds.');
+        
+        // Reload page after 2 seconds to refresh all data
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } else {
+        setCsvUploadStatus({
+          uploading: false,
+          message: data.error || 'Failed to update schedule',
+          type: 'error'
+        });
+        toast.error(data.error || 'Failed to update schedule');
+      }
+    } catch (error) {
+      setCsvUploadStatus({
+        uploading: false,
+        message: `Error: ${error.message}`,
+        type: 'error'
+      });
+      toast.error(`Error: ${error.message}`);
+    }
+
+    // Reset file input
+    event.target.value = null;
+  };
   
   // Handler for lecture form submission
+  // Helper function to generate YouTube thumbnail URL
+  const generateYouTubeThumbnailUrl = (youtubeUrl) => {
+    if (!youtubeUrl) return '';
+    
+    try {
+      let videoId = null;
+      
+      if (youtubeUrl.includes('youtu.be/')) {
+        const parts = youtubeUrl.split('youtu.be/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      } else if (youtubeUrl.includes('youtube.com/watch')) {
+        const urlObj = new URL(youtubeUrl);
+        videoId = urlObj.searchParams.get('v');
+      } else if (youtubeUrl.includes('youtube.com/embed/')) {
+        const parts = youtubeUrl.split('embed/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      } else if (youtubeUrl.includes('youtube.com/live/')) {
+        const parts = youtubeUrl.split('live/');
+        if (parts.length > 1) {
+          videoId = parts[1].split('?')[0].split('&')[0];
+        }
+      }
+      
+      if (videoId) {
+        return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+      }
+    } catch (err) {
+      console.error("Invalid YouTube URL", err);
+    }
+    
+    return '';
+  };
+
   const handleLectureFormSubmit = async (data) => {
     try {
       const { courseId, lecture } = lectureForm;
@@ -114,6 +220,7 @@ const AdminDashboard = () => {
           date: data.lectureDate,
           time: data.lectureTime,
           youtube_url: data.youtubeUrl,
+          thumbnail_url: data.thumbnailUrl || generateYouTubeThumbnailUrl(data.youtubeUrl),
           delivered: lecture.delivered // preserve delivered status
         });
         toast.success("Lecture updated successfully");
@@ -123,7 +230,8 @@ const AdminDashboard = () => {
           lectureName: data.lectureName,
           lectureDate: data.lectureDate,
           lectureTime: data.lectureTime,
-          youtubeUrl: data.youtubeUrl
+          youtubeUrl: data.youtubeUrl,
+          thumbnailUrl: data.thumbnailUrl || generateYouTubeThumbnailUrl(data.youtubeUrl)
         });
         
         toast.success("Lecture added successfully");
@@ -313,6 +421,60 @@ const AdminDashboard = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Live Class Announcement */}
         <LiveClassAnnouncement isAdmin={true} />
+        
+        {/* CSV Upload Section */}
+        <div className="mb-8 rounded-lg bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">📅 Update Lecture Schedule</h3>
+              <p className="mt-1 text-sm text-gray-600">
+                Upload a CSV file to update all lecture dates and times
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <label className="cursor-pointer inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              Upload CSV
+              <input
+                type="file"
+                accept=".csv"
+                onChange={handleCsvUpload}
+                disabled={csvUploadStatus.uploading}
+                className="hidden"
+              />
+            </label>
+            
+            {csvUploadStatus.uploading && (
+              <div className="flex items-center text-gray-600">
+                <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                Processing...
+              </div>
+            )}
+          </div>
+          
+          {csvUploadStatus.message && (
+            <div className={`mt-4 p-4 rounded-lg ${
+              csvUploadStatus.type === 'success' 
+                ? 'bg-green-50 text-green-800 border border-green-200' 
+                : 'bg-red-50 text-red-800 border border-red-200'
+            }`}>
+              <p className="text-sm">{csvUploadStatus.message}</p>
+            </div>
+          )}
+          
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800">
+              <strong>📝 CSV Format:</strong> The CSV should have dates in the first column, time slots for different batch groups in columns 2-9, and day of the week in the last column.
+            </p>
+          </div>
+        </div>
         
         {/* Courses Section */}
         <div className="mb-6">

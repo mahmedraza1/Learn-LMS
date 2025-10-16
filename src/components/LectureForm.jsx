@@ -3,6 +3,49 @@ import { useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { validateDateForCourse } from "../utils/courseScheduleRules";
 
+// Helper function to extract YouTube video ID from URL
+const extractYouTubeVideoId = (url) => {
+  if (!url) return null;
+  
+  try {
+    let videoId = null;
+    
+    if (url.includes('youtu.be/')) {
+      const parts = url.split('youtu.be/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    } else if (url.includes('youtube.com/watch')) {
+      const urlObj = new URL(url);
+      videoId = urlObj.searchParams.get('v');
+    } else if (url.includes('youtube.com/embed/')) {
+      const parts = url.split('embed/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    } else if (url.includes('youtube.com/live/')) {
+      const parts = url.split('live/');
+      if (parts.length > 1) {
+        videoId = parts[1].split('?')[0].split('&')[0];
+      }
+    }
+    
+    return videoId;
+  } catch (err) {
+    console.error("Invalid YouTube URL", err);
+    return null;
+  }
+};
+
+// Helper function to generate YouTube thumbnail URL
+const generateYouTubeThumbnailUrl = (youtubeUrl) => {
+  const videoId = extractYouTubeVideoId(youtubeUrl);
+  if (videoId) {
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  }
+  return '';
+};
+
 const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }) => {
   // If lecture exists and has a YouTube URL, it's edit mode, otherwise it's add mode
   const isEditMode = !!(lecture && lecture.youtube_url);
@@ -24,7 +67,8 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       lectureName: lecture?.title || "",
       lectureDate: lecture?.date ? new Date(lecture.date).toISOString().split('T')[0] : "",
       lectureTime: lecture?.time || "",
-      youtubeUrl: lecture?.youtube_url || ""
+      youtubeUrl: lecture?.youtube_url || "",
+      thumbnailUrl: lecture?.thumbnail_url || ""
     }
   });
   
@@ -36,7 +80,8 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
         lectureName: lecture.title || "",
         lectureDate: lecture.date ? new Date(lecture.date).toISOString().split('T')[0] : "",
         lectureTime: lecture.time || "",
-        youtubeUrl: lecture.youtube_url || ""
+        youtubeUrl: lecture.youtube_url || "",
+        thumbnailUrl: lecture.thumbnail_url || ""
       });
       
       // Also set values individually to ensure the form updates
@@ -46,6 +91,7 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       }
       setValue("lectureTime", lecture.time || "");
       setValue("youtubeUrl", lecture.youtube_url || "");
+      setValue("thumbnailUrl", lecture.thumbnail_url || "");
       
       // If we have a date, update the selectedDay
       if (lecture.date) {
@@ -132,6 +178,8 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
       lectureDate: data.lectureDate,
       lectureTime: data.lectureTime,
       youtubeUrl: data.youtubeUrl,
+      // If custom thumbnail provided, use it; otherwise generate from YouTube URL
+      thumbnailUrl: data.thumbnailUrl || generateYouTubeThumbnailUrl(data.youtubeUrl),
       // These fields might be used by the update function
       id: lecture?.id,
       delivered: lecture?.delivered
@@ -250,6 +298,33 @@ const LectureForm = ({ isOpen, onClose, onSubmit, lecture = null, batch = null }
             {errors.youtubeUrl && (
               <p className="mt-1 text-xs text-red-500">{errors.youtubeUrl.message}</p>
             )}
+          </div>
+
+          {/* Thumbnail URL field */}
+          <div className="mb-4">
+            <label htmlFor="thumbnailUrl" className="mb-1 block text-sm font-medium text-gray-700">
+              Thumbnail URL (Optional)
+            </label>
+            <input
+              id="thumbnailUrl"
+              type="text"
+              className={`w-full rounded-md border ${
+                errors.thumbnailUrl ? "border-red-500" : "border-gray-300"
+              } px-3 py-2 focus:border-[#0d7c66] focus:outline-none focus:ring-1 focus:ring-[#0d7c66]`}
+              placeholder="https://example.com/thumbnail.jpg (Leave empty to use YouTube thumbnail)"
+              {...register("thumbnailUrl", { 
+                pattern: {
+                  value: /^(https?:\/\/).+/,
+                  message: "Invalid URL format"
+                }
+              })}
+            />
+            {errors.thumbnailUrl && (
+              <p className="mt-1 text-xs text-red-500">{errors.thumbnailUrl.message}</p>
+            )}
+            <p className="mt-1 text-xs text-gray-500">
+              If left empty, the YouTube video thumbnail will be used automatically
+            </p>
           </div>
 
           {/* Note about scheduling rules */}
