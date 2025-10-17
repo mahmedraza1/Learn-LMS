@@ -130,6 +130,11 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       console.error('Permission denied:', error);
     });
 
+    socketInstance.on('user-count-update', (data) => {
+      console.log('User count updated:', data.count);
+      setUserCount(data.count);
+    });
+
     setSocket(socketInstance);
 
     // Cleanup on unmount or lectureId change
@@ -233,7 +238,8 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
             <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
             <span className="text-sm font-semibold">💬 Live Chat</span>
           </div>
-          {userCount > 0 && (
+          {/* Only show user count to admins and instructors */}
+          {userCount > 0 && (user?.roles?.includes('administrator') || user?.roles?.includes('admin') || user?.roles?.includes('instructor')) && (
             <div className="flex items-center space-x-1.5 bg-white/20 px-2.5 py-1 rounded-full">
               <FaUsers className="w-3 h-3" />
               <span className="text-xs font-medium">{userCount}</span>

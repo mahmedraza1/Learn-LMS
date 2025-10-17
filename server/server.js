@@ -182,6 +182,11 @@ io.on('connection', (socket) => {
         type: 'system'
       });
     }
+    
+    // Send current user count to all users in the room
+    if (room) {
+      io.to(roomName).emit('user-count-update', { count: room.size });
+    }
   });
 
   // Handle new chat messages
@@ -225,6 +230,14 @@ io.on('connection', (socket) => {
         timestamp: new Date().toISOString(),
         type: 'system'
       });
+      
+      // Update user count after user leaves
+      setTimeout(() => {
+        const room = io.sockets.adapter.rooms.get(roomName);
+        if (room) {
+          io.to(roomName).emit('user-count-update', { count: room.size });
+        }
+      }, 100); // Small delay to ensure room is updated
     }
   });
 
@@ -2206,13 +2219,40 @@ app.post('/api/upload-schedule-csv', csvUpload.single('csvFile'), (req, res) => 
       return `${hours.toString().padStart(2, '0')}:${minutes}`;
     }
 
-    // Function to convert date from MM-DD-YY to YYYY-MM-DD
+    // Function to convert date from MM/DD/YYYY or MM-DD-YY to YYYY-MM-DD
     function convertDate(dateStr) {
       if (!dateStr || dateStr.trim() === '') return null;
       
-      const [month, day, year] = dateStr.split('-');
-      const fullYear = `20${year}`;
-      return `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      let month, day, year;
+      
+      // Check if date uses slash (/) or dash (-)
+      if (dateStr.includes('/')) {
+        // Format: MM/DD/YYYY or M/D/YYYY
+        const parts = dateStr.split('/');
+        if (parts.length !== 3) return null;
+        
+        month = parts[0].trim();
+        day = parts[1].trim();
+        year = parts[2].trim();
+        
+        // If year is 4 digits, use as is, otherwise assume 20XX
+        const fullYear = year.length === 4 ? year : `20${year}`;
+        
+        return `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      } else {
+        // Format: MM-DD-YY or MM-DD-YYYY
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return null;
+        
+        month = parts[0].trim();
+        day = parts[1].trim();
+        year = parts[2].trim();
+        
+        // If year is 4 digits, use as is, otherwise assume 20XX
+        const fullYear = year.length === 4 ? year : `20${year}`;
+        
+        return `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
     }
 
     // Create a map to track which course needs which lecture index
