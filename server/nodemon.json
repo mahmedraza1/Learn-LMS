@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    "data/*.json",
+    "uploads/*",
+    "chat-archives/*",
+    "node_modules"
+  ],
+  "ext": "js,mjs,json",
+  "watch": [
+    "server.js",
+    "*.js"
+  ]
+}

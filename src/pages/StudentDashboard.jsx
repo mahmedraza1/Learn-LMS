@@ -10,7 +10,9 @@ const StudentDashboard = () => {
   const { hasTodayLecture } = useLecture();
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
-    videoUrl: ""
+    videoUrl: "",
+    lecture: null,
+    isLive: false
   });
 
   // Handler for opening video modal
@@ -18,7 +20,9 @@ const StudentDashboard = () => {
     if (lecture?.youtube_url) {
       setVideoModal({
         isOpen: true,
-        videoUrl: lecture.youtube_url
+        videoUrl: lecture.youtube_url,
+        lecture: lecture,
+        isLive: lecture.currentlyLive || false
       });
     }
   };
@@ -27,7 +31,9 @@ const StudentDashboard = () => {
   const closeVideoModal = () => {
     setVideoModal({
       isOpen: false,
-      videoUrl: ""
+      videoUrl: "",
+      lecture: null,
+      isLive: false
     });
   };
 
@@ -151,6 +157,8 @@ const StudentDashboard = () => {
         isOpen={videoModal.isOpen}
         onClose={closeVideoModal}
         videoUrl={videoModal.videoUrl}
+        lecture={videoModal.lecture}
+        isLive={videoModal.isLive}
       />
     </div>
   );

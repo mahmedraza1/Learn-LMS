@@ -38,6 +38,22 @@ const LectureCard = ({
     return days[date.getDay()];
   };
   
+  // Check if lecture is currently live
+  const isLive = () => {
+    // First check if manually marked as currently live
+    if (lecture?.currentlyLive) return true;
+    
+    // Otherwise check if within time window
+    if (!lecture?.date || !lecture?.time) return false;
+    
+    const now = new Date();
+    const lectureDateTime = new Date(`${lecture.date}T${lecture.time}`);
+    const timeDifference = Math.abs(now - lectureDateTime);
+    
+    // Consider live if within 30 minutes of scheduled time
+    return timeDifference <= 30 * 60 * 1000;
+  };
+
   // Format time from 24h to 12h with AM/PM
   const formatTimeToAmPm = (time24h) => {
     if (!time24h) return '';
@@ -168,15 +184,23 @@ const LectureCard = ({
         <div className={`absolute top-1 sm:top-2 right-1 sm:right-2 rounded-full px-2 sm:px-3 py-1 text-xs font-medium shadow-sm ${
           lecture?.delivered 
             ? 'bg-green-100 text-green-800' 
-            : isTodayLecture 
-              ? 'bg-blue-100 text-blue-800'
-              : 'bg-amber-100 text-amber-800'
+            : isLive()
+              ? 'bg-red-100 text-red-800 animate-pulse'
+              : isTodayLecture 
+                ? 'bg-blue-100 text-blue-800'
+                : 'bg-amber-100 text-amber-800'
         }`}>
           {lecture?.delivered ? (
             <span className="flex items-center">
               <FaCheck className="mr-1 w-2 h-2 sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">Delivered</span>
               <span className="sm:hidden">Done</span>
+            </span>
+          ) : isLive() ? (
+            <span className="flex items-center">
+              <div className="mr-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="hidden sm:inline font-semibold">LIVE</span>
+              <span className="sm:hidden font-semibold">LIVE</span>
             </span>
           ) : isTodayLecture ? (
             <span className="flex items-center">

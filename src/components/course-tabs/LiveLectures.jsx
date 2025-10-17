@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth, useBatch } from '../../hooks/reduxHooks';
 import LectureCard from '../LectureCard';
 import VideoModal from '../VideoModal';
+import LiveChat from '../LiveChat';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { FaComments, FaTimes } from 'react-icons/fa';
 
 // Determine API URL based on hostname
 const getApiBaseUrl = () => {
@@ -21,8 +23,12 @@ const LiveLectures = ({ course }) => {
   const [activeBatchTab, setActiveBatchTab] = useState('Batch A');
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
-    videoUrl: ""
+    videoUrl: "",
+    lecture: null,
+    isLive: false
   });
+  const [showLiveChat, setShowLiveChat] = useState(false);
+  const [activeLiveLecture, setActiveLiveLecture] = useState(null);
 
   // Call hooks with fallback values
   const authData = useAuth() || { user: null, isAdmin: false };
@@ -108,6 +114,20 @@ const LiveLectures = ({ course }) => {
       });
 
       setLectures(allLectures);
+      
+      // Check for active live lectures
+      const liveLecture = allLectures.find(lecture => lecture.currentlyLive);
+      console.log('Live lecture check:', { liveLecture, activeLiveLecture, user });
+      
+      if (liveLecture && !activeLiveLecture) {
+        console.log('Setting active live lecture:', liveLecture.title);
+        setActiveLiveLecture(liveLecture);
+        setShowLiveChat(true); // Auto-show chat when live lecture is detected
+      } else if (!liveLecture && activeLiveLecture) {
+        console.log('Clearing active live lecture');
+        setActiveLiveLecture(null);
+        setShowLiveChat(false);
+      }
     } catch (error) {
       console.error('Error fetching lectures:', error);
       toast.error('Failed to load lectures');
@@ -133,9 +153,25 @@ const LiveLectures = ({ course }) => {
 
   const handleAttendLecture = (lecture) => {
     if (lecture.youtube_url) {
+      // Check if lecture is currently live - either marked as live by admin OR within time window
+      const now = new Date();
+      const lectureDateTime = new Date(`${lecture.date}T${lecture.time}`);
+      const timeDifference = Math.abs(now - lectureDateTime);
+      const isWithinTimeWindow = timeDifference <= 30 * 60 * 1000; // 30 minutes in milliseconds
+      const isLive = lecture.currentlyLive || isWithinTimeWindow;
+      
+      console.log('Opening video modal:', {
+        lecture: lecture.title,
+        currentlyLive: lecture.currentlyLive,
+        isWithinTimeWindow,
+        finalIsLive: isLive
+      });
+      
       setVideoModal({
         isOpen: true,
-        videoUrl: lecture.youtube_url
+        videoUrl: lecture.youtube_url,
+        lecture: lecture,
+        isLive: isLive
       });
     }
   };
@@ -148,12 +184,79 @@ const LiveLectures = ({ course }) => {
     // Implement delete functionality
   };
 
-  const handleStartLecture = (lecture) => {
-    // Implement start lecture functionality
+  const handleStartLecture = async (lecture) => {
+    console.log('🚀 Starting lecture function called:', lecture.title);
+    if (!isAdmin) {
+      toast.error("Only admins can start lectures");
+      return;
+    }
+
+    try {
+      // FIXED URL: Removed extra /api/ part
+      const apiUrl = `${API_BASE_URL}/lectures/${lecture.id}`;
+      console.log('🔥 UPDATED API URL:', apiUrl);
+      
+      const response = await axios.put(apiUrl, {
+        currentlyLive: true,
+        delivered: false
+      });
+
+      if (response.data) {
+        // Update local state
+        const updatedLecture = { ...lecture, currentlyLive: true, delivered: false };
+        setLectures(prev => prev.map(l => 
+          l.id === lecture.id ? updatedLecture : l
+        ));
+        
+        // Set as active live lecture and show chat
+        setActiveLiveLecture(updatedLecture);
+        setShowLiveChat(true);
+        
+        toast.success("Lecture started - now live!");
+      }
+    } catch (error) {
+      console.error("❌ Error starting lecture:", error);
+      console.error("❌ Error config:", error.config);
+      console.error("❌ Attempted URL:", error.config?.url);
+      toast.error(`Failed to start lecture: ${error.message}`);
+    }
   };
 
-  const handleMarkDelivered = (lecture) => {
-    // Implement mark delivered functionality
+  const handleMarkDelivered = async (lecture) => {
+    if (!isAdmin) {
+      toast.error("Only admins can mark lectures as delivered");
+      return;
+    }
+
+    try {
+      // FIXED URL: Removed extra /api/ part  
+      const apiUrl = `${API_BASE_URL}/lectures/${lecture.id}`;
+      console.log('🔥 MARK DELIVERED API URL:', apiUrl);
+      
+      const response = await axios.put(apiUrl, {
+        delivered: !lecture.delivered,
+        currentlyLive: false
+      });
+
+      if (response.data) {
+        // Update local state
+        const updatedLecture = { ...lecture, delivered: !lecture.delivered, currentlyLive: false };
+        setLectures(prev => prev.map(l => 
+          l.id === lecture.id ? updatedLecture : l
+        ));
+        
+        // Clear active live lecture if this lecture was live
+        if (activeLiveLecture?.id === lecture.id) {
+          setActiveLiveLecture(null);
+          setShowLiveChat(false);
+        }
+        
+        toast.success(lecture.delivered ? "Lecture marked as not delivered" : "Lecture delivered successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating lecture:", error);
+      toast.error("Failed to update lecture status");
+    }
   };
 
   if (loading) {
@@ -272,11 +375,56 @@ const LiveLectures = ({ course }) => {
         </div>
       )}
 
+      {/* Live Chat Panel */}
+      {activeLiveLecture && (
+        <div className="fixed bottom-4 right-4 z-50">
+          {/* Chat Toggle Button */}
+          <button
+            onClick={() => setShowLiveChat(!showLiveChat)}
+            className={`mb-2 rounded-full p-4 text-white shadow-lg transition-all duration-200 ${
+              showLiveChat 
+                ? 'bg-blue-600 hover:bg-blue-700' 
+                : 'bg-red-600 hover:bg-red-700 animate-pulse'
+            }`}
+            title={showLiveChat ? "Hide Live Chat" : "Show Live Chat"}
+          >
+            <FaComments size={24} />
+          </button>
+          
+          {/* Live Chat Window */}
+          {showLiveChat && (
+            <div className="w-80 h-96 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden">
+              <div className="flex items-center justify-between p-3 bg-red-600 text-white">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                  <span className="font-semibold text-sm">Live Chat - {activeLiveLecture.title}</span>
+                </div>
+                <button
+                  onClick={() => setShowLiveChat(false)}
+                  className="text-white hover:text-red-200 transition-colors"
+                >
+                  <FaTimes size={16} />
+                </button>
+              </div>
+              <div className="h-80">
+                <LiveChat 
+                  lectureId={activeLiveLecture.id} 
+                  isLive={true}
+                  onClose={() => setShowLiveChat(false)}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Video Modal */}
       <VideoModal
         isOpen={videoModal.isOpen}
-        onClose={() => setVideoModal({ isOpen: false, videoUrl: "" })}
+        onClose={() => setVideoModal({ isOpen: false, videoUrl: "", lecture: null, isLive: false })}
         videoUrl={videoModal.videoUrl}
+        lecture={videoModal.lecture}
+        isLive={videoModal.isLive}
       />
     </div>
   );

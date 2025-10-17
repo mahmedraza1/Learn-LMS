@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useAuth, useBatch, useLecture } from "../hooks/reduxHooks";
 import { useAppDispatch } from "../store/hooks";
 import { addGlobalAnnouncement, updateGlobalAnnouncement } from "../store/slices/announcementSlice";
@@ -7,6 +7,7 @@ import LectureForm from "../components/LectureForm";
 import AnnouncementForm from "../components/AnnouncementForm";
 import VideoModal from "../components/VideoModal";
 import LiveClassAnnouncement from "../components/LiveClassAnnouncement";
+import { io } from "socket.io-client";
 import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
@@ -26,7 +27,9 @@ const AdminDashboard = () => {
   
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
-    videoUrl: ""
+    videoUrl: "",
+    lecture: null,
+    isLive: false
   });
 
   // State for announcement form
@@ -65,7 +68,7 @@ const AdminDashboard = () => {
       return aHasLectureToday ? -1 : 1;
     });
   }, [courses, selectedBatch, hasTodayLecture]);
-  
+
   // Early return if still loading - but AFTER all hooks are called
   if (batchLoading) {
     return (
@@ -131,7 +134,12 @@ const AdminDashboard = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:3001/api/upload-schedule-csv', {
+      // Get API URL based on environment
+      const apiUrl = (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') 
+        ? 'https://lms.learn.pk/api/upload-schedule-csv'
+        : 'http://localhost:3001/api/upload-schedule-csv';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         body: formData,
       });
@@ -249,7 +257,19 @@ const AdminDashboard = () => {
         delivered: false // Reset delivered status when starting
       });
       
-      toast.success("Lecture started - now live!");
+      // Initialize chat for this lecture
+      try {
+        const socket = io(getSocketUrl(), { transports: ['websocket'] });
+        socket.emit('admin-start-lecture', { 
+          lectureId: lecture.id,
+          lectureName: lecture.title || `Lecture ${lecture.id}`
+        });
+        socket.disconnect();
+      } catch (socketError) {
+        console.error('Failed to initialize chat:', socketError);
+      }
+      
+      toast.success("Lecture started - now live with chat enabled!");
     } catch (error) {
       console.error("Error starting lecture:", error);
       toast.error("Failed to start lecture");
@@ -257,6 +277,14 @@ const AdminDashboard = () => {
   };
 
   // Handler for marking lecture as delivered (automatically ends live status)
+  // Socket.io connection helper
+  const getSocketUrl = () => {
+    if (typeof window !== 'undefined' && window.location.hostname === 'lms.learn.pk') {
+      return 'https://lms.learn.pk';
+    }
+    return 'http://localhost:3001';
+  };
+
   const handleMarkDelivered = async (lecture, courseId) => {
     try {
       if (lecture.delivered) {
@@ -272,7 +300,23 @@ const AdminDashboard = () => {
           delivered: true,
           currentlyLive: false // Always end live status when marking as delivered
         });
-        toast.success("Lecture delivered successfully!");
+
+        // Clear and end the live chat for this lecture
+        try {
+          const socket = io(getSocketUrl(), { transports: ['websocket'] });
+          
+          // Clear the chat messages
+          socket.emit('clear-chat', { lectureId: lecture.id });
+          
+          // End the lecture chat session
+          socket.emit('end-lecture-chat', { lectureId: lecture.id });
+          
+          socket.disconnect();
+        } catch (socketError) {
+          console.error('Failed to clear/end chat:', socketError);
+        }
+        
+        toast.success("Lecture delivered successfully and chat cleared!");
       }
       
     } catch (error) {
@@ -283,11 +327,13 @@ const AdminDashboard = () => {
 
   
   // Handler for opening video preview
-  const handleVideoPreview = (lecture) => {
+  const handleVideoPreview = (lecture, isLive = false) => {
     if (lecture?.youtube_url) {
       setVideoModal({
         isOpen: true,
-        videoUrl: lecture.youtube_url
+        videoUrl: lecture.youtube_url,
+        lecture: lecture,
+        isLive: isLive || lecture.currentlyLive
       });
     }
   };
@@ -506,8 +552,10 @@ const AdminDashboard = () => {
       {/* Video Modal */}
       <VideoModal
         isOpen={videoModal.isOpen}
-        onClose={() => setVideoModal({ isOpen: false, videoUrl: "" })}
+        onClose={() => setVideoModal({ isOpen: false, videoUrl: "", lecture: null, isLive: false })}
         videoUrl={videoModal.videoUrl}
+        lecture={videoModal.lecture}
+        isLive={videoModal.isLive}
       />
     </div>
   );

@@ -5,9 +5,350 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const archiver = require('archiver');
+const http = require('http');
+const { Server } = require('socket.io');
+const redis = require('redis');
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 3001;
+
+// Initialize Redis client (compatible with Valkey)
+const redisClient = redis.createClient({
+  socket: {
+    host: 'localhost',
+    port: 6379,
+    reconnectStrategy: (retries) => {
+      if (retries > 10) {
+        console.log('Too many Redis retry attempts, giving up');
+        return new Error('Too many retry attempts');
+      }
+      return Math.min(retries * 50, 1000);
+    }
+  }
+});
+
+// Handle Redis connection
+redisClient.on('connect', () => {
+  console.log('Connected to Redis/Valkey');
+});
+
+redisClient.on('error', (err) => {
+  console.log('Redis/Valkey error:', err);
+});
+
+// Connect to Redis
+(async () => {
+  try {
+    await redisClient.connect();
+    console.log('Redis/Valkey client connected successfully');
+    
+    // Cleanup old chat data on server start
+    await cleanupOldChats();
+  } catch (error) {
+    console.error('Failed to connect to Redis/Valkey:', error);
+  }
+})();
+
+// Function to cleanup old chat data
+async function cleanupOldChats() {
+  try {
+    console.log('🧹 Starting chat cleanup...');
+    
+    // Get all chat keys
+    const chatKeys = await redisClient.keys('chat:*');
+    const archivedKeys = await redisClient.keys('archived-chat:*');
+    
+    let cleanedCount = 0;
+    
+    // Clean up active chat keys
+    for (const key of chatKeys) {
+      try {
+        const messages = await redisClient.lRange(key, 0, -1);
+        if (messages.length === 0) {
+          await redisClient.del(key);
+          cleanedCount++;
+          console.log(`🗑️  Removed empty chat key: ${key}`);
+          continue;
+        }
+        
+        // Check if the most recent message is older than 1 hour (more aggressive cleanup)
+        const latestMessage = JSON.parse(messages[0]);
+        const messageTime = new Date(latestMessage.timestamp);
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+        
+        if (messageTime < oneHourAgo) {
+          await redisClient.del(key);
+          cleanedCount++;
+          console.log(`⏰ Removed old chat key: ${key} (last message: ${messageTime.toLocaleString()})`);
+        }
+      } catch (error) {
+        // If we can't parse the message, delete the corrupt key
+        await redisClient.del(key);
+        cleanedCount++;
+        console.log(`🔧 Removed corrupt chat key: ${key}`);
+      }
+    }
+    
+    // Clean up very old archived chats (older than 7 days)
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    for (const key of archivedKeys) {
+      try {
+        const keyParts = key.split(':');
+        if (keyParts.length >= 3) {
+          const timestamp = parseInt(keyParts[2]);
+          if (timestamp && new Date(timestamp) < sevenDaysAgo) {
+            await redisClient.del(key);
+            cleanedCount++;
+            console.log(`📦 Removed old archived chat: ${key}`);
+          }
+        }
+      } catch (error) {
+        console.warn(`Error cleaning archived key ${key}:`, error);
+      }
+    }
+    
+    if (cleanedCount > 0) {
+      console.log(`Cleaned up ${cleanedCount} old chat sessions`);
+    }
+  } catch (error) {
+    console.error('Error during chat cleanup:', error);
+  }
+}
+
+// Initialize Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:5173", "http://localhost:3000", "https://lms.learn.pk"],
+    methods: ["GET", "POST"]
+  }
+});
+
+// Socket.io chat functionality
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  // Join a lecture chat room
+  socket.on('join-lecture-chat', async (data) => {
+    const { lectureId, userName, userRole } = data;
+    const roomName = `lecture-${lectureId}`;
+    
+    // Join the room
+    socket.join(roomName);
+    socket.lectureId = lectureId;
+    socket.userName = userName;
+    socket.userRole = userRole;
+    
+    console.log(`${userName} (${userRole}) joined chat for lecture ${lectureId}`);
+    
+    // Check if this is an active lecture session
+    try {
+      const chatHistory = await redisClient.lRange(`chat:${lectureId}`, 0, -1);
+      
+      if (chatHistory.length === 0) {
+        // No chat history exists, send empty array
+        socket.emit('chat-history', []);
+        console.log(`No chat history found for lecture ${lectureId}`);
+      } else {
+        const messages = chatHistory.map(msg => JSON.parse(msg));
+        
+        // Only send recent messages (within last 1 hour for active sessions)
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+        const recentMessages = messages.filter(msg => {
+          const messageTime = new Date(msg.timestamp);
+          return messageTime > oneHourAgo;
+        });
+        
+        // If no recent messages, treat as new session
+        if (recentMessages.length === 0) {
+          socket.emit('chat-history', []);
+          console.log(`No recent messages for lecture ${lectureId}, starting fresh`);
+        } else {
+          socket.emit('chat-history', recentMessages.reverse()); // Show in chronological order
+          console.log(`Sent ${recentMessages.length} recent messages to ${userName}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching chat history:', error);
+      socket.emit('chat-history', []); // Send empty history on error
+    }
+    
+    // Notify others that user joined (only if there are other users)
+    const room = io.sockets.adapter.rooms.get(roomName);
+    if (room && room.size > 1) {
+      socket.to(roomName).emit('user-joined', {
+        message: `${userName} joined the chat`,
+        timestamp: new Date().toISOString(),
+        type: 'system'
+      });
+    }
+  });
+
+  // Handle new chat messages
+  socket.on('send-message', async (data) => {
+    const { message, lectureId } = data;
+    const roomName = `lecture-${lectureId}`;
+    
+    if (!message.trim()) return;
+    
+    const chatMessage = {
+      id: Date.now() + Math.random(),
+      message: message.trim(),
+      userName: socket.userName,
+      userRole: socket.userRole,
+      timestamp: new Date().toISOString(),
+      type: 'message'
+    };
+    
+    try {
+      // Store message in Redis (keep last 200 messages)
+      await redisClient.lPush(`chat:${lectureId}`, JSON.stringify(chatMessage));
+      await redisClient.lTrim(`chat:${lectureId}`, 0, 199);
+      
+      // Broadcast message to all users in the room
+      io.to(roomName).emit('new-message', chatMessage);
+      
+    } catch (error) {
+      console.error('Error saving/broadcasting message:', error);
+      socket.emit('message-error', { error: 'Failed to send message' });
+    }
+  });
+
+  // Handle user disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+    
+    if (socket.lectureId && socket.userName) {
+      const roomName = `lecture-${socket.lectureId}`;
+      socket.to(roomName).emit('user-left', {
+        message: `${socket.userName} left the chat`,
+        timestamp: new Date().toISOString(),
+        type: 'system'
+      });
+    }
+  });
+
+  // Admin and Instructor functions
+  socket.on('clear-chat', async (data) => {
+    if (socket.userRole !== 'admin' && socket.userRole !== 'instructor') {
+      socket.emit('permission-denied', { error: 'Only admins and instructors can clear chat' });
+      return;
+    }
+    
+    const { lectureId } = data;
+    const roomName = `lecture-${lectureId}`;
+    
+    try {
+      // Clear chat from Redis
+      await redisClient.del(`chat:${lectureId}`);
+      
+      // Notify all users that chat was cleared
+      const clearerRole = socket.userRole === 'admin' ? 'admin' : 'instructor';
+      io.to(roomName).emit('chat-cleared', {
+        message: `Chat has been cleared by ${clearerRole}`,
+        timestamp: new Date().toISOString(),
+        type: 'system'
+      });
+      
+    } catch (error) {
+      console.error('Error clearing chat:', error);
+      socket.emit('clear-error', { error: 'Failed to clear chat' });
+    }
+  });
+
+  // Initialize chat when admin starts a lecture
+  socket.on('admin-start-lecture', async (data) => {
+    if (socket.userRole !== 'admin') {
+      socket.emit('permission-denied', { error: 'Only admins can start lectures' });
+      return;
+    }
+    
+    const { lectureId, lectureName } = data;
+    const roomName = `lecture-${lectureId}`;
+    
+    try {
+      console.log(`🚀 Admin ${socket.userName} starting lecture ${lectureId}: ${lectureName}`);
+      
+      // Clear any existing chat for this lecture
+      const deletedKeys = await redisClient.del(`chat:${lectureId}`);
+      console.log(`🧹 Cleared ${deletedKeys} old chat keys for lecture ${lectureId}`);
+      
+      // Add welcome message to chat
+      const welcomeMessage = {
+        id: `welcome-${Date.now()}`,
+        message: `🎓 Welcome to ${lectureName}! The lecture chat is now active. Say hello! 👋`,
+        timestamp: new Date().toISOString(),
+        type: 'system'
+      };
+      
+      await redisClient.lPush(`chat:${lectureId}`, JSON.stringify(welcomeMessage));
+      
+      // Notify all users in the room that chat is ready
+      io.to(roomName).emit('chat-started', {
+        message: `Chat session started for ${lectureName}`,
+        timestamp: new Date().toISOString(),
+        type: 'system'
+      });
+      
+      console.log(`✅ Successfully started lecture chat for ${lectureId}`);
+      
+    } catch (error) {
+      console.error('❌ Error starting lecture chat:', error);
+      socket.emit('start-lecture-error', { error: 'Failed to start lecture chat' });
+    }
+  });
+
+  // End chat when lecture is marked as delivered
+  socket.on('end-lecture-chat', async (data) => {
+    if (socket.userRole !== 'admin') {
+      socket.emit('permission-denied', { error: 'Only admins can end chat' });
+      return;
+    }
+    
+    const { lectureId } = data;
+    const roomName = `lecture-${lectureId}`;
+    
+    try {
+      // Archive chat messages
+      const chatHistory = await redisClient.lRange(`chat:${lectureId}`, 0, -1);
+      if (chatHistory.length > 0) {
+        // Optionally store chat history in a file
+        const archivePath = path.join(__dirname, 'chat-archives', `lecture-${lectureId}-${Date.now()}.json`);
+        const messages = chatHistory.map(msg => JSON.parse(msg));
+        
+        // Create directory if it doesn't exist
+        const archiveDir = path.dirname(archivePath);
+        if (!fs.existsSync(archiveDir)) {
+          fs.mkdirSync(archiveDir, { recursive: true });
+        }
+        
+        fs.writeFileSync(archivePath, JSON.stringify(messages, null, 2));
+      }
+      
+      // Clear chat from Redis
+      await redisClient.del(`chat:${lectureId}`);
+      
+      // Notify all users that lecture has ended
+      io.to(roomName).emit('lecture-ended', {
+        message: 'Lecture has ended. Chat is now closed.',
+        timestamp: new Date().toISOString(),
+        type: 'system'
+      });
+      
+      // Disconnect all users from this room
+      const room = io.sockets.adapter.rooms.get(roomName);
+      if (room) {
+        room.forEach(socketId => {
+          io.sockets.sockets.get(socketId)?.leave(roomName);
+        });
+      }
+      
+    } catch (error) {
+      console.error('Error ending lecture chat:', error);
+      socket.emit('end-chat-error', { error: 'Failed to end chat' });
+    }
+  });
+});
 
 // Configure multer for file uploads
 const upload = multer({ 
@@ -228,6 +569,28 @@ app.get('/learnlive/lectures/:batch/:courseId', (req, res) => {
     res.json(lecturesData[batch].lectures[courseId]);
   } else {
     res.status(404).json({ message: `Course ${courseId} in batch "${batch}" not found` });
+  }
+});
+
+// GET lectures for a specific course in a batch (API version for AdminDashboard)
+app.get('/learnlive/api/lectures/:batch/:courseId', (req, res) => {
+  const { batch, courseId } = req.params;
+  const lecturesData = readLecturesData();
+  
+  console.log(`API request for lectures: batch="${batch}", courseId="${courseId}"`);
+  
+  if (lecturesData[batch] && lecturesData[batch].lectures) {
+    if (lecturesData[batch].lectures[courseId]) {
+      console.log(`Found ${lecturesData[batch].lectures[courseId].length} lectures for course ${courseId}`);
+      res.json(lecturesData[batch].lectures[courseId]);
+    } else {
+      // Course ID doesn't exist in lectures data
+      console.log(`Course ${courseId} not found in batch ${batch}`);
+      res.json([]); // Return empty array instead of 404 to avoid console errors
+    }
+  } else {
+    console.log(`Batch "${batch}" not found in lectures data`);
+    res.status(404).json({ message: `Batch "${batch}" not found` });
   }
 });
 
@@ -459,6 +822,58 @@ app.put('/learnlive/announcements/:batch/:courseId/:announcementId', (req, res) 
 
 // PUT endpoint to update a lecture by its ID
 app.put('/learnlive/lectures/:lectureId', (req, res) => {
+  const { lectureId } = req.params;
+  const lectureData = req.body;
+  // Parse as float first, then convert to int if it's a whole number
+  const lectureIdNum = parseFloat(lectureId);
+  const lectureIdInt = Math.floor(lectureIdNum);
+  
+  if (!lectureData) {
+    return res.status(400).json({ message: 'Lecture data is required' });
+  }
+  
+  const lecturesData = readLecturesData();
+  let lectureFound = false;
+  
+  // Search through all batches and courses to find the lecture
+  let updatedLecture = null;
+  Object.keys(lecturesData).forEach(batch => {
+    if (lecturesData[batch] && lecturesData[batch].lectures) {
+      Object.keys(lecturesData[batch].lectures).forEach(courseId => {
+        if (Array.isArray(lecturesData[batch].lectures[courseId])) {
+          const lectureIndex = lecturesData[batch].lectures[courseId].findIndex(
+            lecture => lecture.id === lectureIdNum || lecture.id === lectureIdInt
+          );
+          
+          if (lectureIndex >= 0) {
+            // Update the lecture with new data while preserving the ID
+            const originalId = lecturesData[batch].lectures[courseId][lectureIndex].id;
+            lecturesData[batch].lectures[courseId][lectureIndex] = {
+              ...lecturesData[batch].lectures[courseId][lectureIndex],
+              ...lectureData,
+              id: originalId // Ensure original ID is preserved
+            };
+            updatedLecture = lecturesData[batch].lectures[courseId][lectureIndex];
+            lectureFound = true;
+          }
+        }
+      });
+    }
+  });
+  
+  if (lectureFound && updatedLecture) {
+    if (writeLecturesData(lecturesData)) {
+      res.status(200).json(updatedLecture); // Return the updated lecture object
+    } else {
+      res.status(500).json({ message: 'Error updating lecture data' });
+    }
+  } else {
+    res.status(404).json({ message: 'Lecture not found' });
+  }
+});
+
+// Additional endpoint to match frontend expectations: /learnlive/api/lectures/:courseId/:lectureId
+app.put('/learnlive/api/lectures/:courseId/:lectureId', (req, res) => {
   const { lectureId } = req.params;
   const lectureData = req.body;
   // Parse as float first, then convert to int if it's a whole number
@@ -1950,17 +2365,58 @@ app.post('/api/upload-schedule-csv', csvUpload.single('csvFile'), (req, res) => 
   }
 });
 
-// Serve static files from the React app build directory
-app.use(express.static(path.join(__dirname, '..', 'dist')));
-
-// The "catch all" handler: for any request that doesn't match API routes above, 
-// send back React's index.html file
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+// Admin endpoint to manually cleanup all chats
+app.post('/api/admin/cleanup-chats', async (req, res) => {
+  try {
+    const chatKeys = await redisClient.keys('chat:*');
+    let cleanedCount = 0;
+    
+    for (const key of chatKeys) {
+      await redisClient.del(key);
+      cleanedCount++;
+    }
+    
+    console.log(`🧹 Admin manually cleaned ${cleanedCount} chat keys`);
+    res.json({ 
+      success: true, 
+      message: `Cleaned up ${cleanedCount} chat sessions`,
+      cleanedCount 
+    });
+  } catch (error) {
+    console.error('Error in manual chat cleanup:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Start server
-app.listen(PORT, () => {
+// Serve static files from the React app build directory (production only)
+const distPath = path.join(__dirname, '..', 'dist');
+const indexPath = path.join(distPath, 'index.html');
+
+// Only serve static files if dist directory exists (production mode)
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  
+  // The "catch all" handler: for any request that doesn't match API routes above, 
+  // send back React's index.html file
+  app.get('*', (req, res) => {
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(404).json({ error: 'Frontend not built. Please run npm run build first.' });
+    }
+  });
+} else {
+  // Development mode - let Vite handle frontend
+  app.get('*', (req, res) => {
+    res.status(404).json({ 
+      error: 'API endpoint not found. Frontend is served by Vite dev server on port 5173.' 
+    });
+  });
+}
+
+// Start server with Socket.io
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Socket.io enabled for live chat`);
   console.log(`Serving frontend from ${path.join(__dirname, '..', 'dist')}`);
 });
