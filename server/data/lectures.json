@@ -36,7 +36,7 @@
           "course_id": 1,
           "batch": "Batch A",
           "delivered": false,
-          "currentlyLive": true,
+          "currentlyLive": false,
           "id": 1760708555848
         },
         {
