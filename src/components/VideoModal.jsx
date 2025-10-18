@@ -85,25 +85,33 @@ const VideoModal = ({ isOpen, onClose, videoUrl, lecture = null, isLive = false 
   return (
     <div className="fixed inset-0 z-50 bg-black">
       <div 
-        className="relative h-screen w-screen overflow-hidden bg-black flex"
+        className={`relative h-screen w-screen overflow-hidden bg-black ${
+          isLive && lecture 
+            ? 'flex flex-col lg:flex-row' 
+            : 'flex'
+        }`}
         onContextMenu={handleContextMenu}
       >
         {/* Video Section */}
-        <div className={`relative transition-all duration-300 ${isLive && lecture ? 'w-3/4' : 'w-full'}`}>
+        <div className={`relative transition-all duration-300 ${
+          isLive && lecture 
+            ? 'w-full lg:w-3/4 h-[40vh] lg:h-full' 
+            : 'w-full h-full'
+        }`}>
           {/* Close button */}
           <button
-            className="absolute right-6 top-6 z-20 rounded-full bg-black/60 p-3 text-white backdrop-blur-sm hover:bg-black/80 transition-all duration-200 border-2 border-white/20"
+            className="absolute right-4 top-4 lg:right-6 lg:top-6 z-20 rounded-full bg-black/60 p-2 lg:p-3 text-white backdrop-blur-sm hover:bg-black/80 transition-all duration-200 border-2 border-white/20"
             onClick={onClose}
             onContextMenu={handleContextMenu}
           >
-            <FaTimes size={28} />
+            <FaTimes size={24} className="lg:w-7 lg:h-7" />
           </button>
           
           {/* Live indicator for live lectures */}
           {isLive && lecture && (
-            <div className="absolute left-6 top-6 z-20 flex items-center space-x-2 rounded-full bg-red-600 px-4 py-2 text-white backdrop-blur-sm border-2 border-white/20">
-              <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-              <span className="font-semibold text-sm">🔴 LIVE</span>
+            <div className="absolute left-4 top-4 lg:left-6 lg:top-6 z-20 flex items-center space-x-2 rounded-full bg-red-600 px-3 py-1.5 lg:px-4 lg:py-2 text-white backdrop-blur-sm border-2 border-white/20">
+              <div className="w-2 h-2 lg:w-3 lg:h-3 bg-white rounded-full animate-pulse"></div>
+              <span className="font-semibold text-xs lg:text-sm">🔴 LIVE</span>
             </div>
           )}
           
@@ -120,20 +128,20 @@ const VideoModal = ({ isOpen, onClose, videoUrl, lecture = null, isLive = false 
             ></iframe>
           ) : (
             <div 
-              className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-900 p-8 text-white"
+              className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gray-900 p-4 lg:p-8 text-white"
               onContextMenu={handleContextMenu}
             >
-              <p className="text-xl">Invalid or missing YouTube video URL</p>
-              <p className="text-center text-sm text-gray-300">
+              <p className="text-lg lg:text-xl">Invalid or missing YouTube video URL</p>
+              <p className="text-center text-xs lg:text-sm text-gray-300">
                 The lecture might not have a valid YouTube URL assigned yet. Please check back later or contact your instructor.
               </p>
             </div>
           )}
         </div>
         
-        {/* Live Chat Section - Always visible for live lectures */}
+        {/* Live Chat Section - Responsive: Below video on mobile (60%), beside on desktop */}
         {isLive && lecture && (
-          <div className="w-1/4 min-w-80 bg-white flex flex-col border-l-2 border-gray-200">
+          <div className="w-full lg:w-1/4 lg:min-w-80 flex-1 lg:h-full bg-white flex flex-col border-t-2 lg:border-t-0 lg:border-l-2 border-gray-200 overflow-hidden pb-20 lg:pb-0">
             <LiveChat 
               lectureId={lecture.id} 
               isLive={isLive}

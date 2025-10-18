@@ -189,7 +189,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       case 'admin':
         return 'text-red-600';
       case 'instructor':
-        return 'text-blue-600';
+        return 'text-[#0d7c66]';
       default:
         return 'text-gray-800';
     }
@@ -205,7 +205,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
         );
       case 'instructor':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#0d7c66]/10 text-[#0d7c66] border border-[#0d7c66]/30">
             🎓 Instructor
           </span>
         );
@@ -219,7 +219,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       case 'admin':
         return 'bg-red-50 border-red-200 hover:bg-red-100';
       case 'instructor':
-        return 'bg-blue-50 border-blue-200 hover:bg-blue-100';
+        return 'bg-[#0d7c66]/5 border-[#0d7c66]/20 hover:bg-[#0d7c66]/10';
       default:
         return 'bg-white border-gray-200 hover:bg-gray-50';
     }
@@ -230,9 +230,9 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white overflow-hidden">
       {/* Chat Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md">
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-gradient-to-r from-[#0d7c66] to-[#0a6352] text-white shadow-md">
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
             <div className={`w-2.5 h-2.5 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
@@ -264,15 +264,16 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       {/* Messages Container */}
       <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50"
+        className="flex-1 overflow-y-auto p-3 md:p-4 space-y-2 md:space-y-3 bg-gray-50 min-h-0"
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center py-8">
-            <div className="w-16 h-16 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-3xl">💬</span>
+          <div className="flex flex-col items-center justify-center h-full text-center py-4 md:py-8">
+            <div className="w-12 h-12 md:w-16 md:h-16 mb-3 md:mb-4 bg-[#0d7c66]/10 rounded-full flex items-center justify-center">
+              <span className="text-2xl md:text-3xl">💬</span>
             </div>
-            <p className="text-gray-600 font-medium mb-1">Welcome to the live chat!</p>
-            <p className="text-sm text-gray-500">Messages will appear here during the lecture.</p>
+            <p className="text-sm md:text-base text-gray-600 font-medium mb-1">Welcome to the live chat!</p>
+            <p className="text-xs md:text-sm text-gray-500">Messages will appear here during the lecture.</p>
           </div>
         ) : (
           messages.map((message, index) => {
@@ -322,11 +323,11 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message Input - Fixed at Bottom */}
-      <div className="border-t border-gray-200 bg-white p-4 shadow-lg">
+      {/* Message Input - Fixed at Bottom with Safe Area for Mobile Navigation */}
+      <div className="flex-shrink-0 border-t border-gray-200 bg-white p-3 md:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-4 shadow-lg">
         {!isConnected && (
-          <div className="mb-3 flex items-center justify-center">
-            <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-2 rounded-lg text-xs">
+          <div className="mb-2 flex items-center justify-center">
+            <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg text-xs">
               <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
               <span>Connecting to chat server...</span>
             </div>
@@ -340,21 +341,21 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder={isConnected ? "Type your message..." : "Connecting..."}
             disabled={!isConnected}
-            className="flex-1 px-4 py-2.5 text-sm border-2 border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed transition-all placeholder:text-gray-400"
+            className="flex-1 px-3 md:px-4 py-2 md:py-2.5 text-sm border-2 border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0d7c66] focus:border-[#0d7c66] disabled:bg-gray-100 disabled:cursor-not-allowed transition-all placeholder:text-gray-400"
             maxLength={500}
           />
           <button
             type="submit"
             disabled={!isConnected || !newMessage.trim()}
-            className="flex-shrink-0 p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
+            className="flex-shrink-0 p-2.5 md:p-3 bg-[#0d7c66] text-white rounded-full hover:bg-[#0a6352] disabled:bg-gray-300 disabled:cursor-not-allowed transition-all transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
             title="Send message"
           >
-            <FaPaperPlane className="w-4 h-4" />
+            <FaPaperPlane className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </button>
         </form>
         
         {isConnected && newMessage.length > 450 && (
-          <p className="text-xs text-gray-500 mt-2 text-right">
+          <p className="text-xs text-gray-500 mt-1.5 text-right">
             {500 - newMessage.length} characters remaining
           </p>
         )}
