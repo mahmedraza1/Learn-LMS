@@ -67,7 +67,8 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       socketInstance.emit('join-lecture-chat', {
         lectureId: lectureId,
         userName: user.name || 'Anonymous',
-        userRole: getUserRole()
+        userRole: getUserRole(),
+        admissionStatus: user.admission_status || 'Granted'
       });
     });
 
@@ -195,7 +196,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
     }
   };
 
-  const getRoleBadge = (role) => {
+  const getRoleBadge = (role, admissionStatus) => {
     switch (role?.toLowerCase()) {
       case 'admin':
         return (
@@ -210,6 +211,14 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
           </span>
         );
       default:
+        // Show trial badge for students with Trial admission status
+        if (admissionStatus === 'Trial') {
+          return (
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+              ⏰ Trial
+            </span>
+          );
+        }
         return null;
     }
   };
@@ -305,7 +314,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
                         <span className={`font-bold text-sm ${getRoleColor(message.userRole)}`}>
                           {message.userName}
                         </span>
-                        {getRoleBadge(message.userRole)}
+                        {getRoleBadge(message.userRole, message.admissionStatus)}
                       </div>
                       <span className="text-xs text-gray-400 whitespace-nowrap">
                         {formatTimestamp(message.timestamp)}

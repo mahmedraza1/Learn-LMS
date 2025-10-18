@@ -22,12 +22,18 @@ import FastAnnouncementModal from '../FastAnnouncementModal';
 import AnnouncementForm from '../AnnouncementForm';
 
 // Helper function to get display role from roles array
-const getDisplayRole = (roles) => {
+const getDisplayRole = (roles, admissionStatus) => {
   if (!roles || !Array.isArray(roles)) return 'Student';
   
   if (roles.includes('administrator')) return 'Administrator';
   if (roles.includes('instructor')) return 'Instructor';
-  if (roles.includes('student')) return 'Student';
+  if (roles.includes('student')) {
+    // Show Trial status for trial students
+    if (admissionStatus === 'Trial') {
+      return 'Student (Trial)';
+    }
+    return 'Student';
+  }
   
   return 'Student'; // Default fallback
 };
@@ -187,9 +193,11 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <div className="text-left hidden lg:block">
               <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
-              <p className="text-xs text-gray-500">{getDisplayRole(user?.roles)}</p>
+              <p className={`text-xs ${user?.admission_status === 'Trial' ? 'text-amber-600 font-medium' : 'text-gray-500'}`}>
+                {getDisplayRole(user?.roles, user?.admission_status)}
+              </p>
             </div>
-            <div className="w-8 h-8 bg-[#0D7C66] rounded-full flex items-center justify-center">
+            <div className={`w-8 h-8 ${user?.admission_status === 'Trial' ? 'bg-amber-500' : 'bg-[#0D7C66]'} rounded-full flex items-center justify-center`}>
               <span className="text-white text-sm font-medium">
                 {user?.name?.charAt(0)?.toUpperCase() || 'U'}
               </span>

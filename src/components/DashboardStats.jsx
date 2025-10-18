@@ -35,6 +35,15 @@ const DashboardStats = ({ user, isAdmin = false }) => {
     fetchStats();
   }, []);
 
+  // Get student status text
+  const getStudentStatus = () => {
+    if (user?.admission_status === 'Trial') {
+      const daysLeft = user?.days_left_in_trial || 0;
+      return `Trial (${daysLeft} ${daysLeft === 1 ? 'day' : 'days'})`;
+    }
+    return 'Active';
+  };
+
   const statCards = isAdmin ? [
     {
       title: "Total Courses",
@@ -95,11 +104,11 @@ const DashboardStats = ({ user, isAdmin = false }) => {
     },
     {
       title: "Student Profile",
-      value: "Active",
+      value: getStudentStatus(),
       icon: MdPerson,
-      color: "bg-indigo-500",
-      bgColor: "bg-indigo-50",
-      textColor: "text-indigo-700"
+      color: user?.admission_status === 'Trial' ? "bg-amber-500" : "bg-indigo-500",
+      bgColor: user?.admission_status === 'Trial' ? "bg-amber-50" : "bg-indigo-50",
+      textColor: user?.admission_status === 'Trial' ? "text-amber-700" : "text-indigo-700"
     }
   ];
 

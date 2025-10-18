@@ -10,12 +10,18 @@ import { useAppSelector } from '../../store/hooks';
 import { selectUser } from '../../store/slices/authSlice';
 
 // Helper function to get display role from roles array
-const getDisplayRole = (roles) => {
+const getDisplayRole = (roles, admissionStatus) => {
   if (!roles || !Array.isArray(roles)) return 'Student';
   
   if (roles.includes('administrator')) return 'Administrator';
   if (roles.includes('instructor')) return 'Instructor';
-  if (roles.includes('student')) return 'Student';
+  if (roles.includes('student')) {
+    // Show Trial status for trial students
+    if (admissionStatus === 'Trial') {
+      return 'Student (Trial)';
+    }
+    return 'Student';
+  }
   
   return 'Student'; // Default fallback
 };
@@ -97,7 +103,7 @@ const Sidebar = () => {
       {/* User info at bottom */}
       <div className="p-4 border-t border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-[#0D7C66] rounded-full flex items-center justify-center">
+          <div className={`w-10 h-10 ${user?.admission_status === 'Trial' ? 'bg-amber-500' : 'bg-[#0D7C66]'} rounded-full flex items-center justify-center`}>
             <span className="text-white text-sm font-medium">
               {user?.name?.charAt(0)?.toUpperCase() || 'U'}
             </span>
@@ -106,8 +112,8 @@ const Sidebar = () => {
             <p className="text-sm font-medium text-white truncate">
               {user?.name || 'User'}
             </p>
-            <p className="text-xs text-slate-400 truncate">
-              {getDisplayRole(user?.roles)}
+            <p className={`text-xs truncate ${user?.admission_status === 'Trial' ? 'text-amber-400 font-medium' : 'text-slate-400'}`}>
+              {getDisplayRole(user?.roles, user?.admission_status)}
             </p>
           </div>
         </div>

@@ -130,7 +130,7 @@ io.on('connection', (socket) => {
 
   // Join a lecture chat room
   socket.on('join-lecture-chat', async (data) => {
-    const { lectureId, userName, userRole } = data;
+    const { lectureId, userName, userRole, admissionStatus } = data;
     const roomName = `lecture-${lectureId}`;
     
     // Join the room
@@ -138,8 +138,9 @@ io.on('connection', (socket) => {
     socket.lectureId = lectureId;
     socket.userName = userName;
     socket.userRole = userRole;
+    socket.admissionStatus = admissionStatus || 'Granted';
     
-    console.log(`${userName} (${userRole}) joined chat for lecture ${lectureId}`);
+    console.log(`${userName} (${userRole}, ${socket.admissionStatus}) joined chat for lecture ${lectureId}`);
     
     // Check if this is an active lecture session
     try {
@@ -201,6 +202,7 @@ io.on('connection', (socket) => {
       message: message.trim(),
       userName: socket.userName,
       userRole: socket.userRole,
+      admissionStatus: socket.admissionStatus || 'Granted',
       timestamp: new Date().toISOString(),
       type: 'message'
     };

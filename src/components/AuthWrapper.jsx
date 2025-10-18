@@ -70,15 +70,15 @@ const AuthWrapper = ({ children }) => {
   }
 
   // MAIN AUTH PROTECTION: Student with no granted admission - cannot access site
-  // Check for students specifically and ensure they have granted admission
+  // Check for students specifically and ensure they have granted or trial admission
   if (isStudent) {
-    if (!hasGrantedAdmission || user?.admission_status !== 'Granted') {
+    if (!hasGrantedAdmission || (user?.admission_status !== 'Granted' && user?.admission_status !== 'Trial')) {
       return <StudentPendingView />;
     }
   }
 
-  // Additional safety check: if user has student role but no granted admission
-  if (user?.roles?.includes('student') && user?.admission_status !== 'Granted') {
+  // Additional safety check: if user has student role but no granted/trial admission
+  if (user?.roles?.includes('student') && user?.admission_status !== 'Granted' && user?.admission_status !== 'Trial') {
     return <StudentPendingView />;
   }
 
