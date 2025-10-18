@@ -462,13 +462,26 @@ const readMiscData = () => {
     console.error('Error reading miscellaneous data:', err);
     return { 
       dashboardVideo: {
-        title: "Welcome to Learn-Live Platform",
-        description: "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
-        videoUrl: "https://youtu.be/jfKfPfyJRdk",
-        videoType: "youtube",
-        isActive: true,
-        updatedAt: new Date().toISOString(),
-        updatedBy: "System"
+        desktop: {
+          title: "Welcome to Learn-Live Platform",
+          description: "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
+          videoUrl: "https://youtu.be/jfKfPfyJRdk",
+          videoType: "youtube",
+          customThumbnail: "",
+          isActive: true,
+          updatedAt: new Date().toISOString(),
+          updatedBy: "System"
+        },
+        mobile: {
+          title: "Welcome to Learn-Live Platform",
+          description: "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
+          videoUrl: "https://youtu.be/jfKfPfyJRdk",
+          videoType: "youtube",
+          customThumbnail: "",
+          isActive: true,
+          updatedAt: new Date().toISOString(),
+          updatedBy: "System"
+        }
       }
     };
   }
@@ -1467,38 +1480,69 @@ app.delete('/api/groups/:id', (req, res) => {
   }
 });
 
-// GET dashboard videos
-app.get('/api/dashboard-videos', (req, res) => {
+// GET dashboard videos by device type
+app.get('/api/dashboard-videos/:deviceType', (req, res) => {
   try {
+    const { deviceType } = req.params;
     const miscData = readMiscData();
-    res.json(miscData.dashboardVideo);
+    
+    // Validate device type
+    if (deviceType !== 'desktop' && deviceType !== 'mobile') {
+      return res.status(400).json({ message: 'Invalid device type. Must be "desktop" or "mobile"' });
+    }
+    
+    // Return device-specific video or fallback
+    const videoData = miscData.dashboardVideo?.[deviceType];
+    if (videoData) {
+      res.json(videoData);
+    } else {
+      // Fallback to default if not found
+      res.json({
+        title: "Welcome to Learn-Live Platform",
+        description: "Get started with your learning journey.",
+        videoUrl: "https://youtu.be/jfKfPfyJRdk",
+        videoType: "youtube",
+        isActive: true
+      });
+    }
   } catch (error) {
     console.error('Error getting dashboard videos:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// UPDATE dashboard video (admin only)
-app.put('/api/dashboard-videos', (req, res) => {
+// UPDATE dashboard video by device type (admin only)
+app.put('/api/dashboard-videos/:deviceType', (req, res) => {
   try {
+    const { deviceType } = req.params;
     const { title, description, videoUrl, videoType, customThumbnail, isActive, updatedBy } = req.body;
+    
+    // Validate device type
+    if (deviceType !== 'desktop' && deviceType !== 'mobile') {
+      return res.status(400).json({ message: 'Invalid device type. Must be "desktop" or "mobile"' });
+    }
     
     const miscData = readMiscData();
     
-    // Update the video configuration
-    miscData.dashboardVideo = {
+    // Initialize dashboardVideo object if it doesn't exist
+    if (!miscData.dashboardVideo) {
+      miscData.dashboardVideo = {};
+    }
+    
+    // Update the device-specific video configuration
+    miscData.dashboardVideo[deviceType] = {
       title,
       description,
       videoUrl,
       videoType, // 'youtube', 'embed', or 'direct'
-      customThumbnail: customThumbnail || null, // Add custom thumbnail support
+      customThumbnail: customThumbnail || '', // Add custom thumbnail support
       isActive,
       updatedAt: new Date().toISOString(),
       updatedBy
     };
     
     if (writeMiscData(miscData)) {
-      res.json(miscData.dashboardVideo);
+      res.json(miscData.dashboardVideo[deviceType]);
     } else {
       res.status(500).json({ message: 'Failed to update video configuration' });
     }

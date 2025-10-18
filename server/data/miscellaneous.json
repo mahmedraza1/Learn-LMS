@@ -1,12 +1,25 @@
 {
   "dashboardVideo": {
-    "title": "Welcome to Learn-Live Platform",
-    "description": "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
-    "videoUrl": "https://learn.pk/wp-content/uploads/2025/06/Learn-The-Future-of-Pakistan.mp4",
-    "videoType": "direct",
-    "isActive": true,
-    "updatedAt": "2025-09-30T11:53:02.722Z",
-    "updatedBy": "Learn.pk"
+    "desktop": {
+      "title": "Welcome to Learn-Live Platform",
+      "description": "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
+      "videoUrl": "https://learn.pk/wp-content/uploads/2025/06/Learn-The-Future-of-Pakistan.mp4",
+      "videoType": "direct",
+      "customThumbnail": "",
+      "isActive": true,
+      "updatedAt": "2025-09-30T11:53:02.722Z",
+      "updatedBy": "Learn.pk"
+    },
+    "mobile": {
+      "title": "Welcome to Learn-Live Platform",
+      "description": "Get started with your learning journey. This introduction video will help you navigate the platform and make the most of your courses.",
+      "videoUrl": "https://learn.pk/wp-content/uploads/2025/06/Learn-The-Future-of-Pakistan.mp4",
+      "videoType": "direct",
+      "customThumbnail": "",
+      "isActive": true,
+      "updatedAt": "2025-09-30T11:53:02.722Z",
+      "updatedBy": "Learn.pk"
+    }
   },
   "dashboardAnnouncement": {
     "title": "Welcome To Learn.pk",

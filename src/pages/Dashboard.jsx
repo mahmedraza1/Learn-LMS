@@ -15,6 +15,7 @@ const Dashboard = () => {
   const user = useAppSelector(selectUser);
   const isAdmin = useAppSelector(selectIsAdmin);
   const [videoManagementOpen, setVideoManagementOpen] = useState(false);
+  const [videoDeviceType, setVideoDeviceType] = useState('desktop'); // 'desktop' or 'mobile'
   const [dashboardAnnouncement, setDashboardAnnouncement] = useState(null);
   const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -648,10 +649,22 @@ const Dashboard = () => {
                     Live Lectures
                   </a>
                   <button 
-                    onClick={() => setVideoManagementOpen(true)}
+                    onClick={() => {
+                      setVideoDeviceType('desktop');
+                      setVideoManagementOpen(true);
+                    }}
                     className="block w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base"
                   >
-                    Manage Videos
+                    Manage Desktop Video
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setVideoDeviceType('mobile');
+                      setVideoManagementOpen(true);
+                    }}
+                    className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 sm:px-4 rounded-lg text-center transition-colors text-sm sm:text-base"
+                  >
+                    Manage Mobile Video
                   </button>
                 </>
               ) : (
@@ -763,6 +776,7 @@ const Dashboard = () => {
           isOpen={videoManagementOpen} 
           onClose={() => setVideoManagementOpen(false)}
           user={user}
+          deviceType={videoDeviceType}
         />
       )}
     </div>

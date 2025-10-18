@@ -13,7 +13,7 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-const VideoManagementForm = ({ isOpen, onClose, user }) => {
+const VideoManagementForm = ({ isOpen, onClose, user, deviceType = 'desktop' }) => {
   const [loading, setLoading] = useState(false);
   const [videoData, setVideoData] = useState(null);
   
@@ -25,11 +25,11 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
     if (isOpen) {
       fetchVideoData();
     }
-  }, [isOpen]);
+  }, [isOpen, deviceType]);
   
   const fetchVideoData = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/dashboard-videos`);
+      const response = await fetch(`${API_BASE_URL}/dashboard-videos/${deviceType}`);
       const data = await response.json();
       setVideoData(data);
       
@@ -76,10 +76,11 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
       const payload = {
         ...data,
         videoUrl: processedVideoUrl,
-        updatedBy: 'Learn.pk'
+        updatedBy: 'Learn.pk',
+        deviceType: deviceType
       };
       
-      const response = await fetch(`${API_BASE_URL}/dashboard-videos`, {
+      const response = await fetch(`${API_BASE_URL}/dashboard-videos/${deviceType}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
       });
       
       if (response.ok) {
-        toast.success('Dashboard video updated successfully');
+        toast.success(`Dashboard ${deviceType} video updated successfully`);
         fetchVideoData(); // Refresh data
       } else {
         const errorData = await response.json();
@@ -110,7 +111,9 @@ const VideoManagementForm = ({ isOpen, onClose, user }) => {
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <MdVideoLibrary className="w-5 h-5 text-emerald-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Manage Dashboard Video</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Manage {deviceType === 'desktop' ? 'Desktop' : 'Mobile'} Video
+            </h2>
           </div>
           <button
             onClick={onClose}

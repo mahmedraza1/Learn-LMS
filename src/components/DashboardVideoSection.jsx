@@ -18,14 +18,29 @@ const DashboardVideoSection = ({ isAdmin = false }) => {
   const [loading, setLoading] = useState(true);
   const [showThumbnailEdit, setShowThumbnailEdit] = useState(false);
   const [customThumbnail, setCustomThumbnail] = useState('');
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  
+  useEffect(() => {
+    // Detect if device is mobile
+    const checkDevice = () => {
+      const isMobile = window.innerWidth < 1024; // lg breakpoint
+      setIsMobileDevice(isMobile);
+    };
+    
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
   
   useEffect(() => {
     fetchVideoConfig();
-  }, [isAdmin]);
+  }, [isAdmin, isMobileDevice]);
   
   const fetchVideoConfig = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/dashboard-videos`);
+      const deviceType = isMobileDevice ? 'mobile' : 'desktop';
+      const response = await fetch(`${API_BASE_URL}/dashboard-videos/${deviceType}`);
       const data = await response.json();
       
       if (data && data.isActive) {
