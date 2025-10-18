@@ -43,6 +43,13 @@
   }
 }
 
+/* Hide mobile navigation when video modal is active */
+@media (max-width: 1023px) {
+  body.video-modal-active .mobile-navigation {
+    display: none !important;
+  }
+}
+
 /* Button styles using direct classes instead of @apply */
 .btn-primary {
   background-color: #0d7c66;
