@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, useBatch } from '../../hooks/reduxHooks';
+import { useAppSelector } from '../../store/hooks';
+import { selectIsUpcomingBatchStudent } from '../../store/slices/authSlice';
 import LectureCard from '../LectureCard';
 import VideoModal from '../VideoModal';
 import LiveChat from '../LiveChat';
@@ -33,11 +35,67 @@ const LiveLectures = ({ course }) => {
   // Call hooks with fallback values
   const authData = useAuth() || { user: null, isAdmin: false };
   const batchData = useBatch() || { selectedBatch: 'Batch A' };
+  const isUpcomingBatchStudent = useAppSelector(selectIsUpcomingBatchStudent);
 
   // Safely destructure with defaults
   const user = authData?.user || null;
   const isAdmin = authData?.isAdmin || false;
   const selectedBatch = batchData?.selectedBatch || 'Batch A';
+
+  // If upcoming batch student, show restriction message
+  if (isUpcomingBatchStudent) {
+    return (
+      <div className="p-4 sm:p-6">
+        <div className="max-w-2xl mx-auto">
+          <div className="rounded-lg bg-blue-50 border-2 border-blue-200 p-6 sm:p-8 text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 mb-4">
+              <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 className="mb-3 text-2xl font-bold text-blue-900">Live Lectures Coming Soon!</h2>
+            <p className="text-lg text-blue-800 mb-4">
+              You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>
+            </p>
+            <p className="text-blue-700 mb-6">
+              Live lecture access will be available when your batch starts. In the meantime, you can:
+            </p>
+            <div className="bg-white rounded-lg p-6 text-left mb-6">
+              <ul className="space-y-3 text-blue-900">
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>📹 Watch recorded lectures from previous batches</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>📚 Access course notes and study materials</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>❓ Review FAQs for this course</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>📖 Read course overview and announcements</span>
+                </li>
+              </ul>
+            </div>
+            <p className="text-sm text-blue-600">
+              💡 Check the other tabs above to access available resources!
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Determine which course IDs to fetch based on user role and batch
   const getCourseIds = () => {

@@ -44,6 +44,22 @@ const DashboardStats = ({ user, isAdmin = false }) => {
     return 'Active';
   };
 
+  // Get batch display name
+  const getBatchDisplayName = () => {
+    // If student has upcoming batch, show it instead of "Unassigned"
+    if (user?.upcoming_batch && user.upcoming_batch !== 'Unassigned') {
+      if (user.upcoming_batch.includes('A')) {
+        return 'A (Upcoming)';
+      } else if (user.upcoming_batch.includes('B')) {
+        return 'B (Upcoming)';
+      }
+      return `${user.upcoming_batch} (Upcoming)`;
+    }
+    
+    // Otherwise show regular batch
+    return user?.batch || "Not Assigned";
+  };
+
   const statCards = isAdmin ? [
     {
       title: "Total Courses",
@@ -80,11 +96,11 @@ const DashboardStats = ({ user, isAdmin = false }) => {
   ] : [
     {
       title: "My Batch",
-      value: user.batch || "Not Assigned",
+      value: getBatchDisplayName(),
       icon: MdGroup,
-      color: "bg-[#0D7C66]",
-      bgColor: "bg-emerald-50",
-      textColor: "text-emerald-700"
+      color: user?.upcoming_batch && user.upcoming_batch !== 'Unassigned' ? "bg-blue-500" : "bg-[#0D7C66]",
+      bgColor: user?.upcoming_batch && user.upcoming_batch !== 'Unassigned' ? "bg-blue-50" : "bg-emerald-50",
+      textColor: user?.upcoming_batch && user.upcoming_batch !== 'Unassigned' ? "text-blue-700" : "text-emerald-700"
     },
     {
       title: "Live Classes",

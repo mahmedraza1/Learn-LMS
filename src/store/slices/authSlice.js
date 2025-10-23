@@ -85,5 +85,31 @@ export const selectHasGrantedAdmission = (state) => {
   return user && (user.admission_status === 'Granted' || user.admission_status === 'Trial');
 };
 
+// Selector to check if user is an upcoming batch student
+export const selectIsUpcomingBatchStudent = (state) => {
+  const user = state.auth.user;
+  return user && 
+         user.roles?.includes('student') && 
+         user.upcoming_batch && 
+         user.upcoming_batch !== 'Unassigned' &&
+         (user.admission_status === 'Granted' || user.admission_status === 'Trial');
+};
+
+// Selector to check if user can access live lectures
+export const selectCanAccessLiveLectures = (state) => {
+  const user = state.auth.user;
+  const isAdmin = user?.roles?.includes('administrator') || user?.roles?.includes('instructor');
+  const isUpcomingStudent = selectIsUpcomingBatchStudent(state);
+  
+  // Admins can always access, upcoming batch students cannot
+  return isAdmin || !isUpcomingStudent;
+};
+
+// Selector for fee status
+export const selectFeeStatus = (state) => {
+  const user = state.auth.user;
+  return user?.fee_status || 'Unknown';
+};
+
 export const { clearAuth, clearError, updateUserBatch } = authSlice.actions;
 export default authSlice.reducer;

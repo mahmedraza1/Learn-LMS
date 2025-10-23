@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { selectCourses, fetchCourses } from '../store/slices/coursesSlice';
+import { selectIsUpcomingBatchStudent } from '../store/slices/authSlice';
 import { MdPeople, MdSchedule, MdStar, MdGroup } from 'react-icons/md';
 
 // Tab Components
@@ -17,6 +18,7 @@ const CourseDetail = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const courses = useAppSelector(selectCourses);
+  const isUpcomingBatchStudent = useAppSelector(selectIsUpcomingBatchStudent);
   
   const [activeTab, setActiveTab] = useState('overview');
   

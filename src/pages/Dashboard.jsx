@@ -4,7 +4,7 @@ import { FaBullhorn, FaEdit, FaTrash, FaDownload, FaUpload, FaDatabase } from 'r
 import { MdClose, MdAdd } from 'react-icons/md';
 import parse from 'html-react-parser';
 import { useAppSelector } from "../store/hooks";
-import { selectUser, selectIsAdmin } from "../store/slices/authSlice";
+import { selectUser, selectIsAdmin, selectFeeStatus, selectIsUpcomingBatchStudent } from "../store/slices/authSlice";
 import DashboardStats from '../components/DashboardStats';
 import DashboardVideoSection from '../components/DashboardVideoSection';
 import VideoManagementForm from '../components/VideoManagementForm';
@@ -14,6 +14,8 @@ import toast from 'react-hot-toast';
 const Dashboard = () => {
   const user = useAppSelector(selectUser);
   const isAdmin = useAppSelector(selectIsAdmin);
+  const feeStatus = useAppSelector(selectFeeStatus);
+  const isUpcomingBatchStudent = useAppSelector(selectIsUpcomingBatchStudent);
   const [videoManagementOpen, setVideoManagementOpen] = useState(false);
   const [videoDeviceType, setVideoDeviceType] = useState('desktop'); // 'desktop' or 'mobile'
   const [dashboardAnnouncement, setDashboardAnnouncement] = useState(null);
@@ -355,10 +357,17 @@ const Dashboard = () => {
                 {greeting}, {user?.name || 'User'}! {emoji}
               </p>
             </div>
-            {!isAdmin && user?.batch && (
+            {!isAdmin && !isUpcomingBatchStudent && user?.batch && user.batch !== "Unassigned" && (
               <div className="flex-shrink-0">
                 <span className="inline-flex items-center rounded-full bg-emerald-100 px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium text-emerald-800">
                   {user.batch}
+                </span>
+              </div>
+            )}
+            {!isAdmin && isUpcomingBatchStudent && (
+              <div className="flex-shrink-0">
+                <span className="inline-flex items-center rounded-full bg-blue-100 px-3 sm:px-4 py-1 sm:py-2 text-sm font-medium text-blue-800">
+                  {user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch} (Upcoming)
                 </span>
               </div>
             )}
@@ -492,6 +501,66 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {/* Upcoming Batch Student Notice */}
+        {!isAdmin && isUpcomingBatchStudent && (
+          <div className="mb-6 rounded-lg bg-blue-50 border-2 border-blue-200 p-4 sm:p-6">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0">
+                <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                  Welcome to Learn LMS - Upcoming Batch Student
+                </h3>
+                <p className="text-blue-800 mb-3">
+                  You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>. 
+                  You can access recorded lectures, notes, and course materials, but live lectures will be available once your batch starts.
+                </p>
+                <div className="bg-blue-100 rounded-md p-3 mt-3">
+                  <p className="text-sm font-medium text-blue-900">
+                    📚 For now, study recorded lectures and notes provided in each course.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Fee Status Display for Students */}
+        {!isAdmin && feeStatus && (
+          <div className="mb-6 rounded-lg bg-white border border-gray-200 shadow-sm p-4 sm:p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium text-gray-700">Fee Status</h3>
+                <p className={`mt-1 text-lg font-semibold ${
+                  feeStatus === 'Paid' ? 'text-green-600' : 
+                  feeStatus === 'Pending' ? 'text-yellow-600' : 
+                  'text-red-600'
+                }`}>
+                  {feeStatus}
+                </p>
+              </div>
+              <div className={`rounded-full p-3 ${
+                feeStatus === 'Paid' ? 'bg-green-100' : 
+                feeStatus === 'Pending' ? 'bg-yellow-100' : 
+                'bg-red-100'
+              }`}>
+                {feeStatus === 'Paid' ? (
+                  <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Dashboard Statistics */}
         <DashboardStats user={user} isAdmin={isAdmin} />
         

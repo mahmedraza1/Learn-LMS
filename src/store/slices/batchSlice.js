@@ -29,6 +29,16 @@ export const initializeBatchData = createAsyncThunk(
           needsUserBatchUpdate = true;
           newUserBatch = formattedBatch;
         }
+      } else if (!isAdmin && user.upcoming_batch && user.upcoming_batch !== "Unassigned") {
+        // For upcoming batch students, use their upcoming batch
+        // Format: "A_upcoming" -> "Batch A", "B_upcoming" -> "Batch B"
+        if (user.upcoming_batch.includes("A")) {
+          selectedBatch = "Batch A";
+        } else if (user.upcoming_batch.includes("B")) {
+          selectedBatch = "Batch B";
+        } else {
+          selectedBatch = user.upcoming_batch.replace("_upcoming", "");
+        }
       } else if (isAdmin) {
         // For admins, select the first batch by default
         selectedBatch = availableBatches[0];

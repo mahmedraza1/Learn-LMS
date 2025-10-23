@@ -1,6 +1,8 @@
 import React from "react";
 import { useLecture } from "../hooks/reduxHooks";
-import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck, FaCalendarAlt, FaClock as FaClockCircle, FaStop } from "react-icons/fa";
+import { useAppSelector } from "../store/hooks";
+import { selectCanAccessLiveLectures, selectIsUpcomingBatchStudent } from "../store/slices/authSlice";
+import { FaYoutube, FaEdit, FaTrash, FaClock, FaPlay, FaCheck, FaCalendarAlt, FaClock as FaClockCircle, FaStop, FaLock } from "react-icons/fa";
 
 const LectureCard = ({ 
   lecture, 
@@ -15,6 +17,8 @@ const LectureCard = ({
   scheduleDate
 }) => {
   const { isToday } = useLecture();
+  const canAccessLiveLectures = useAppSelector(selectCanAccessLiveLectures);
+  const isUpcomingBatchStudent = useAppSelector(selectIsUpcomingBatchStudent);
   const isLectureToday = isToday(scheduleDate);
   
   // Format date to display in card
@@ -326,7 +330,7 @@ const LectureCard = ({
             </div>
           ) : (
             <div className="flex w-full justify-center">
-              {isCurrentlyLive ? (
+              {isCurrentlyLive && canAccessLiveLectures ? (
                 <button
                   onClick={() => onAttend(lecture)}
                   className="flex items-center justify-center rounded-md px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg cursor-pointer animate-pulse"
@@ -335,6 +339,19 @@ const LectureCard = ({
                   <span className="hidden sm:inline">Join Live Lecture</span>
                   <span className="sm:hidden">Join Live</span>
                 </button>
+              ) : isCurrentlyLive && !canAccessLiveLectures ? (
+                <div className="flex flex-col items-center w-full">
+                  <button
+                    disabled
+                    className="flex items-center justify-center rounded-md px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium cursor-not-allowed bg-gray-100 text-gray-400 w-full"
+                  >
+                    <FaLock className="mr-1 sm:mr-2 text-xs sm:text-sm" />
+                    <span>Live Class Locked</span>
+                  </button>
+                  <p className="mt-2 text-xs text-center text-gray-600">
+                    Available when your batch starts
+                  </p>
+                </div>
               ) : (
                 <button
                   onClick={() => onAttend(lecture)}
