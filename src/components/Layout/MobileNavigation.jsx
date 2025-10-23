@@ -4,12 +4,16 @@ import {
   MdDashboard, 
   MdBook, 
   MdVideocam, 
-  MdGroup 
+  MdGroup,
+  MdReceipt
 } from 'react-icons/md';
+import { useAppSelector } from '../../store/hooks';
+import { selectIsAdmin } from '../../store/slices/authSlice';
 
 const MobileNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isAdmin = useAppSelector(selectIsAdmin);
 
   const navigationItems = [
     {
@@ -31,7 +35,13 @@ const MobileNavigation = () => {
       name: 'Groups',
       path: '/groups',
       icon: <MdGroup className="w-6 h-6" />
-    }
+    },
+    // Only show Fee Proofs for students
+    ...(!isAdmin ? [{
+      name: 'Fee',
+      path: '/fee-proofs',
+      icon: <MdReceipt className="w-6 h-6" />
+    }] : [])
   ];
 
   const isActivePath = (path) => {
