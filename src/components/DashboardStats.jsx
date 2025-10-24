@@ -62,8 +62,33 @@ const DashboardStats = ({ user, isAdmin = false }) => {
 
   // Get fee status display
   const getFeeStatus = () => {
-    return user?.fee_status || "Unknown";
+    const status = user?.fee_status || "Unknown";
+    // If status is "Pending Renewal", show only "Renewal"
+    if (status === "Pending Renewal") {
+      return "Renewal";
+    }
+    return status;
   };
+
+  // Get fee status colors
+  const getFeeStatusColors = () => {
+    const status = user?.fee_status || "Unknown";
+    if (status === "Pending Renewal") {
+      return {
+        color: "bg-green-500",
+        bgColor: "bg-green-50",
+        textColor: "text-red-700"
+      };
+    }
+    // Default green for other statuses (like "Paid")
+    return {
+      color: "bg-green-500",
+      bgColor: "bg-green-50",
+      textColor: "text-green-700"
+    };
+  };
+
+  const feeStatusColors = getFeeStatusColors();
 
   const statCards = isAdmin ? [
     {
@@ -119,9 +144,9 @@ const DashboardStats = ({ user, isAdmin = false }) => {
       title: "Fee Status",
       value: getFeeStatus(),
       icon: MdSchool,
-      color: "bg-green-500",
-      bgColor: "bg-green-50",
-      textColor: "text-green-700"
+      color: feeStatusColors.color,
+      bgColor: feeStatusColors.bgColor,
+      textColor: feeStatusColors.textColor
     },
     {
       title: "Student Profile",

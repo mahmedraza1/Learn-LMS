@@ -503,18 +503,18 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Upcoming Batch Student Notice */}
         {!isAdmin && isUpcomingBatchStudent && (
-          <div className="mb-6 rounded-lg bg-blue-50 border-2 border-blue-200 p-4 sm:p-6">
+          <div className="mb-6 rounded-lg bg-green-50 border-2 border-green-200 p-4 sm:p-6">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">
+                <h3 className="text-lg font-semibold text-green-900 mb-2">
                   Welcome to Learn LMS - Upcoming Batch Student
                 </h3>
-                <p className="text-blue-800 mb-3">
+                <p className="text-green-800 mb-3">
                   Congratulations! You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>. 
                   You can access Course Material, Recorded Lectures, Notes and Community Groups. <br/><b>Note:</b> Your live lectures will be start from <b>{
                    user.upcoming_batch.includes("A") ? " 1st date of next month" : user.upcoming_batch.includes("B") ? " 15th date of this month" : "the scheduled date"
