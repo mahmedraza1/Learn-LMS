@@ -515,7 +515,7 @@ const Dashboard = () => {
                   Welcome to Learn LMS - Upcoming Batch Student
                 </h3>
                 <p className="text-blue-800 mb-3">
-                  You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>. 
+                  Congratulations! You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>. 
                   You can access Course Material, Recorded Lectures, Notes and Community Groups. <br/><b>Note:</b> Your live lectures will be start from <b>{
                    user.upcoming_batch.includes("A") ? " 1st date of next month" : user.upcoming_batch.includes("B") ? " 15th date of this month" : "the scheduled date"
                   }</b>.
@@ -525,75 +525,6 @@ const Dashboard = () => {
                     📚 For now, access Courses and Groups.
                   </p>
                 </div> */}
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Payment Status Card for Students */}
-        {!isAdmin && feeStatus && (
-          <div className={`mb-6 rounded-lg border-2 p-4 sm:p-6 ${
-            feeStatus === 'Paid' ? 'bg-green-50 border-green-200' : 
-            feeStatus === 'Pending' ? 'bg-yellow-50 border-yellow-200' : 
-            'bg-red-50 border-red-200'
-          }`}>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className={`flex-shrink-0 ${
-                  feeStatus === 'Paid' ? 'text-green-600' : 
-                  feeStatus === 'Pending' ? 'text-yellow-600' : 
-                  'text-red-600'
-                }`}>
-                  {feeStatus === 'Paid' ? (
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  ) : feeStatus === 'Pending' ? (
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  ) : (
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )}
-                </div>
-                <div>
-                  <h2 className="text-base sm:text-lg font-semibold text-gray-900">Payment Status</h2>
-                  <p className={`text-xl sm:text-2xl font-bold mt-1 ${
-                    feeStatus === 'Paid' ? 'text-green-600' : 
-                    feeStatus === 'Pending' ? 'text-yellow-600' : 
-                    'text-red-600'
-                  }`}>
-                    {feeStatus}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 text-sm">
-                <div className="flex items-center gap-2 text-gray-700">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>Admission Status: <strong>{user?.admission_status || 'Unknown'}</strong></span>
-                </div>
-                {user?.upcoming_batch && user.upcoming_batch !== 'Unassigned' && (
-                  <div className="flex items-center gap-2 text-gray-700">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span>Upcoming Batch: <strong>
-                      {user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}
-                    </strong></span>
-                  </div>
-                )}
-                {user?.batch && user.batch !== 'Unassigned' && (
-                  <div className="flex items-center gap-2 text-gray-700">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span>Batch: <strong>{user.batch}</strong></span>
-                  </div>
-                )}
               </div>
             </div>
           </div>

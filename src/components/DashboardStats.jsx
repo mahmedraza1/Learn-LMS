@@ -60,6 +60,11 @@ const DashboardStats = ({ user, isAdmin = false }) => {
     return user?.batch || "Not Assigned";
   };
 
+  // Get fee status display
+  const getFeeStatus = () => {
+    return user?.fee_status || "Unknown";
+  };
+
   const statCards = isAdmin ? [
     {
       title: "Total Courses",
@@ -111,12 +116,12 @@ const DashboardStats = ({ user, isAdmin = false }) => {
       textColor: "text-red-700"
     },
     {
-      title: "Available Courses",
-      value: stats.totalCourses,
+      title: "Fee Status",
+      value: getFeeStatus(),
       icon: MdSchool,
-      color: "bg-blue-500",
-      bgColor: "bg-blue-50",
-      textColor: "text-blue-700"
+      color: "bg-green-500",
+      bgColor: "bg-green-50",
+      textColor: "text-green-700"
     },
     {
       title: "Student Profile",

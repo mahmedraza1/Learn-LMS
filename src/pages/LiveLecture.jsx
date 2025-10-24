@@ -27,14 +27,14 @@ const LiveLecture = () => {
               </svg>
             </div>
             <h2 className="mb-3 text-2xl font-bold text-blue-900">Live Lectures Coming Soon!</h2>
-            <p className="text-lg text-blue-800 mb-4">
+            {/* <p className="text-lg text-blue-800 mb-4">
               You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>
-            </p>
+            </p> */}
             <p className="text-blue-700 mb-6">
-              Live lecture access will be available when your batch starts
-               by <b>{
+              Your live lectures will be start from <b>{
                    user.upcoming_batch.includes("A") ? " 1st date of next month" : user.upcoming_batch.includes("B") ? " 15th date of this month" : "the scheduled date"
-                  }</b>. In the meantime, you can:
+                  }</b>.<br/>
+               In the meantime, you can:
             </p>
             <div className="bg-white rounded-lg p-6 text-left mb-6">
               <ul className="space-y-3 text-blue-900">
