@@ -58,7 +58,9 @@ const LiveLectures = ({ course }) => {
               You are enrolled in <strong>{user.upcoming_batch?.includes("A") ? "Batch A" : user.upcoming_batch?.includes("B") ? "Batch B" : user.upcoming_batch}</strong>
             </p>
             <p className="text-blue-700 mb-6">
-              Live lecture access will be available when your batch starts. In the meantime, you can:
+              Live lecture access will be available when your batch starts  by <b>{
+                   user.upcoming_batch.includes("A") ? " 1st date of next month" : user.upcoming_batch.includes("B") ? " 15th date of this month" : "the scheduled date"
+                  }</b>. In the meantime, you can:
             </p>
             <div className="bg-white rounded-lg p-6 text-left mb-6">
               <ul className="space-y-3 text-blue-900">
@@ -66,7 +68,13 @@ const LiveLectures = ({ course }) => {
                   <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span>📹 Watch recorded lectures from previous batches</span>
+                  <span>📹 Watch recorded lectures</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>👥 Join Your Community Groups</span>
                 </li>
                 <li className="flex items-start">
                   <svg className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

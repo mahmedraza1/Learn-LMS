@@ -4,11 +4,10 @@ import {
   MdDashboard, 
   MdBook, 
   MdVideocam, 
-  MdGroup,
-  MdReceipt
+  MdGroup
 } from 'react-icons/md';
 import { useAppSelector } from '../../store/hooks';
-import { selectUser, selectIsAdmin } from '../../store/slices/authSlice';
+import { selectUser } from '../../store/slices/authSlice';
 
 // Helper function to get display role from roles array
 const getDisplayRole = (roles, admissionStatus) => {
@@ -31,7 +30,6 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useAppSelector(selectUser);
-  const isAdmin = useAppSelector(selectIsAdmin);
 
   const navigationItems = [
     {
@@ -53,13 +51,7 @@ const Sidebar = () => {
       name: 'Groups',
       path: '/groups',
       icon: <MdGroup className="w-5 h-5" />
-    },
-    // Only show Fee Proofs for students
-    ...(!isAdmin ? [{
-      name: 'Fee Proofs',
-      path: '/fee-proofs',
-      icon: <MdReceipt className="w-5 h-5" />
-    }] : [])
+    }
   ];
 
   const isActivePath = (path) => {

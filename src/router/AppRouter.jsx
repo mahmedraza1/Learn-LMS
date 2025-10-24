@@ -7,7 +7,6 @@ import Courses from '../pages/Courses';
 import CourseDetail from '../pages/CourseDetail';
 import LiveLecture from '../pages/LiveLecture';
 import Groups from '../pages/Groups';
-import FeeProofs from '../pages/FeeProofs';
 
 const AppRouter = () => {
   return (
@@ -21,7 +20,6 @@ const AppRouter = () => {
             <Route path="courses/:courseId" element={<CourseDetail />} />
             <Route path="live-lecture" element={<LiveLecture />} />
             <Route path="groups" element={<Groups />} />
-            <Route path="fee-proofs" element={<FeeProofs />} />
           </Route>
           {/* Catch all route */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
