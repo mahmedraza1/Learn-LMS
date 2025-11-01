@@ -24,17 +24,14 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
   useEffect(() => {
     // Only connect if we have required props and are not already connected to this lecture
     if (!lectureId || !isLive || !user) {
-      console.log('LiveChat: Missing required props', { lectureId, isLive, user: !!user });
       return;
     }
 
     // Prevent reconnecting to the same lecture
     if (socket && socket.connected && socket.lectureId === lectureId) {
-      console.log('LiveChat: Already connected to lecture', lectureId);
       return;
     }
 
-    console.log('LiveChat: Initializing connection for lecture', lectureId);
 
     // Clean up existing connection if any
     if (socket) {
@@ -60,7 +57,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
 
     // Connection event handlers
     socketInstance.on('connect', () => {
-      console.log('Connected to chat server for lecture:', lectureId);
+      
       setIsConnected(true);
       
       // Join the lecture chat room
@@ -73,7 +70,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
     });
 
     socketInstance.on('disconnect', () => {
-      console.log('Disconnected from chat server for lecture:', lectureId);
+      
       setIsConnected(false);
     });
 
@@ -83,42 +80,42 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
 
     // Chat event handlers
     socketInstance.on('chat-history', (history) => {
-      console.log('Received chat history:', history.length, 'messages');
+      
       setMessages(history || []);
     });
 
     socketInstance.on('new-message', (message) => {
-      console.log('New message received:', message);
+      
       setMessages(prev => [...prev, message]);
     });
 
     socketInstance.on('user-joined', (notification) => {
-      console.log('User joined notification:', notification);
+      
       setMessages(prev => [...prev, notification]);
     });
 
     socketInstance.on('user-left', (notification) => {
-      console.log('User left notification:', notification);
+      
       // Don't show user left messages
       // setMessages(prev => [...prev, notification]);
     });
 
     socketInstance.on('chat-cleared', (notification) => {
-      console.log('Chat cleared:', notification);
+      
       setMessages([notification]);
     });
 
     socketInstance.on('chat-started', (notification) => {
-      console.log('Chat session started:', notification);
+      
       setMessages([notification]);
     });
 
     socketInstance.on('lecture-ended', (notification) => {
-      console.log('Lecture ended notification:', notification);
+      
       setMessages(prev => [...prev, notification]);
       // Auto close chat after 5 seconds
       setTimeout(() => {
-        console.log('Auto-closing chat after lecture end');
+        
         onClose && onClose();
       }, 5000);
     });
@@ -132,7 +129,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
     });
 
     socketInstance.on('user-count-update', (data) => {
-      console.log('User count updated:', data.count);
+      
       setUserCount(data.count);
     });
 
@@ -140,7 +137,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
 
     // Cleanup on unmount or lectureId change
     return () => {
-      console.log('LiveChat: Cleaning up connection for lecture', lectureId);
+      
       socketInstance.disconnect();
       setSocket(null);
       setIsConnected(false);
@@ -219,6 +216,14 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
             </span>
           );
         }
+        // Show fee pending badge for students with Fee Pending admission status
+        if (admissionStatus === 'Fee Pending') {
+          return (
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
+              💳 Fee Pending
+            </span>
+          );
+        }
         return null;
     }
   };
@@ -288,7 +293,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
           messages.map((message, index) => {
             // Debug logging for roles
             if (message.type !== 'system') {
-              console.log('Message role:', message.userRole, 'for user:', message.userName);
+              
             }
             
             return (

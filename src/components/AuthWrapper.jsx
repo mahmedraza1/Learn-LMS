@@ -70,17 +70,23 @@ const AuthWrapper = ({ children }) => {
   }
 
   // MAIN AUTH PROTECTION: Student with no granted admission - cannot access site
-  // Check for students specifically and ensure they have granted or trial admission
+  // Check for students specifically and ensure they have:
+  // - Granted status, OR
+  // - Trial status, OR
+  // - BOTH Fee Pending admission status AND Pending Renewal fee status
   if (isStudent) {
-    if (!hasGrantedAdmission || (user?.admission_status !== 'Granted' && user?.admission_status !== 'Trial')) {
+    const hasValidAdmission = 
+      user?.admission_status === 'Granted' || 
+      user?.admission_status === 'Trial' ||
+      (user?.admission_status === 'Fee Pending' && user?.fee_status === 'Pending Renewal');
+    
+    
+    if (!hasValidAdmission) {
       return <StudentPendingView />;
     }
   }
 
-  // Additional safety check: if user has student role but no granted/trial admission
-  if (user?.roles?.includes('student') && user?.admission_status !== 'Granted' && user?.admission_status !== 'Trial') {
-    return <StudentPendingView />;
-  }
+  // Additional safety check removed - redundant with above check
 
   // For authenticated users with proper access, render children (which will include the Layout)
   return children;

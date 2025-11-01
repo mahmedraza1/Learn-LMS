@@ -81,8 +81,12 @@ export const selectIsGuest = (state) => {
 // New selector for admission status
 export const selectHasGrantedAdmission = (state) => {
   const user = state.auth.user;
-  // Allow both 'Granted' and 'Trial' admission status
-  return user && (user.admission_status === 'Granted' || user.admission_status === 'Trial');
+  // Allow 'Granted', 'Trial', or both 'Fee Pending' admission status AND 'Pending Renewal' fee status
+  return user && (
+    user.admission_status === 'Granted' || 
+    user.admission_status === 'Trial' ||
+    (user.admission_status === 'Fee Pending' && user.fee_status === 'Pending Renewal')
+  );
 };
 
 // Selector to check if user is an upcoming batch student
@@ -92,7 +96,9 @@ export const selectIsUpcomingBatchStudent = (state) => {
          user.roles?.includes('student') && 
          user.upcoming_batch && 
          user.upcoming_batch !== 'Unassigned' &&
-         (user.admission_status === 'Granted' || user.admission_status === 'Trial');
+         (user.admission_status === 'Granted' || 
+          user.admission_status === 'Trial' || 
+          (user.admission_status === 'Fee Pending' && user.fee_status === 'Pending Renewal'));
 };
 
 // Selector to check if user can access live lectures

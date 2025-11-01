@@ -41,6 +41,9 @@ const DashboardStats = ({ user, isAdmin = false }) => {
       const daysLeft = user?.days_left_in_trial || 0;
       return `Trial (${daysLeft} ${daysLeft === 1 ? 'day' : 'days'})`;
     }
+    if (user?.admission_status === 'Fee Pending') {
+      return 'Fee Pending';
+    }
     return 'Active';
   };
 
@@ -152,9 +155,12 @@ const DashboardStats = ({ user, isAdmin = false }) => {
       title: "Student Profile",
       value: getStudentStatus(),
       icon: MdPerson,
-      color: user?.admission_status === 'Trial' ? "bg-amber-500" : "bg-indigo-500",
-      bgColor: user?.admission_status === 'Trial' ? "bg-amber-50" : "bg-indigo-50",
-      textColor: user?.admission_status === 'Trial' ? "text-amber-700" : "text-indigo-700"
+      color: user?.admission_status === 'Trial' ? "bg-amber-500" : 
+             user?.admission_status === 'Fee Pending' ? "bg-yellow-500" : "bg-indigo-500",
+      bgColor: user?.admission_status === 'Trial' ? "bg-amber-50" : 
+               user?.admission_status === 'Fee Pending' ? "bg-yellow-50" : "bg-indigo-50",
+      textColor: user?.admission_status === 'Trial' ? "text-amber-700" : 
+                 user?.admission_status === 'Fee Pending' ? "text-yellow-700" : "text-indigo-700"
     }
   ];
 

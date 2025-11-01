@@ -184,14 +184,14 @@ const LiveLectures = ({ course }) => {
       
       // Check for active live lectures
       const liveLecture = allLectures.find(lecture => lecture.currentlyLive);
-      console.log('Live lecture check:', { liveLecture, activeLiveLecture, user });
+      
       
       if (liveLecture && !activeLiveLecture) {
-        console.log('Setting active live lecture:', liveLecture.title);
+        
         setActiveLiveLecture(liveLecture);
         setShowLiveChat(true); // Auto-show chat when live lecture is detected
       } else if (!liveLecture && activeLiveLecture) {
-        console.log('Clearing active live lecture');
+        
         setActiveLiveLecture(null);
         setShowLiveChat(false);
       }
@@ -227,12 +227,7 @@ const LiveLectures = ({ course }) => {
       const isWithinTimeWindow = timeDifference <= 30 * 60 * 1000; // 30 minutes in milliseconds
       const isLive = lecture.currentlyLive || isWithinTimeWindow;
       
-      console.log('Opening video modal:', {
-        lecture: lecture.title,
-        currentlyLive: lecture.currentlyLive,
-        isWithinTimeWindow,
-        finalIsLive: isLive
-      });
+      
       
       setVideoModal({
         isOpen: true,
@@ -252,7 +247,7 @@ const LiveLectures = ({ course }) => {
   };
 
   const handleStartLecture = async (lecture) => {
-    console.log('🚀 Starting lecture function called:', lecture.title);
+    
     if (!isAdmin) {
       toast.error("Only admins can start lectures");
       return;
@@ -261,7 +256,7 @@ const LiveLectures = ({ course }) => {
     try {
       // FIXED URL: Removed extra /api/ part
       const apiUrl = `${API_BASE_URL}/lectures/${lecture.id}`;
-      console.log('🔥 UPDATED API URL:', apiUrl);
+      
       
       const response = await axios.put(apiUrl, {
         currentlyLive: true,
@@ -298,7 +293,7 @@ const LiveLectures = ({ course }) => {
     try {
       // FIXED URL: Removed extra /api/ part  
       const apiUrl = `${API_BASE_URL}/lectures/${lecture.id}`;
-      console.log('🔥 MARK DELIVERED API URL:', apiUrl);
+      
       
       const response = await axios.put(apiUrl, {
         delivered: !lecture.delivered,

@@ -6,7 +6,7 @@ const VideoModal = ({ isOpen, onClose, videoUrl, lecture = null, isLive = false 
   const [isLandscape, setIsLandscape] = useState(false);
   
   // Debug logging
-  console.log('VideoModal props:', { isOpen, lecture: lecture?.title, isLive });
+  
   
   // Detect landscape orientation on mobile
   useEffect(() => {
@@ -114,13 +114,13 @@ const VideoModal = ({ isOpen, onClose, videoUrl, lecture = null, isLive = false 
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.log('Close button clicked');
+          
           onClose();
         }}
         onTouchStart={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          console.log('Close button touched');
+          
           onClose();
         }}
         onContextMenu={handleContextMenu}

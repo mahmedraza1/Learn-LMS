@@ -32,6 +32,10 @@ const getDisplayRole = (roles, admissionStatus) => {
     if (admissionStatus === 'Trial') {
       return 'Student (Trial)';
     }
+    // Show Fee Pending status
+    if (admissionStatus === 'Fee Pending') {
+      return 'Student (Fee Pending)';
+    }
     return 'Student';
   }
   
@@ -193,11 +197,17 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <div className="text-left hidden lg:block">
               <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
-              <p className={`text-xs ${user?.admission_status === 'Trial' ? 'text-amber-600 font-medium' : 'text-gray-500'}`}>
+              <p className={`text-xs ${
+                user?.admission_status === 'Trial' ? 'text-amber-600 font-medium' : 
+                user?.admission_status === 'Fee Pending' ? 'text-yellow-600 font-medium' : 'text-gray-500'
+              }`}>
                 {getDisplayRole(user?.roles, user?.admission_status)}
               </p>
             </div>
-            <div className={`w-8 h-8 ${user?.admission_status === 'Trial' ? 'bg-amber-500' : 'bg-[#0D7C66]'} rounded-full flex items-center justify-center`}>
+            <div className={`w-8 h-8 ${
+              user?.admission_status === 'Trial' ? 'bg-amber-500' : 
+              user?.admission_status === 'Fee Pending' ? 'bg-yellow-500' : 'bg-[#0D7C66]'
+            } rounded-full flex items-center justify-center`}>
               <span className="text-white text-sm font-medium">
                 {user?.name?.charAt(0)?.toUpperCase() || 'U'}
               </span>
