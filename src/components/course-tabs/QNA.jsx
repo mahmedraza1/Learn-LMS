@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch, FaFilter, FaQuestionCircle } from 'react-icons/fa';
 import { useAuth } from '../../hooks/reduxHooks';
+import { useAppSelector } from '../../store/hooks';
+import { selectIsFeePendingStudent } from '../../store/slices/authSlice';
 import FAQForm from '../FAQForm';
 import FAQCard from '../FAQCard';
+import FeePendingRestriction from '../FeePendingRestriction';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
@@ -19,6 +22,7 @@ const API_BASE_URL = getApiBaseUrl();
 const QNA = ({ course }) => {
   // Call hooks with fallback values (same pattern as other components)
   const authData = useAuth() || { user: null, isAdmin: false };
+  const isFeePendingStudent = useAppSelector(selectIsFeePendingStudent);
 
   // Safely destructure with defaults
   const user = authData?.user || null;
@@ -31,6 +35,11 @@ const QNA = ({ course }) => {
     isOpen: false,
     faq: null
   });
+
+  // If fee pending student, show restriction message
+  if (isFeePendingStudent) {
+    return <FeePendingRestriction />;
+  }
 
   // Fetch FAQs from API or localStorage
   const fetchFaqs = async () => {

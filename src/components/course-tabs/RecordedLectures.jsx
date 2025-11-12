@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, useBatch } from '../../hooks/reduxHooks';
+import { useAppSelector } from '../../store/hooks';
+import { selectIsFeePendingStudent } from '../../store/slices/authSlice';
 import { FaPlus } from 'react-icons/fa';
 import RecordedLectureCard from '../RecordedLectureCard';
 import RecordedLectureForm from '../RecordedLectureForm';
 import VideoModal from '../VideoModal';
 import VideoPlayerModal from '../VideoPlayerModal';
+import FeePendingRestriction from '../FeePendingRestriction';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -39,11 +42,17 @@ const RecordedLectures = ({ course }) => {
   // Call hooks with fallback values
   const authData = useAuth() || { user: null, isAdmin: false };
   const batchData = useBatch() || { selectedBatch: 'Batch A' };
+  const isFeePendingStudent = useAppSelector(selectIsFeePendingStudent);
 
   // Safely destructure with defaults
   const user = authData?.user || null;
   const isAdmin = authData?.isAdmin || false;
   const selectedBatch = batchData?.selectedBatch || 'Batch A';
+
+  // If fee pending student, show restriction message
+  if (isFeePendingStudent) {
+    return <FeePendingRestriction />;
+  }
 
   // Determine video type
   const getVideoType = (url) => {

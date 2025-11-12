@@ -1,18 +1,25 @@
 import React from "react";
 import { useAppSelector } from "../store/hooks";
-import { selectUser, selectIsAdmin, selectIsStudent, selectIsUpcomingBatchStudent } from "../store/slices/authSlice";
+import { selectUser, selectIsAdmin, selectIsStudent, selectIsUpcomingBatchStudent, selectIsFeePendingStudent } from "../store/slices/authSlice";
 import StudentDashboard from "./StudentDashboard";
 import AdminDashboard from "./AdminDashboard";
+import FeePendingRestriction from "../components/FeePendingRestriction";
 
 const LiveLecture = () => {
   const user = useAppSelector(selectUser);
   const isAdmin = useAppSelector(selectIsAdmin);
   const isStudent = useAppSelector(selectIsStudent);
   const isUpcomingBatchStudent = useAppSelector(selectIsUpcomingBatchStudent);
+  const isFeePendingStudent = useAppSelector(selectIsFeePendingStudent);
 
   // Admin/Instructor view
   if (isAdmin) {
     return <AdminDashboard />;
+  }
+
+  // Fee pending student - show restriction message
+  if (isFeePendingStudent) {
+    return <FeePendingRestriction />;
   }
 
   // Upcoming batch student - show restriction message

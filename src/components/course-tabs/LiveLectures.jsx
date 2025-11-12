@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth, useBatch } from '../../hooks/reduxHooks';
 import { useAppSelector } from '../../store/hooks';
-import { selectIsUpcomingBatchStudent } from '../../store/slices/authSlice';
+import { selectIsUpcomingBatchStudent, selectIsFeePendingStudent } from '../../store/slices/authSlice';
 import LectureCard from '../LectureCard';
 import VideoModal from '../VideoModal';
 import LiveChat from '../LiveChat';
+import FeePendingRestriction from '../FeePendingRestriction';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { FaComments, FaTimes } from 'react-icons/fa';
@@ -36,11 +37,17 @@ const LiveLectures = ({ course }) => {
   const authData = useAuth() || { user: null, isAdmin: false };
   const batchData = useBatch() || { selectedBatch: 'Batch A' };
   const isUpcomingBatchStudent = useAppSelector(selectIsUpcomingBatchStudent);
+  const isFeePendingStudent = useAppSelector(selectIsFeePendingStudent);
 
   // Safely destructure with defaults
   const user = authData?.user || null;
   const isAdmin = authData?.isAdmin || false;
   const selectedBatch = batchData?.selectedBatch || 'Batch A';
+
+  // If fee pending student, show restriction message
+  if (isFeePendingStudent) {
+    return <FeePendingRestriction />;
+  }
 
   // If upcoming batch student, show restriction message
   if (isUpcomingBatchStudent) {

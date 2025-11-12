@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch, FaFilter, FaFileAlt, FaDownload, FaBook } from 'react-icons/fa';
 import { useAuth } from '../../hooks/reduxHooks';
+import { useAppSelector } from '../../store/hooks';
+import { selectIsFeePendingStudent } from '../../store/slices/authSlice';
 import NotesForm from '../NotesForm';
 import NotesCard from '../NotesCard';
+import FeePendingRestriction from '../FeePendingRestriction';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
@@ -19,6 +22,7 @@ const API_BASE_URL = getApiBaseUrl();
 const Notes = ({ course }) => {
   // Call hooks with fallback values (same pattern as RecordedLectures)
   const authData = useAuth() || { user: null, isAdmin: false };
+  const isFeePendingStudent = useAppSelector(selectIsFeePendingStudent);
 
   // Safely destructure with defaults
   const user = authData?.user || null;
@@ -31,6 +35,11 @@ const Notes = ({ course }) => {
     isOpen: false,
     note: null
   });
+
+  // If fee pending student, show restriction message
+  if (isFeePendingStudent) {
+    return <FeePendingRestriction />;
+  }
 
   // Fetch notes from API or localStorage
   const fetchNotes = async () => {

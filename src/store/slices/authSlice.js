@@ -117,5 +117,13 @@ export const selectFeeStatus = (state) => {
   return user?.fee_status || 'Unknown';
 };
 
+// Selector to check if user has fee pending status (restricted access)
+export const selectIsFeePendingStudent = (state) => {
+  const user = state.auth.user;
+  return user && 
+         user.roles?.includes('student') && 
+         (user.admission_status === 'Fee Pending' || user.admission_status === 'Verification Pending');
+};
+
 export const { clearAuth, clearError, updateUserBatch } = authSlice.actions;
 export default authSlice.reducer;

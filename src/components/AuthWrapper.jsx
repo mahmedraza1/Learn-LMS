@@ -73,12 +73,16 @@ const AuthWrapper = ({ children }) => {
   // Check for students specifically and ensure they have:
   // - Granted status, OR
   // - Trial status, OR
-  // - BOTH Fee Pending admission status AND Pending Renewal fee status
+  // - BOTH Fee Pending admission status AND Pending Renewal fee status, OR
+  // - Fee Pending status (with restrictions), OR
+  // - Verification Pending status (with restrictions)
   if (isStudent) {
     const hasValidAdmission = 
       user?.admission_status === 'Granted' || 
       user?.admission_status === 'Trial' ||
-      (user?.admission_status === 'Fee Pending' && user?.fee_status === 'Pending Renewal');
+      (user?.admission_status === 'Fee Pending' && user?.fee_status === 'Pending Renewal') ||
+      user?.admission_status === 'Fee Pending' ||
+      user?.admission_status === 'Verification Pending';
     
     
     if (!hasValidAdmission) {
