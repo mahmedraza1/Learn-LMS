@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '../../store/hooks';
-import { selectIsAdmin, selectIsFeePendingStudent } from '../../store/slices/authSlice';
+import { selectIsAdmin } from '../../store/slices/authSlice';
 import { MdAdd, MdEdit, MdDelete, MdSave, MdCancel, MdAnnouncement } from 'react-icons/md';
 import Editor from '../Editor';
-import FeePendingRestriction from '../FeePendingRestriction';
 import toast from 'react-hot-toast';
 
 // Determine API URL based on hostname
@@ -18,7 +17,6 @@ const API_BASE_URL = getApiBaseUrl();
 
 const AnnouncementsNews = ({ course }) => {
   const isAdmin = useAppSelector(selectIsAdmin);
-  const isFeePendingStudent = useAppSelector(selectIsFeePendingStudent);
   const [announcements, setAnnouncements] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -26,11 +24,6 @@ const AnnouncementsNews = ({ course }) => {
   const [announcementTitle, setAnnouncementTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
-  // If fee pending student, show restriction message
-  if (isFeePendingStudent) {
-    return <FeePendingRestriction />;
-  }
 
   // Fetch course announcements
   const fetchAnnouncements = async () => {

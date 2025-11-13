@@ -118,8 +118,16 @@ export const selectFeeStatus = (state) => {
 };
 
 // Selector to check if user has fee pending status (restricted access)
+// Excludes students with both Fee Pending admission AND Pending Renewal fee status
 export const selectIsFeePendingStudent = (state) => {
   const user = state.auth.user;
+  
+  // If Fee Pending admission status AND Pending Renewal fee status, allow full access
+  if (user?.admission_status === 'Fee Pending' && user?.fee_status === 'Pending Renewal') {
+    return false;
+  }
+  
+  // Otherwise, restrict if Fee Pending or Verification Pending
   return user && 
          user.roles?.includes('student') && 
          (user.admission_status === 'Fee Pending' || user.admission_status === 'Verification Pending');
