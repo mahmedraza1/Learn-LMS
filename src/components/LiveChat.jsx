@@ -278,8 +278,12 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       {/* Messages Container */}
       <div 
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-3 md:p-4 space-y-2 md:space-y-3 bg-gray-50 min-h-0"
-        style={{ WebkitOverflowScrolling: 'touch' }}
+        className="flex-1 overflow-y-auto p-3 md:p-4 space-y-2 md:space-y-3 bg-gray-50"
+        style={{ 
+          WebkitOverflowScrolling: 'touch',
+          minHeight: 0,
+          overscrollBehavior: 'contain'
+        }}
       >
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-4 md:py-8">
@@ -338,7 +342,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       </div>
 
       {/* Message Input - Fixed at Bottom with Safe Area for Mobile Navigation */}
-      <div className="flex-shrink-0 border-t border-gray-200 bg-white p-3 md:p-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:pb-4 shadow-lg">
+      <div className="flex-shrink-0 border-t border-gray-200 p-3 pb-16 bg-white md:p-4 shadow-lg">
         {!isConnected && (
           <div className="mb-2 flex items-center justify-center">
             <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg text-xs">

@@ -144,7 +144,7 @@ const VideoModal = ({ isOpen, onClose, videoUrl, lecture = null, isLive = false 
         onContextMenu={handleContextMenu}
       >
         {/* Video Section */}
-        <div className={`relative transition-all duration-300 ${
+        <div className={`relative flex-shrink-0 transition-all duration-300 ${
           isLive && lecture 
             ? (isLandscape 
                 ? 'w-3/4 h-full' 
@@ -190,7 +190,7 @@ const VideoModal = ({ isOpen, onClose, videoUrl, lecture = null, isLive = false 
           <div className={`bg-white flex flex-col border-gray-200 overflow-hidden ${
             isLandscape 
               ? 'w-1/4 min-w-80 h-full border-l-2' 
-              : 'w-full lg:w-1/4 lg:min-w-80 flex-1 lg:h-full border-t-2 lg:border-t-0 lg:border-l-2'
+              : 'w-full lg:w-1/4 lg:min-w-80 h-[60vh] lg:h-full border-t-2 lg:border-t-0 lg:border-l-2'
           }`}>
             <LiveChat 
               lectureId={lecture.id} 
