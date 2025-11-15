@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from "react";
 import { useAuth, useBatch, useLecture } from "../hooks/reduxHooks";
 import CourseCard from "../components/CourseCard";
+import LectureCard from "../components/LectureCard";
 import VideoModal from "../components/VideoModal";
 import LiveClassAnnouncement from "../components/LiveClassAnnouncement";
 
 const StudentDashboard = () => {
   const { user } = useAuth();
   const { courses, selectedBatch, loading } = useBatch();
-  const { hasTodayLecture } = useLecture();
+  const { hasTodayLecture, lectures } = useLecture();
   const [videoModal, setVideoModal] = useState({
     isOpen: false,
     videoUrl: "",
@@ -61,6 +62,38 @@ const StudentDashboard = () => {
     });
   }, [courses, formattedBatch, hasTodayLecture]);
 
+  // Get today's lectures for the student's batch
+  const todayLectures = useMemo(() => {
+    const batchCourses = courses[formattedBatch] || [];
+    const today = new Date();
+    const todayDateString = today.toISOString().split('T')[0];
+    const lecturesForToday = [];
+    
+    batchCourses.forEach(course => {
+      const courseIdString = String(course.id);
+      const courseLectures = lectures[courseIdString] || [];
+      
+      // Find today's lecture for this course
+      const todayLecture = courseLectures.find(lecture => {
+        if (!lecture.date) return false;
+        const lectureDate = new Date(lecture.date);
+        const lectureDateString = lectureDate.toISOString().split('T')[0];
+        return lectureDateString === todayDateString;
+      });
+      
+      if (todayLecture) {
+        lecturesForToday.push({
+          lecture: todayLecture,
+          course: course,
+          scheduleDate: new Date(todayLecture.date)
+        });
+      }
+    });
+    
+    return lecturesForToday;
+  }, [courses, formattedBatch, lectures]);
+
+
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -97,6 +130,31 @@ const StudentDashboard = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Live Class Announcement */}
         <LiveClassAnnouncement isAdmin={false} />
+        
+        {/* Live Lectures Right Now Section - NEW */}
+        {todayLectures.length > 0 && (
+          <div className="mb-8">
+            <div className="mb-4 flex items-center">
+              <h2 className="text-xl font-bold text-gray-800">🔴 Live Lectures Right Now</h2>
+              <div className="ml-3 inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-800">
+                {todayLectures.length} {todayLectures.length === 1 ? 'Lecture' : 'Lectures'} Today
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+              {todayLectures.map(({ lecture, course, scheduleDate }) => (
+                <LectureCard
+                  key={`${course.id}-${lecture.id}`}
+                  lecture={lecture}
+                  lectureNumber={lecture.lecture_number}
+                  isEditable={false}
+                  isAdmin={false}
+                  onAttend={handleAttendLecture}
+                  scheduleDate={scheduleDate}
+                />
+              ))}
+            </div>
+          </div>
+        )}
         
         <h2 className="mb-6 text-xl font-bold text-gray-800">My Courses</h2>
 
