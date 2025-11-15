@@ -135,7 +135,7 @@ const StudentDashboard = () => {
         {todayLectures.length > 0 && (
           <div className="mb-8">
             <div className="mb-4 flex items-center">
-              <h2 className="text-xl font-bold text-gray-800">🔴 Live Lectures Right Now</h2>
+              <h2 className="text-xl font-bold text-gray-800">🔴 Today Live Lectures Right Now</h2>
               <div className="ml-3 inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-800">
                 {todayLectures.length} {todayLectures.length === 1 ? 'Lecture' : 'Lectures'} Today
               </div>
