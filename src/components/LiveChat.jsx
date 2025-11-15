@@ -342,7 +342,7 @@ const LiveChat = ({ lectureId, isLive, onClose }) => {
       </div>
 
       {/* Message Input - Fixed at Bottom with Safe Area for Mobile Navigation */}
-      <div className="flex-shrink-0 border-t border-gray-200 p-3 pb-16 bg-white md:p-4 shadow-lg">
+      <div className="flex-shrink-0 border-t border-gray-200 p-3 pb-20 bg-white md:p-4 shadow-lg">
         {!isConnected && (
           <div className="mb-2 flex items-center justify-center">
             <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg text-xs">
